@@ -103,7 +103,7 @@ app.message("profile", async (context: TurnContext, state: TurnState) => {
 app.authentication.get('graph').onUserSignInSuccess(async (context: TurnContext, state: TurnState) => {
     // Successfully logged in
     await context.sendActivity('Successfully logged in');
-    await context.sendActivity(`This is what you said before the AuthFlow started: ${context.activity.text}`);
+    await context.sendActivity(`Send the command again to get response: ${context.activity.text}`);
 });
 
 app.authentication
