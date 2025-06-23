@@ -2,7 +2,7 @@
 
 A bot, chatbot, or conversational bot is an app that responds to simple commands sent in chat and replies in meaningful ways. Examples of bots in everyday use include: bots that notify about build failures, bots that provide information about the weather or bus schedules, or provide travel information. A bot interaction can be a quick question and answer, or it can be a complex conversation. Being a cloud application, a bot can provide valuable and secure access to cloud services and corporate resources.
 
-This is a simple command bot that implements single sign-on feature to retrieve profile and photo for currently signed-in user using Bot Framework SDK, TeamsFx SDK and Microsoft Graph API, and the commands can be found as below:
+This is a simple command bot with single sign-on feature to retrieve profile and photo for currently signed-in user using Bot Framework SDK, Teams AI library and Microsoft Graph API, and the commands can be found as below:
 
 | command    | response                                          | sso command |
 | ---------- | ------------------------------------------------- | ----------- |
@@ -16,7 +16,7 @@ This is a simple command bot that implements single sign-on feature to retrieve 
 
 - How to use Microsoft 365 Agents Toolkit to create a Teams bot app.
 - How to use Microsoft Graph to get User info and picture in Teams app.
-- How to use TeamsFx SDK to implementing SSO for Teams bot.
+- How to use Teams AI library to configure SSO for Teams bot.
 
 ## Prerequisite to use this sample
 
@@ -76,6 +76,7 @@ This is a simple command bot that implements single sign-on feature to retrieve 
 | ------------ | ------ | -------------------------------------- |
 | Sep 20, 2022 | rentu  | update to support Teams Toolkit v4.0.0 |
 | Mar 17, 2023 | rentu  | update to support Teams Toolkit v5.0.0 |
+| Jun 23, 2025 | nliu   | update to Teams AI library             |
 
 ## Feedback
 
