@@ -83,8 +83,8 @@ deploy:
     with:
       target: ./.localConfigs
       envs:
-        BOT_ID: ${{BOT_ID}}
-        BOT_PASSWORD: ${{SECRET_BOT_PASSWORD}}
+        clientId: ${{BOT_ID}}
+        clientSecret: ${{SECRET_BOT_PASSWORD}}
         BOT_TYPE: 'MultiTenant'
         TEAMSFX_API_ALPHAVANTAGE_ENDPOINT: ${{TEAMSFX_API_ALPHAVANTAGE_ENDPOINT}}
         TEAMSFX_API_ALPHAVANTAGE_API_KEY: ${{TEAMSFX_API_ALPHAVANTAGE_API_KEY}}
