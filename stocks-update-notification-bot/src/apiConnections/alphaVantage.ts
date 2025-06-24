@@ -3,8 +3,7 @@ import axios from "axios";
 
 /*
 Next steps:
-1. Run npm install. We added the @microsoft/teamsfx to your package.json.
-   You need to run the command under the "bot" folder (instead of your project root folder).
+1. Run npm install. You need to run the command under the "bot" folder (instead of your project root folder).
 2. Set `TEAMSFX_API_ALPHAVANTAGE_API_KEY` to your API key in the file `bot/.env.teamsfx.local`.
 
 You can import the API client (an Axios instance) in another file and call alphaVantage APIs and authentication is now handled for you automatically.

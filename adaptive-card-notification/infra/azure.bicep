@@ -104,5 +104,5 @@ module azureBotRegistration './botRegistration/azurebot.bicep' = {
 output BOT_DOMAIN string = functionApp.properties.defaultHostName
 output BOT_AZURE_FUNCTION_APP_RESOURCE_ID string = functionApp.id
 output BOT_FUNCTION_ENDPOINT string = 'https://${functionApp.properties.defaultHostName}'
-output BOT_ID string = identity.properties.clientId
-output BOT_TENANT_ID string = identity.properties.tenantId
+output clientId string = identity.properties.clientId
+output tenantId string = identity.properties.tenantId
