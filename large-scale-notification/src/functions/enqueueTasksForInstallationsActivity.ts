@@ -14,7 +14,7 @@ import {
   ServiceBusAdministrationClient,
   ServiceBusClient,
 } from "@azure/service-bus";
-import { BotBuilderCloudAdapter } from "@microsoft/teamsfx";
+import { TeamsBotInstallation } from "../notification/notification";
 
 import {
   batchSendingInterval,
@@ -41,7 +41,7 @@ const enqueueTasksForInstallationsActivity: ActivityHandler = async (
     managedIdentityClientId: managedIdentityId,
   });
   let token = input.continuationToken;
-  let installations: BotBuilderCloudAdapter.TeamsBotInstallation[] = [];
+  let installations: TeamsBotInstallation[] = [];
   let lastSendTime: Date = undefined;
   let newStatus = { ...input.sendStatus };
   for (let iter = 0; iter < iterateTime; iter++) {
@@ -49,7 +49,7 @@ const enqueueTasksForInstallationsActivity: ActivityHandler = async (
       `${new Date().toISOString()} #${iter} [enqueueTasksForInstallationsActivity] continue ${token}`
     );
     const installationResult =
-      await notificationApp.notification.getPagedInstallations(
+      await notificationApp.getPagedInstallations(
         maxPageSize,
         token,
         false
