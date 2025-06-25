@@ -60,11 +60,11 @@ resource functionApp 'Microsoft.Web/sites@2021-02-01' = {
           value: '~18' // Set NodeJS version to 18.x
         }
         {
-          name: 'BOT_ID'
+          name: 'clientId'
           value: identity.properties.clientId
         }
         {
-          name: 'BOT_TENANT_ID'
+          name: 'tenantId'
           value: identity.properties.tenantId
         }
         {
@@ -115,5 +115,5 @@ module azureBotRegistration './botRegistration/azurebot.bicep' = {
 output BOT_DOMAIN string = functionApp.properties.defaultHostName
 output BOT_AZURE_FUNCTION_APP_RESOURCE_ID string = functionApp.id
 output BOT_FUNCTION_ENDPOINT string = 'https://${functionApp.properties.defaultHostName}'
-output clientId string = identity.properties.clientId
-output clientSecret string = identity.properties.tenantId
+output BOT_ID string = identity.properties.clientId
+output BOT_TENANT_ID string = identity.properties.tenantId
