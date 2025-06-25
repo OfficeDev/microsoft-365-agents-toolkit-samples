@@ -4,7 +4,7 @@
 
 This sample showcases an app that send a message to Teams with Adaptive Cards triggered by a HTTP post request. You can further extend the sample to consume, transform and post events to individual, chat or channel in Teams.
 
-The app is built using the TeamsFx SDK, which provides a simple set of functions over the Microsoft Bot Framework to implement this scenario.
+The app is built using the Microsoft 365 Agents SDK, and provides a simple set of functions over the Microsoft Bot Framework to implement this scenario.
 
 ![Notification Message in Teams](https://user-images.githubusercontent.com/10163840/224254253-21b4dedd-1079-4cda-ac9e-cd3bce725702.png)
 
@@ -60,6 +60,7 @@ The app is built using the TeamsFx SDK, which provides a simple set of functions
 |Date| Author| Comments|
 |---|---|---|
 |Apr 3, 2023| Dooriya Li | Add notification sample for codespaces |
+|Jun 25, 2025| Ning Liu | Update dependency to Agents SDK |
 
 ## Feedback
 We really appreciate your feedback! If you encounter any issue or error, please report issues to us following the [Supporting Guide](https://github.com/OfficeDev/TeamsFx-Samples/blob/dev/SUPPORT.md). Meanwhile you can make [recording](https://aka.ms/teamsfx-record) of your journey with our product, they really make the product better. Thank you!
