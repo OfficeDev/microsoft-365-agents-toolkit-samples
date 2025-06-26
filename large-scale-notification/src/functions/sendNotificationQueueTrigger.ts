@@ -1,13 +1,13 @@
-import { TurnContext } from "botbuilder";
+import { TurnContext } from "@microsoft/agents-hosting";
 import * as ACData from "adaptivecards-templating";
 import { app, InvocationContext } from "@azure/functions";
-import { BotBuilderCloudAdapter } from "@microsoft/teamsfx";
 
 import config from "../internal/config";
-import { notificationApp } from "../internal/initialize";
+import { adapter } from "../internal/initialize";
 import { InstallationReference } from "../types/installationReference";
 import notificationTemplate from "../adaptiveCards/notification-default.json";
 import { constructConversationReference } from "../util";
+import { TeamsBotInstallation } from "../notification/notification";
 
 export async function serviceBusQueueTrigger(
   mySbMsg: any,
@@ -15,8 +15,8 @@ export async function serviceBusQueueTrigger(
 ): Promise<void> {
   const installationReference = JSON.parse(mySbMsg) as InstallationReference;
   const conversation = constructConversationReference(installationReference);
-  const installation = new BotBuilderCloudAdapter.TeamsBotInstallation(
-    notificationApp.adapter,
+  const installation = new TeamsBotInstallation(
+    adapter,
     conversation,
     config.MicrosoftAppId
   );

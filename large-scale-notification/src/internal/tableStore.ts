@@ -1,18 +1,15 @@
-import { ConversationReference } from "botbuilder";
+import { ConversationReference } from "@microsoft/agents-activity";
 import { DefaultAzureCredential } from "@azure/identity";
 import { TableClient } from "@azure/data-tables";
-import {
-  ConversationReferenceStore,
-  ConversationReferenceStoreAddOptions,
-  PagedData,
-} from "@microsoft/teamsfx";
+import { IStorage, PagedData } from "../notification/interface";
 
 import {
   constructConversationReference,
   extractKeyDataFromConversationReference,
 } from "../util";
+import { InstallationReference } from "../types/installationReference";
 
-export class TableStore implements ConversationReferenceStore {
+export class TableStore implements IStorage {
   private readonly client: TableClient;
 
   constructor(
@@ -32,11 +29,20 @@ export class TableStore implements ConversationReferenceStore {
     );
   }
 
-  public async add(
-    key: string,
-    reference: Partial<ConversationReference>,
-    options: ConversationReferenceStoreAddOptions
-  ): Promise<boolean> {
+  public async read(keys: string[]): Promise<{ [key: string]: Partial<ConversationReference> }> {
+    const results: { [key: string]: Partial<ConversationReference> } = {};
+    try {
+      await Promise.all(keys.map(async (key) => {
+        const entity: InstallationReference = await this.client.getEntity(this.hash(key), key);
+        results[key] = constructConversationReference(entity);
+      }));
+    } catch (e: any) {
+      // Optionally handle error
+    }
+    return results;
+  }
+
+  public async write(changes: { [key: string]: Partial<ConversationReference> }): Promise<void> {
     /*
      * {
      *   "activityId":"f:4c06e7be-31d2-27d3-2c3f-e2c2ff775e0a",
@@ -57,28 +63,25 @@ export class TableStore implements ConversationReferenceStore {
      *   "serviceUrl":"https://smba.trafficmanager.net/amer/"
      * }
      */
-    const task = {
-      partitionKey: this.hash(key),
-      rowKey: key,
-      ...extractKeyDataFromConversationReference(reference),
-    };
-    try {
-      await this.client.createEntity(task);
-      return true;
-    } catch (e: unknown) {
-      return false;
+    for (const [key, reference] of Object.entries(changes)) {
+      const task = {
+        partitionKey: this.hash(key),
+        rowKey: key,
+        ...extractKeyDataFromConversationReference(reference),
+      };
+      try {
+        await this.client.createEntity(task);
+      } catch (e: any) {
+        // Optionally handle error per entity
+      }
     }
   }
 
-  public async remove(
-    key: string,
-    reference: Partial<ConversationReference>
-  ): Promise<boolean> {
+  public async delete(keys: string[]): Promise<void> {
     try {
-      await this.client.deleteEntity(this.hash(key), key);
-      return true;
+      await Promise.all(keys.map(key => this.client.deleteEntity(this.hash(key), key)));
     } catch (e: unknown) {
-      return false;
+      // Optionally handle error
     }
   }
 

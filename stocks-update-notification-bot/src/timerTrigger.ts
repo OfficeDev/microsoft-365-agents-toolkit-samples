@@ -1,8 +1,7 @@
 import { AzureFunction, Context } from '@azure/functions';
 import * as ACData from "adaptivecards-templating";
-import { AxiosInstance, BotBuilderCloudAdapter } from '@microsoft/teamsfx';
-import ConversationBot = BotBuilderCloudAdapter.ConversationBot;
-import TeamsBotInstallation = BotBuilderCloudAdapter.TeamsBotInstallation;
+import { NotificationBot, TeamsBotInstallation } from './notification/notification';
+import { AxiosInstance } from 'axios';
 import { GlobalQuote } from './cardModels';
 import { notificationApp } from './internal/initialize';
 import template from './adaptiveCards/notification-default.json'
@@ -73,13 +72,13 @@ const addCompanyName =
     (name: string): GlobalQuote => { return { ...quote, name } }
 
 const getInstallations =
-  async (app: ConversationBot): Promise<TeamsBotInstallation[]> => {
+  async (app: NotificationBot): Promise<TeamsBotInstallation[]> => {
     const pageSize = 100;
     const installations: TeamsBotInstallation[] = [];
 
     let continuationToken: string | undefined;
     do {
-      const pagedInstallations = await app.notification.getPagedInstallations(pageSize, continuationToken);
+      const pagedInstallations = await app.getPagedInstallations(pageSize, continuationToken);
       continuationToken = pagedInstallations.continuationToken;
       installations.push(...pagedInstallations.data);
     } while (continuationToken);
