@@ -5,7 +5,7 @@ import { HashRouter as Router, Navigate, Route, Routes } from "react-router-dom"
 import Privacy from "./Privacy";
 import TermsOfUse from "./TermsOfUse";
 import Tab from "./Tab";
-import { useTeams } from "@microsoft/teamsfx-react";
+import { useTeams } from "./useTeams";
 import { app } from "@microsoft/teams-js";
 
 /**

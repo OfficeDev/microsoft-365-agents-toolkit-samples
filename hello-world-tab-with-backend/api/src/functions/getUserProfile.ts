@@ -11,14 +11,11 @@ import {
   HttpResponseInit,
   InvocationContext,
 } from "@azure/functions";
-import {
-  OnBehalfOfCredentialAuthConfig,
-  OnBehalfOfUserCredential,
-  UserInfo,
-} from "@microsoft/teamsfx";
+import { OnBehalfOfCredential } from "@azure/identity";
 import { Client } from "@microsoft/microsoft-graph-client";
 import { TokenCredentialAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials";
 import config from "../config";
+import { jwtDecode } from "jwt-decode";
 // Only takes effect for proxy purpose when HOOK_FOR_PROXY is set in the environment.
 import "../HookForProxy";
 
@@ -69,16 +66,16 @@ export async function getUserProfile(
     };
   }
 
-  const oboAuthConfig: OnBehalfOfCredentialAuthConfig = {
+  const oboAuthConfig = {
     authorityHost: config.authorityHost,
     clientId: config.clientId,
     tenantId: config.tenantId,
     clientSecret: config.clientSecret,
   };
 
-  let oboCredential: OnBehalfOfUserCredential;
+  let oboCredential: OnBehalfOfCredential;
   try {
-    oboCredential = new OnBehalfOfUserCredential(accessToken, oboAuthConfig);
+    oboCredential = new OnBehalfOfCredential({...oboAuthConfig, userAssertionToken: accessToken });
   } catch (e) {
     context.error(e);
     return {
@@ -93,9 +90,9 @@ export async function getUserProfile(
 
   // Query user's information from the access token.
   try {
-    const currentUser: UserInfo = await oboCredential.getUserInfo();
-    if (currentUser && currentUser.displayName) {
-      res.jsonBody.userInfoMessage = `User display name is ${currentUser.displayName}.`;
+    const currentUser = jwtDecode(accessToken) as { name?: string};
+    if (currentUser && currentUser.name) {
+      res.jsonBody.userInfoMessage = `User display name is ${currentUser.name}.`;
     } else {
       res.jsonBody.userInfoMessage =
         "No user information was found in access token.";

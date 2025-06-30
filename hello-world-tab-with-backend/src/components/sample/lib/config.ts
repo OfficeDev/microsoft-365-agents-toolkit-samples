@@ -1,6 +1,7 @@
 const config = {
   initiateLoginEndpoint: process.env.REACT_APP_START_LOGIN_PAGE_URL,
   clientId: process.env.REACT_APP_CLIENT_ID,
+  tenantId: process.env.TEAMS_APP_TENANT_ID,
   apiEndpoint: process.env.REACT_APP_FUNC_ENDPOINT,
   apiName: process.env.REACT_APP_FUNC_NAME,
 };

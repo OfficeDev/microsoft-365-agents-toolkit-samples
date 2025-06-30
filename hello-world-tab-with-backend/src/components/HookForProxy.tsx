@@ -4,26 +4,20 @@
  * The backend code in api folder will send the Graph API request to proxy which will skip the access token check.
  */
 
-import { TeamsUserCredential } from "@microsoft/teamsfx";
-import { AccessToken } from "@azure/identity";
 import { Base64 } from "js-base64";
+import { authentication } from "@microsoft/teams-js";
 export function shouldHookForProxy(): boolean {
   return process.env.REACT_APP_HOOK_FOR_PROXY === "true";
 }
 
 if (shouldHookForProxy()) {
   // hook getToken to return a mocked access token. The token can not be used to call real Graph API.
-  TeamsUserCredential.prototype.getToken = async (scopes: string | string[], options?: any) => {
-    const accessToken: AccessToken = {
-      token: generateMockedAccessToken(),
-      expiresOnTimestamp: 2147483647,
-    };
-    return accessToken;
+  authentication.getAuthToken = async (authTokenRequest?: any) => {
+    return generateMockedAccessToken();
   };
 
-  // hook login to do nothing.
-  TeamsUserCredential.prototype.login = async (scopes: string | string[], options?: any) => {
-    return;
+  authentication.authenticate = async (authenticateParams?: any) => {
+    return "";
   };
 }
 

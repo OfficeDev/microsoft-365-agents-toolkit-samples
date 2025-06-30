@@ -5,14 +5,11 @@
 
 // Import polyfills for fetch required by msgraph-sdk-javascript.
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
-import {
-  OnBehalfOfCredentialAuthConfig,
-  OnBehalfOfUserCredential,
-  UserInfo,
-} from "@microsoft/teamsfx";
+import { OnBehalfOfCredential } from "@azure/identity";
 import config from "../config";
 import { TokenCredentialAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials";
 import { Client } from "@microsoft/microsoft-graph-client";
+import { jwtDecode } from "jwt-decode";
 
 /**
  * This function handles requests from teamsapp client.
@@ -56,16 +53,16 @@ export async function getUserProfile(
     };
   }
 
-  const oboAuthConfig: OnBehalfOfCredentialAuthConfig = {
+  const oboAuthConfig = {
     authorityHost: config.authorityHost,
     clientId: config.clientId,
     tenantId: config.tenantId,
     clientSecret: config.clientSecret,
   };
 
-  let oboCredential: OnBehalfOfUserCredential;
+  let oboCredential: OnBehalfOfCredential;
   try {
-    oboCredential = new OnBehalfOfUserCredential(accessToken, oboAuthConfig);
+    oboCredential = new OnBehalfOfCredential({...oboAuthConfig, userAssertionToken: accessToken });
   } catch (e) {
     context.error(e);
     return {
@@ -80,9 +77,9 @@ export async function getUserProfile(
 
   // Query user's information from the access token.
   try {
-    const currentUser: UserInfo = await oboCredential.getUserInfo();
-    if (currentUser && currentUser.displayName) {
-      body.userInfoMessage = `User display name is ${currentUser.displayName}.`;
+    const tokenObject = jwtDecode(accessToken) as { name?: string};
+    if (tokenObject.name) {
+      body.userInfoMessage = `User display name is ${tokenObject.name}.`;
     } else {
       body.userInfoMessage = "No user information was found in access token.";
     }
