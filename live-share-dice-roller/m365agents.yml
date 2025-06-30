@@ -34,7 +34,7 @@ provision:
     with:
       manifestPath: ./appPackage/manifest.json # Path to manifest template
       outputZipPath: ./appPackage/build/appPackage.${{TEAMSFX_ENV}}.zip
-      outputJsonPath: ./appPackage/build/manifest.${{TEAMSFX_ENV}}.json
+      outputFolder: ./appPackage/build
   # Validate app package using validation rules
   - uses: teamsApp/validateAppPackage
     with:
@@ -70,7 +70,7 @@ publish:
     with:
       manifestPath: ./appPackage/manifest.json # Path to manifest template
       outputZipPath: ./appPackage/build/appPackage.${{TEAMSFX_ENV}}.zip
-      outputJsonPath: ./appPackage/build/manifest.${{TEAMSFX_ENV}}.json
+      outputFolder: ./appPackage/build
   # Validate app package using validation rules
   - uses: teamsApp/validateAppPackage
     with:
