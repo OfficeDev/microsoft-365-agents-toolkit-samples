@@ -9,21 +9,17 @@ import {
 import { useEffect } from "react";
 import { HashRouter as Router, Navigate, Route, Routes } from "react-router-dom";
 import { app } from "@microsoft/teams-js";
-import { useTeamsUserCredential } from "@microsoft/teamsfx-react";
 import Tab from "./Tab";
 import TabConfig from "./TabConfig";
 import { TeamsFxContext } from "./Context";
-import config from "./sample/lib/config";
+import { useTeams } from "./sample/lib/useTeams";
 
 /**
  * The main app which handles the initialization and routing
  * of the app.
  */
 export default function App() {
-  const { loading, theme, themeString, teamsUserCredential } = useTeamsUserCredential({
-    initiateLoginEndpoint: config.initiateLoginEndpoint!,
-    clientId: config.clientId!,
-  });
+  const [{ loading, themeString, theme }] = useTeams();
   useEffect(() => {
     loading &&
       app.initialize().then(() => {
@@ -32,7 +28,7 @@ export default function App() {
       });
   }, [loading]);
   return (
-    <TeamsFxContext.Provider value={{ theme, themeString, teamsUserCredential }}>
+    <TeamsFxContext.Provider value={{ theme, themeString }}>
       <FluentProvider
         theme={
           themeString === "dark"

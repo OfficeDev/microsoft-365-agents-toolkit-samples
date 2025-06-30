@@ -1,25 +1,24 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Button, Spinner } from "@fluentui/react-components";
-import { useData } from "@microsoft/teamsfx-react";
-import * as axios from "axios";
-import { BearerTokenAuthProvider, createApiClient, TeamsUserCredential } from "@microsoft/teamsfx";
-import { TeamsFxContext } from "../Context";
+import { useData } from "./lib/useData";
+import axios from "axios";
 import config from "./lib/config";
+import { app, authentication } from "@microsoft/teams-js";
 
 const functionName = config.apiName || "myFunc";
 
-async function callFunction(teamsUserCredential: TeamsUserCredential) {
+async function callFunction(ssoToken: string) {
   try {
     const apiBaseUrl = config.apiEndpoint + "/api/";
-    // createApiClient(...) creates an Axios instance which uses BearerTokenAuthProvider to inject token to request header
-    const apiClient = createApiClient(
-      apiBaseUrl,
-      new BearerTokenAuthProvider(async () => (await teamsUserCredential.getToken(""))!.token)
-    );
+    const apiClient = axios.create({baseURL: apiBaseUrl});
+    apiClient.interceptors.request.use(async (config) => {
+      config.headers["Authorization"] = `Bearer ${ssoToken}`;
+      return config;
+    });
     const response = await apiClient.get(functionName);
     return response.data;
   } catch (err: unknown) {
-    if (axios.default.isAxiosError(err)) {
+    if (axios.isAxiosError(err)) {
       let funcErrorMsg = "";
 
       if (err?.response?.status === 404) {
@@ -52,17 +51,38 @@ export function AzureFunctions(props: { codePath?: string; docsUrl?: string }) {
     docsUrl: "https://aka.ms/teamsfx-azure-functions",
     ...props,
   };
-  const teamsUserCredential = useContext(TeamsFxContext).teamsUserCredential;
   const { loading, data, error, reload } = useData(async () => {
-    if (!teamsUserCredential) {
-      throw new Error("TeamsFx SDK is not initialized.");
-    }
+    await app.initialize();
+    let ssoToken: string | undefined;
     if (needConsent) {
-      await teamsUserCredential!.login(["User.Read"]);
+      const scopes = ["User.Read"];
+      const params = {
+        url: `${
+          config.initiateLoginEndpoint ? config.initiateLoginEndpoint : ""
+        }?clientId=${config.clientId ? config.clientId : ""}&scope=${encodeURI(
+          scopes.join(" ")
+        )}`,
+        width: 600,
+        height: 535,
+      } as authentication.AuthenticatePopUpParameters;
+      try {
+        await authentication.authenticate(params);
+        ssoToken = await authentication.getAuthToken({
+          resources: scopes
+        });
+      } catch (error) {
+        console.error("Authentication failed:", error);
+        setNeedConsent(true);
+        return;
+      }
       setNeedConsent(false);
     }
+    if (!ssoToken) {
+      setNeedConsent(true);
+      return;
+    }
     try {
-      const functionRes = await callFunction(teamsUserCredential);
+      const functionRes = await callFunction(ssoToken);
       return functionRes;
     } catch (error: any) {
       if (error.message.includes("The application may not be authorized.")) {
