@@ -57,7 +57,7 @@ provision:
       # Path to manifest template
       manifestPath: ./appPackage/manifest.json
       outputZipPath: ./appPackage/build/appPackage.${{TEAMSFX_ENV}}.zip
-      outputJsonPath: ./appPackage/build/manifest.${{TEAMSFX_ENV}}.json
+      outputFolder: ./appPackage/build
   # Apply the Teams app manifest to an existing Teams app in
   # Developer Portal.
   # Will use the app id in manifest file to determine which Teams app to update.
@@ -122,7 +122,7 @@ publish:
       # Path to manifest template
       manifestPath: ./appPackage/manifest.json
       outputZipPath: ./appPackage/build/appPackage.${{TEAMSFX_ENV}}.zip
-      outputJsonPath: ./appPackage/build/manifest.${{TEAMSFX_ENV}}.json
+      outputFolder: ./appPackage/build
   # Apply the Teams app manifest to an existing Teams app in
   # Developer Portal.
   # Will use the app id in manifest file to determine which Teams app to update.
