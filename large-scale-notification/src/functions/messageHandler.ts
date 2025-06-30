@@ -5,6 +5,7 @@ import {
   InvocationContext,
 } from "@azure/functions";
 import { adapter } from "../internal/initialize";
+import { teamsBot } from "../teamsBot";
 
 export async function messages(
   request: HttpRequest,
@@ -29,7 +30,7 @@ export async function messages(
     await requestAdaptor(request),
     response,
     async (context) => {
-      // Add your bot logic here if needed
+      await teamsBot.run(context);
     }
   );
   return res;
