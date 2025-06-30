@@ -93,8 +93,8 @@ deploy:
     name: deploy container image
     with:
       run: az containerapp up -n ${{AZURE_CONTAINER_APP_NAME}} --image
-        ${{AZURE_CONTAINER_IMAGE}} --env-vars "BOT_ID=secretref:bot-id"
-        "BOT_TENANT_ID=secretref:bot-tenant-id" "BOT_TYPE=secretref:bot-type" "BOT_DOMAIN=${{BOT_DOMAIN}}"
+        ${{AZURE_CONTAINER_IMAGE}} --env-vars "clientId=secretref:bot-id"
+        "tenantId=secretref:bot-tenant-id" "BOT_TYPE=secretref:bot-type" "BOT_DOMAIN=${{BOT_DOMAIN}}"
         "AAD_APP_CLIENT_ID=secretref:aad-app-client-id"
         "AAD_APP_CLIENT_SECRET=secretref:aad-app-client-secret"
         "AAD_APP_TENANT_ID=secretref:aad-app-tenant-id"
