@@ -7,7 +7,7 @@ import {
   MoreHorizontal32Regular,
   Share20Regular,
 } from "@fluentui/react-icons";
-import { BaseWidget, IWidgetClassNames } from "@microsoft/teamsfx-react";
+import { BaseWidget, IWidgetClassNames } from "./BaseWidget";
 
 import { CollaborationModel } from "../models/collaborationModel";
 import { getCollaborationData } from "../services/collaborationService";

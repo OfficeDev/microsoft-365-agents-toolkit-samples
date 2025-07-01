@@ -1,8 +1,6 @@
 import "./App.css";
-
 import { useEffect } from "react";
 import { HashRouter as Router, Navigate, Route, Routes } from "react-router-dom";
-
 import {
   FluentProvider,
   teamsDarkTheme,
@@ -10,8 +8,7 @@ import {
   teamsLightTheme,
 } from "@fluentui/react-components";
 import { app } from "@microsoft/teams-js";
-import { useTeamsUserCredential } from "@microsoft/teamsfx-react";
-
+import { useTeams } from "./lib/useTeams";
 import SampleDashboard from "./dashboards/SampleDashboard";
 import { TeamsFxContext } from "./internal/context";
 
@@ -20,10 +17,7 @@ import { TeamsFxContext } from "./internal/context";
  * of the app.
  */
 export default function App() {
-  const { loading, themeString, teamsUserCredential } = useTeamsUserCredential({
-    initiateLoginEndpoint: process.env.REACT_APP_START_LOGIN_PAGE_URL!,
-    clientId: process.env.REACT_APP_CLIENT_ID!,
-  });
+  const [{ loading, themeString, theme }] = useTeams();
   useEffect(() => {
     loading &&
       app.initialize().then(() => {
@@ -32,7 +26,7 @@ export default function App() {
       });
   }, [loading]);
   return (
-    <TeamsFxContext.Provider value={{ themeString, teamsUserCredential }}>
+    <TeamsFxContext.Provider value={{ theme, themeString }}>
       <FluentProvider
         id="App"
         theme={

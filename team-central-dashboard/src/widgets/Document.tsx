@@ -21,7 +21,7 @@ import {
   MoreHorizontal16Filled,
   MoreHorizontal32Regular,
 } from "@fluentui/react-icons";
-import { BaseWidget, IWidgetClassNames } from "@microsoft/teamsfx-react";
+import { BaseWidget, IWidgetClassNames } from "./BaseWidget";
 
 import { TEAMS_SVG } from "../common/constants";
 import { EmptyThemeImg } from "../components/EmptyThemeImg";
