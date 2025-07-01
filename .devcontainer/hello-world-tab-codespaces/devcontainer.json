@@ -2,9 +2,9 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node
 {
   "name": "tab-codespaces",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:16",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:20",
   // Default workspace folder
-  "workspaceFolder": "/workspaces/teams-toolkit-samples/hello-world-tab-codespaces/",
+  "workspaceFolder": "/workspaces/microsoft-365-agents-toolkit-samples/hello-world-tab-codespaces/",
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   "forwardPorts": [
     53000
@@ -34,5 +34,5 @@
     }
   },
   // Install teamsapp CLI
-  "postCreateCommand": "npm install -g @microsoft/teamsapp-cli"
+  "postCreateCommand": "npm install -g @microsoft/m365agentstoolkit-cli"
 }
