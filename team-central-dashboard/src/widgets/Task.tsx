@@ -12,7 +12,7 @@ import {
   MoreHorizontal32Regular,
   Star24Regular,
 } from "@fluentui/react-icons";
-import { BaseWidget, IWidgetClassNames } from "@microsoft/teamsfx-react";
+import { BaseWidget, IWidgetClassNames } from "./BaseWidget";
 
 import { EmptyThemeImg } from "../components/EmptyThemeImg";
 import { TeamsFxContext } from "../internal/context";

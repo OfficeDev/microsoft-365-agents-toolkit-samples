@@ -13,7 +13,7 @@ import {
   Settings20Regular,
   Trophy20Regular,
 } from "@fluentui/react-icons";
-import { BaseWidget, IWidgetClassNames } from "@microsoft/teamsfx-react";
+import { BaseWidget, IWidgetClassNames } from "./BaseWidget";
 
 import ProgressBar from "../components/Progress";
 import { DayRange, DayRangeModel } from "../models/dayRangeModel";

@@ -1,7 +1,4 @@
 import * as axios from "axios";
-
-import { BearerTokenAuthProvider, createApiClient } from "@microsoft/teamsfx";
-
 import { TeamsUserCredentialContext } from "../internal/singletonContext";
 
 type Method = axios.Method;
@@ -25,11 +22,12 @@ export async function callFunction(method: Method, functionName: string, params?
     // Construct the base URL for the Azure Function API
     const apiBaseUrl = import.meta.env.VITE_APP_FUNC_ENDPOINT + "/api/";
 
-    // Create an Axios instance which uses BearerTokenAuthProvider to inject token to request header
-    const apiClient = createApiClient(
-      apiBaseUrl,
-      new BearerTokenAuthProvider(async () => (await credential.getToken(""))!.token)
-    );
+    const apiClient = axios.default.create({baseURL: apiBaseUrl});
+    const token = await credential.getToken("");
+    apiClient.interceptors.request.use(async (config) => {
+      config.headers["Authorization"] = `Bearer ${token?.token}`;
+      return config;
+    });
 
     let response: any;
     // Send the request to the Azure Function API

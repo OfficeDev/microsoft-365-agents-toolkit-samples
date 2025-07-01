@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-import { TeamsUserCredential } from "@microsoft/teamsfx";
+import { TeamsUserCredential } from "./TeamsUserCredential";
 
 export const TeamsFxContext = createContext<{
   themeString: string,
