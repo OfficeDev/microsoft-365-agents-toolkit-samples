@@ -1,21 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-const {
-    TeamsFx,
-    getTediousConnectionConfig,
-    OnBehalfOfUserCredential
-} = require("@microsoft/teamsfx");
 const { app } = require("@azure/functions");
 const { Connection, Request } = require('tedious');
-const config = require("../config");
-
-const oboAuthConfig = {
-    authorityHost: config.authorityHost,
-    clientId: config.clientId,
-    tenantId: config.tenantId,
-    clientSecret: config.clientSecret,
-};
+const { jwtDecode } = require("jwt-decode");
 
 /**
  * This function handles requests sent from teamsfx client SDK.
@@ -31,11 +19,8 @@ async function todo(req) {
             .get("Authorization")
             ?.replace("Bearer ", "")
             .trim();
-
-        const oboCredential = new OnBehalfOfUserCredential(accessToken, oboAuthConfig);
-        // Get the user info from access token
-        const currentUser = await oboCredential.getUserInfo();
-        const objectId = currentUser.objectId;
+        const tokenObj = jwtDecode(accessToken);
+        const objectId = tokenObj.oid;
         const body = method === "get" ? {} : await req.json();
         var query;
 
@@ -58,9 +43,7 @@ async function todo(req) {
                 break;
         }
 
-        const teamsfx = new TeamsFx()
-        connection = await getSQLConnection(teamsfx);
-        // Execute SQL through TeamsFx server SDK generated connection and return result
+        connection = await getSQLConnection();
         const result = await execQuery(query, connection);
         return {
             status: 200,
@@ -82,8 +65,21 @@ async function todo(req) {
     }
 }
 
-async function getSQLConnection(teamsfx) {
-    const config = await getTediousConnectionConfig(teamsfx);
+async function getSQLConnection() {
+    const config = {
+        server: process.env.SQL_ENDPOINT,
+        authentication: {
+            type: 'default',
+            options: {
+                userName: process.env.SQL_USER_NAME,
+                password: process.env.SQL_PASSWORD,
+            }
+        },
+        options: {
+            port: 1433,
+            database: process.env.SQL_DATABASE_NAME,
+        }
+    };
     const connection = new Connection(config);
     return new Promise((resolve, reject) => {
         connection.on('connect', err => {
