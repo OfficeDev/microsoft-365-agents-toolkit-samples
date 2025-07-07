@@ -3,7 +3,7 @@
 
 import React from "react";
 import "./App.css";
-import { TeamsUserCredential } from "@microsoft/teamsfx";
+import { TeamsUserCredential } from "./lib/TeamsUserCredential";
 import { Button } from "@fluentui/react-components";
 import { Providers, ProviderState } from "@microsoft/mgt-element";
 import {
