@@ -4,11 +4,7 @@
 import React from "react";
 import "./App.css";
 import "./Tab.css";
-import {
-  BearerTokenAuthProvider,
-  createApiClient,
-  TeamsUserCredential,
-} from "@microsoft/teamsfx";
+import { TeamsUserCredential } from "./lib/TeamsUserCredential";
 import Profile from "./Profile";
 import Creator from "./Creator";
 import {
@@ -26,6 +22,7 @@ import { Notepad20Regular, ContactCard20Regular } from "@fluentui/react-icons";
 import noItemimage from "../images/no-item.png";
 import { app } from "@microsoft/teams-js";
 import config from "./lib/config";
+import axios from 'axios';
 
 class Tab extends React.Component {
   constructor(props) {
@@ -63,13 +60,14 @@ class Tab extends React.Component {
     this.credential = credential;
 
     const apiBaseUrl = config.apiEndpoint + "/api/";
-    // createApiClient(...) creates an Axios instance which uses BearerTokenAuthProvider to inject token to request header
-    const apiClient = createApiClient(
-      apiBaseUrl,
-      new BearerTokenAuthProvider(
-        async () => (await credential.getToken("")).token
-      )
-    );
+    const apiClient = axios.create({
+      baseURL: apiBaseUrl
+    });
+    const token = await credential.getToken("");
+    apiClient.interceptors.request.use(async (config) => {
+      config.headers["Authorization"] = `Bearer ${token?.token}`;
+      return config;
+    });
     this.apiClient = apiClient;
   }
 
