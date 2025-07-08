@@ -116,7 +116,7 @@
             "shortDescription": "A template for apps using only in the context of a Teams meeting",
             "fullDescription": "My first meeting app is a simple template to show how to build a tab app that can be installed and used in a meeting, in all of meeting lifecycles: pre-meeting chat, in-meeting, post-meeting chat. This sample contains tab as side panel, meeting chat tab, or meeting details tab. The template also includes simple codes to fetch meeting info and user profile.",
             "types": [
-                "Tab"
+                "Meeting"
             ],
             "tags": [
                 "Meeting Extension",
@@ -466,7 +466,7 @@
             "shortDescription": "This sample introduces Microsoft Live Share and Azure Fluid Relay to enable a shared experience between multiple users.",
             "fullDescription": "This sample is a a collaboration tool used in a Teams meeting that enables you to share your experience with others in real time. Azure Fluid Relay is a part of this service. It allows multiple users to roll a dice and see the results. This sample is a great way to get started with Live Share and Fluid.",
             "types": [
-                "Tab"
+                "Meeting"
             ],
             "tags": [
                 "Live Share",
