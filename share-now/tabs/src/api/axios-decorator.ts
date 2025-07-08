@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
-import { TeamsUserCredential, TeamsUserCredentialAuthConfig } from "@microsoft/teamsfx";
+import { TeamsUserCredential } from "../helpers/TeamsUserCredential";
 
 export class AxiosJWTDecorator {
 
@@ -92,7 +92,7 @@ export class AxiosJWTDecorator {
   private async setupAuthorizationHeader(
     config?: AxiosRequestConfig
   ): Promise<AxiosRequestConfig> {
-    const authConfig: TeamsUserCredentialAuthConfig = {
+    const authConfig = {
       clientId: process.env.REACT_APP_CLIENT_ID ?? "",
       initiateLoginEndpoint: process.env.REACT_APP_START_LOGIN_PAGE_URL ?? "",
     };

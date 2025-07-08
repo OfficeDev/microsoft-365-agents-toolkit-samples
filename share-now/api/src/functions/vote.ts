@@ -2,22 +2,14 @@
 // Licensed under the MIT License.
 import "isomorphic-fetch";
 import { HttpRequest, HttpResponseInit, InvocationContext, app } from "@azure/functions";
-import { OnBehalfOfCredentialAuthConfig, OnBehalfOfUserCredential } from "@microsoft/teamsfx";
 import { executeQuery, getSQLConnection } from "../utils/common";
 import { checkPost } from "../utils/query";
-import config from "../config";
+import { jwtDecode } from "jwt-decode";
 
 interface Response {
   status: number;
   body: any;
 }
-
-const oboAuthConfig: OnBehalfOfCredentialAuthConfig = {
-  authorityHost: config.authorityHost,
-  clientId: config.clientId,
-  tenantId: config.tenantId,
-  clientSecret: config.clientSecret,
-};
 
 export default async function vote(
   req: HttpRequest,
@@ -40,8 +32,7 @@ export default async function vote(
     ?.replace("Bearer ", "")
     .trim();
 
-    const oboCredential = new OnBehalfOfUserCredential(accessToken, oboAuthConfig);
-    const currentUser = await oboCredential.getUserInfo();
+    const currentUser = jwtDecode(accessToken) as { oid: string };
 
     const postID = +req.params.id;;
     const checkRes = await checkPost(postID, connection);
@@ -51,23 +42,23 @@ export default async function vote(
 
     let query;
     if (method === "post") {
-      const voted = await checkVoted(postID, currentUser.objectId, connection);
+      const voted = await checkVoted(postID, currentUser.oid, connection);
       if (voted) {
         res.body = "already voted";
         return res;
       }
-      query = `INSERT [dbo].[UserVoteEntity] (PostID, UserID) VALUES (${postID},'${currentUser.objectId}');`;
+      query = `INSERT [dbo].[UserVoteEntity] (PostID, UserID) VALUES (${postID},'${currentUser.oid}');`;
       await executeQuery(query, connection);
       await updateVoteCount(postID, true, connection)
       res.body = "vote successfully";
       return res;
     } else if (method === "delete") {
-      const voted = await checkVoted(postID, currentUser.objectId, connection);
+      const voted = await checkVoted(postID, currentUser.oid, connection);
       if (!voted) {
         res.body = "haven't voted";
         return res;
       }
-      query = `delete [dbo].[UserVoteEntity] where UserID = '${currentUser.objectId}' and PostID = ${postID};`;
+      query = `delete [dbo].[UserVoteEntity] where UserID = '${currentUser.oid}' and PostID = ${postID};`;
       await executeQuery(query, connection);
       await updateVoteCount(postID, false, connection)
       return res;

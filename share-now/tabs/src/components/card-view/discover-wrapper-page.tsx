@@ -14,7 +14,7 @@ import NotificationMessage from "../notification-message/notification-message";
 import { WithTranslation, withTranslation } from "react-i18next";
 import { TFunction } from "i18next";
 import InfiniteScroll from 'react-infinite-scroller';
-import { TeamsUserCredential, TeamsUserCredentialAuthConfig } from "@microsoft/teamsfx";
+import { TeamsUserCredential } from "../../helpers/TeamsUserCredential";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../../styles/site.css";
@@ -82,7 +82,7 @@ class DiscoverWrapperPage extends React.Component<WithTranslation, ICardViewStat
       this.authorAvatarBackground = colors === null ? [] : JSON.parse(colors);
       this.hasmorePost = true;
       this.clearSearchText = false;
-      const authConfig: TeamsUserCredentialAuthConfig = {
+      const authConfig = {
         clientId: process.env.REACT_APP_CLIENT_ID ?? "",
         initiateLoginEndpoint: process.env.REACT_APP_START_LOGIN_PAGE_URL ?? "",
       };
