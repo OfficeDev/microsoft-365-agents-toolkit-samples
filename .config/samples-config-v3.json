@@ -1,6 +1,7 @@
 {
     "filterOptions": {
         "capabilities": [
+            "Declarative Agent",
             "Tab",
             "Bot",
             "Message Extension",
