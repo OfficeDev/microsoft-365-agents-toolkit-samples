@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Spinner } from "@fluentui/react-components";
 import * as axios from "axios";
-import { apiClient } from "./lib/apiClient";
+import { getApiClient } from "./lib/apiClient";
 import { ConnectionId } from "./lib/constants";
 import { Status } from "./Status";
 
@@ -12,6 +12,8 @@ async function callFunction(
   data?: any
 ) {
   try {
+    
+    const apiClient = await getApiClient();
     const response = await apiClient.request({
       url: functionName,
       method,

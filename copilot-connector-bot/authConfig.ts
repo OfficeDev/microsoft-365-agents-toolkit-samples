@@ -1,7 +1,6 @@
-import { AppCredentialAuthConfig, OnBehalfOfCredentialAuthConfig } from "@microsoft/teamsfx";
 import config from "./config";
 
-const authConfig: OnBehalfOfCredentialAuthConfig | AppCredentialAuthConfig = {
+const authConfig = {
   authorityHost: config.authorityHost,
   clientId: config.clientId,
   tenantId: config.tenantId,

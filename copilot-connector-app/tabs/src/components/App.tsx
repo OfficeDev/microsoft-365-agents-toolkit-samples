@@ -13,7 +13,7 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-import { useTeamsUserCredential } from "@microsoft/teamsfx-react";
+import { useTeams } from "./sample/lib/useTeams";
 import Privacy from "./Privacy";
 import TermsOfUse from "./TermsOfUse";
 import Tab from "./Tab";
@@ -26,14 +26,10 @@ import config from "./sample/lib/config";
  * of the app.
  */
 export default function App() {
-  const { loading, theme, themeString, teamsUserCredential } =
-    useTeamsUserCredential({
-      initiateLoginEndpoint: config.initiateLoginEndpoint!,
-      clientId: config.clientId!,
-    });
+  const [{ loading, themeString, theme }] = useTeams();
   return (
     <TeamsFxContext.Provider
-      value={{ theme, themeString, teamsUserCredential }}
+      value={{ theme, themeString }}
     >
       <FluentProvider
         theme={
