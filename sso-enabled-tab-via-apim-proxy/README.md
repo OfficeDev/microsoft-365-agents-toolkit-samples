@@ -25,7 +25,7 @@ With this sample, you can achieve the SSO feature in your tab app using OBO (on-
 
 - How to use Microsoft 365 Agents Toolkit to create a Teams tab app.
 - How to use integrate APIM in TeamsFx projects.
-- How to implement SSO in Teams Tab app.
+- How to get SSO token with Teams-js library.
 - How to use APIM as proxy of Graph Toolkit, use SSO token to call Graph and get user login info.
 
 ## Note

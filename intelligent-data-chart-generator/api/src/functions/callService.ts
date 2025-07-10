@@ -4,8 +4,7 @@
  */
 
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
-import { ApiKeyLocation, ApiKeyProvider, AxiosInstance, createApiClient } from "@microsoft/teamsfx";
-
+import axios from "axios";
 import config from "../config";
 import sqlExample from "../example/sqlExample.json";
 import sqlPrompt from "../prompt/sqlPrompt";
@@ -144,11 +143,11 @@ function getExample(exampleData: any[]): Example[] {
  * @returns The response object from the OpenAI API.
  */
 async function callOpenAI(request: any) {
-  const authProvider = new ApiKeyProvider("api-key", config.openAIApiKey, ApiKeyLocation.Header);
-  const apiClient: AxiosInstance = createApiClient(
-    `${config.openAIEndpoint}openai/deployments/${config.openAIDeploymentName}`,
-    authProvider
-  );
+  const apiClient = axios.create({baseURL: `${config.openAIEndpoint}openai/deployments/${config.openAIDeploymentName}`});
+  apiClient.interceptors.request.use(async (axiosConfig) => {
+    axiosConfig.headers["api-key"] = config.openAIApiKey;
+    return axiosConfig;
+  });
   const resp = await apiClient.post(config.chatCompletionUrl, request);
   if (resp.status !== 200) {
     throw new Error(`Failed to call OpenAI API. Status code: ${resp.status}`);

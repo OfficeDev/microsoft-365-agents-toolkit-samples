@@ -15,8 +15,8 @@ import {
 import { CacheService, ProxyProvider } from "@microsoft/mgt";
 import config from "./lib/config";
 
-import { TeamsUserCredential } from "@microsoft/teamsfx";
 import axios from "axios";
+import { app, authentication } from "@microsoft/teams-js";
 
 class Tab extends React.Component {
   constructor(props) {
@@ -31,15 +31,17 @@ class Tab extends React.Component {
 
   async componentDidMount() {
     await this.initTeamsFx();
-    await this.initGraphToolkit(this.credential);
-    await this.checkIsConsentNeeded(this.credential);
+    await this.initGraphToolkit();
+    await this.checkIsConsentNeeded();
   }
 
-  async initGraphToolkit(credential) {
+  async initGraphToolkit() {
     Providers.globalProvider = new ProxyProvider(
       `${config.apimEndpoint}/${config.apimGraphProxy}`,
       async () => {
-        const ssoToken = (await credential.getToken("")).token;
+        const ssoToken = await authentication.getAuthToken({
+          resources: config.scope
+        });
         return {
           Authorization: `Bearer ${ssoToken}`,
         }
@@ -48,16 +50,22 @@ class Tab extends React.Component {
   }
 
   async initTeamsFx() {
-    this.credential = new TeamsUserCredential({
-      initiateLoginEndpoint: config.initiateLoginEndpoint,
-      clientId: config.clientId,
-    });
+    await app.initialize();
     this.scope = config.scope;
   }
 
   async loginBtnClick() {
     try {
-      await this.credential.login(this.scope);
+      const params = {
+        url: `${
+          config.initiateLoginEndpoint ? config.initiateLoginEndpoint : ""
+        }?clientId=${config.clientId ? config.clientId : ""}&scope=${encodeURI(
+          config.scope.join(" ")
+        )}`,
+        width: 600,
+        height: 535,
+      };
+      await authentication.authenticate(params);
       Providers.globalProvider.setState(ProviderState.SignedIn);
       this.setState({
         showLoginPage: false,
@@ -68,9 +76,11 @@ class Tab extends React.Component {
     }
   }
 
-  async checkIsConsentNeeded(credential) {
+  async checkIsConsentNeeded() {
     let consentNeeded = false;
-    const ssoToken = (await credential.getToken("")).token;
+    const ssoToken = await authentication.getAuthToken({
+      resources: config.scope
+    });
     try {
       await axios.get(
         `${config.apimEndpoint}/${config.apimCheckConsent}`,

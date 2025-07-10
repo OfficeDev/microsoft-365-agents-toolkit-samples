@@ -1,10 +1,6 @@
-import * as axios from "axios";
-
-import { BearerTokenAuthProvider, createApiClient } from "@microsoft/teamsfx";
+import axios, { Method } from "axios";
 
 import { TeamsUserCredentialContext } from "../internal/singletonContext";
-
-type Method = axios.Method;
 
 /**
  * Calls an Azure Function with the specified HTTP method, function name, parameters, and data.
@@ -23,21 +19,18 @@ export async function callFunction(
   // Get the Teams user credential from the singleton context
   const credential = TeamsUserCredentialContext.getInstance().getCredential();
   if (!credential) {
-    throw new Error("TeamsFx SDK is not initialized.");
+    throw new Error("TeamsUserCredential is not initialized.");
   }
 
   try {
     // Construct the base URL for the Azure Function API
     const apiBaseUrl = import.meta.env.VITE_APP_FUNC_ENDPOINT + "/api/";
-
-    // Create an Axios instance which uses BearerTokenAuthProvider to inject token to request header
-    const apiClient = createApiClient(
-      apiBaseUrl,
-      new BearerTokenAuthProvider(
-        async () => (await credential.getToken(""))!.token
-      )
-    );
-
+    const apiClient = axios.create({baseURL: apiBaseUrl});
+    const token = await credential.getToken("");
+    apiClient.interceptors.request.use(async (config) => {
+      config.headers["Authorization"] = `Bearer ${token?.token}`;
+      return config;
+    });
     let response: any;
     // Send the request to the Azure Function API
     response = await apiClient.request({
@@ -50,7 +43,7 @@ export async function callFunction(
     // Return the response data from the Azure Function
     return response.data;
   } catch (err: unknown) {
-    if (axios.default.isAxiosError(err)) {
+    if (axios.isAxiosError(err)) {
       let funcErrorMsg = "";
 
       if (err?.response?.status === 404) {
