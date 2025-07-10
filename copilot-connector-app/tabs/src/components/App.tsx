@@ -20,16 +20,21 @@ import Tab from "./Tab";
 import TabConfig from "./TabConfig";
 import { TeamsFxContext } from "./Context";
 import config from "./sample/lib/config";
+import { TeamsUserCredential } from "./sample/lib/TeamsUserCredential";
 
 /**
  * The main app which handles the initialization and routing
  * of the app.
  */
 export default function App() {
+  const teamsUserCredential = new TeamsUserCredential({
+    initiateLoginEndpoint: config.initiateLoginEndpoint!,
+    clientId: config.clientId!,
+  });
   const [{ loading, themeString, theme }] = useTeams();
   return (
     <TeamsFxContext.Provider
-      value={{ theme, themeString }}
+      value={{ theme, themeString, teamsUserCredential }}
     >
       <FluentProvider
         theme={

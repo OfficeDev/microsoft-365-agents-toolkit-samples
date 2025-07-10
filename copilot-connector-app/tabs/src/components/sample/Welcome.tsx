@@ -1,19 +1,18 @@
+import { useContext } from "react";
 import { Button, Image, Spinner } from "@fluentui/react-components";
 import "./Welcome.css";
 import { Introduce } from "./Introduce";
 import { Ingest } from "./Ingest";
 import { Query } from "./Query";
+import { TeamsFxContext } from "../Context";
 import { useData } from "./lib/useData";
-import { app } from "@microsoft/teams-js";
 
 export function Welcome() {
+  const { teamsUserCredential } = useContext(TeamsFxContext);
   const { loading, data, error, reload } = useData(async () => {
-    await app.initialize();
-    const context = await app.getContext();
-    if (context.user) {
-      return {
-        displayName: context.user.displayName || "",
-      };
+    const userInfo = await teamsUserCredential?.getUserInfo();
+    return {
+      displayName: userInfo?.displayName || "",
     }
   });
   return (
