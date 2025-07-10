@@ -1,7 +1,7 @@
 {
-  "name": "node-weather-agent",
+  "name": "genai-gateway-agent",
   "version": "1.0.0",
-  "description": "Microsoft Teams Toolkit Weather Agent Bot Template with Agetns SDK",
+  "description": "APIM GenAI Gateway agent with Agents SDK sample",
   "engines": {
     "node": "18 || 20 || 22"
   },

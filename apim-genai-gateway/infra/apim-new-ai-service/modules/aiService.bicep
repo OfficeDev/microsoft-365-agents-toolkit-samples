@@ -3,6 +3,9 @@
 @description('Used to generate names for all resources in this file')
 param resourceBaseName string
 
+@description('Suffix to differentiate multiple AI services')
+param serviceSuffix string = ''
+
 param location string = resourceGroup().location
 
 param aiServicesSku string = 'S0'
@@ -14,7 +17,7 @@ param tags object = {}
 
 // AIServices cognitive service
 resource aiService 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
-  name: 'ai-${resourceBaseName}-${location}'
+  name: 'ai-${resourceBaseName}${serviceSuffix}-${location}'
   location: location
   sku: {
     name: aiServicesSku
@@ -22,7 +25,7 @@ resource aiService 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
   }
   kind: 'AIServices'
   tags: union(tags, {
-    'azd-service-name': 'ai-services'
+    'azd-service-name': 'ai-services${serviceSuffix}'
   })
   
   identity: {
@@ -31,7 +34,7 @@ resource aiService 'Microsoft.CognitiveServices/accounts@2024-10-01' = {
   
   properties: {
     publicNetworkAccess: 'Enabled'
-    customSubDomainName: toLower('ai-${resourceBaseName}-${location}')
+    customSubDomainName: toLower('ai-${resourceBaseName}${serviceSuffix}-${location}')
     disableLocalAuth: false
   }
 }

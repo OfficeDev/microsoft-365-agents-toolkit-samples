@@ -1,9 +1,13 @@
 param resourceBaseName string
 
-param aiServiceEndpoint string
+param aiService1Endpoint string
+param aiService2Endpoint string
 
 @secure()
-param aiServiceKey string
+param aiService1Key string
+
+@secure()
+param aiService2Key string
 
 resource apimService 'Microsoft.ApiManagement/service@2023-05-01-preview' existing = {
   name: 'apim-${resourceBaseName}'
@@ -35,23 +39,25 @@ resource api 'Microsoft.ApiManagement/service/apis@2023-05-01-preview' = {
 resource apiPolicy 'Microsoft.ApiManagement/service/apis/policies@2021-12-01-preview' = {
   name: 'policy'
   parent: api
+  dependsOn: [backendPoolAIServices]
   properties: {
     format: 'rawxml'
     value: loadTextContent('../policy.xml')
   }
 }
 
-// Create backend for AIServices
-resource backendAIServices 'Microsoft.ApiManagement/service/backends@2023-05-01-preview' = {
-  name: 'AIServices'
+// Create backend for AIServices 1
+resource backendAIServices1 'Microsoft.ApiManagement/service/backends@2024-05-01' = {
+  name: 'AIServices1'
   parent: apimService
   properties: {
-    description: 'Azure AI Services backend'
-    url: '${aiServiceEndpoint}/openai'
+    description: 'Azure AI Services backend 1'
+    type: 'Single'
     protocol: 'http'
+    url: '${aiService1Endpoint}/openai'
     credentials: {
       header: {
-        'api-key': [aiServiceKey]
+        'api-key': [aiService1Key]
       }
     }
     circuitBreaker: {
@@ -70,7 +76,7 @@ resource backendAIServices 'Microsoft.ApiManagement/service/backends@2023-05-01-
               }
             ]
           }
-          name: 'aiServicesBreakerRule'
+          name: 'aiServices1BreakerRule'
           tripDuration: 'PT1M'
         }
       ]
@@ -78,18 +84,63 @@ resource backendAIServices 'Microsoft.ApiManagement/service/backends@2023-05-01-
   }
 }
 
-// Create backend pool for load balancing (can add multiple AIServices endpoints here)
-resource backendPoolAIServices 'Microsoft.ApiManagement/service/backends@2023-05-01-preview' = {
+// Create backend for AIServices 2
+resource backendAIServices2 'Microsoft.ApiManagement/service/backends@2024-05-01' = {
+  name: 'AIServices2'
+  parent: apimService
+  properties: {
+    description: 'Azure AI Services backend 2'
+    type: 'Single'
+    protocol: 'http'
+    url: '${aiService2Endpoint}/openai'
+    credentials: {
+      header: {
+        'api-key': [aiService2Key]
+      }
+    }
+    circuitBreaker: {
+      rules: [
+        {
+          failureCondition: {
+            count: 3
+            errorReasons: [
+              'Server errors'
+            ]
+            interval: 'PT5M'
+            statusCodeRanges: [
+              {
+                min: 429
+                max: 429
+              }
+            ]
+          }
+          name: 'aiServices2BreakerRule'
+          tripDuration: 'PT1M'
+        }
+      ]
+    }
+  }
+}
+
+// Create backend pool for load balancing (includes both AIServices endpoints)
+resource backendPoolAIServices 'Microsoft.ApiManagement/service/backends@2024-05-01' = {
   name: 'aiservices-backend-pool'
   parent: apimService
-  dependsOn: [backendAIServices]
+  dependsOn: [backendAIServices1, backendAIServices2]
   properties: {
     description: 'Load balancer for multiple AI Services endpoints'
     type: 'Pool'
     pool: {
       services: [
         {
-          id: '/backends/AIServices'
+          id: '/subscriptions/${subscription().subscriptionId}/resourceGroups/${resourceGroup().name}/providers/Microsoft.ApiManagement/service/${apimService.name}/backends/AIServices1'
+          weight: 50
+          priority: 1
+        }
+        {
+          id: '/subscriptions/${subscription().subscriptionId}/resourceGroups/${resourceGroup().name}/providers/Microsoft.ApiManagement/service/${apimService.name}/backends/AIServices2'
+          weight: 50
+          priority: 1
         }
       ]
     }

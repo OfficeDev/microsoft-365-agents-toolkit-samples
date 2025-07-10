@@ -64,10 +64,21 @@ module contentSafety './modules/contentSafety.bicep' = if (enableContentSafety) 
   ]
 }
 
-module aiService './modules/aiService.bicep' = {
-  name: 'AI-Service-deployment'
+module aiService1 './modules/aiService.bicep' = {
+  name: 'AI-Service-1-deployment'
   params: {
     resourceBaseName: resourceBaseName
+    serviceSuffix: '1'
+    location: location
+    aiServicesSku: aiServicesSku
+  }
+}
+
+module aiService2 './modules/aiService.bicep' = {
+  name: 'AI-Service-2-deployment'
+  params: {
+    resourceBaseName: resourceBaseName
+    serviceSuffix: '2'
     location: location
     aiServicesSku: aiServicesSku
   }
@@ -78,8 +89,8 @@ module semanticCache './modules/semanticCache.bicep' = {
  params: {
    resourceBaseName: resourceBaseName
    location: location
-   azureOpenAIKey: aiService.outputs.aiServiceApiKey
-   azureOpenAIEndpoint: aiService.outputs.aiServiceEndpoint
+   azureOpenAIKey: aiService1.outputs.aiServiceApiKey
+   azureOpenAIEndpoint: aiService1.outputs.aiServiceEndpoint
    embeddingsDeploymentName: embeddingsDeploymentName
  }
  dependsOn: [
@@ -91,8 +102,10 @@ module apiBackends './modules/apiBackends.bicep' = {
   name: 'AI-Service-Backends-deployment'
   params: {
     resourceBaseName: resourceBaseName
-    aiServiceKey: aiService.outputs.aiServiceApiKey
-    aiServiceEndpoint: aiService.outputs.aiServiceEndpoint
+    aiService1Key: aiService1.outputs.aiServiceApiKey
+    aiService1Endpoint: aiService1.outputs.aiServiceEndpoint
+    aiService2Key: aiService2.outputs.aiServiceApiKey
+    aiService2Endpoint: aiService2.outputs.aiServiceEndpoint
   }
   dependsOn: [
     apimService // Ensure APIM service exists first since aiServiceBackends references it
@@ -116,4 +129,4 @@ output AZURE_OPENAI_ENDPOINT string = apimService.outputs.gatewayUrl
 #disable-next-line outputs-should-not-contain-secrets
 output SECRET_AZURE_OPENAI_API_KEY string = apiBackends.outputs.subscriptionPrimaryKey
 
-output AZURE_OPENAI_DEPLOYMENT_NAME string = aiService.outputs.aiServiceDeploymentName
+output AZURE_OPENAI_DEPLOYMENT_NAME string = aiService1.outputs.aiServiceDeploymentName

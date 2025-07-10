@@ -2,7 +2,9 @@
     <inbound>
         <base />
         <set-header name="api-key" exists-action="delete" /> <!-- Remove the APIM subscription key in api-key header -->
-        <set-backend-service backend-id="AIServices" />
+        
+        <!-- Use backend pool for automatic load balancing -->
+        <set-backend-service backend-id="aiservices-backend-pool" />
         
         <azure-openai-semantic-cache-lookup
             score-threshold="0.8"
@@ -13,9 +15,9 @@
             <vary-by>@(context.Subscription.Id)</vary-by>
         </azure-openai-semantic-cache-lookup>
         
-        <!-- <azure-openai-token-limit counter-key="@(context.Request.IpAddress)"
-            tokens-per-minute="500" estimate-prompt-tokens="false" remaining-tokens-variable-name="remainingTokens">
-        </azure-openai-token-limit> -->
+        <azure-openai-token-limit counter-key="@(context.Request.IpAddress)"
+            tokens-per-minute="1000" estimate-prompt-tokens="false" remaining-tokens-variable-name="remainingTokens">
+        </azure-openai-token-limit>
         
         <azure-openai-emit-token-metric namespace="openai">
             <dimension name="Subscription ID" value="@(context.Subscription.Id)" />
@@ -35,7 +37,9 @@
         </llm-content-safety>
     </inbound>
     <backend>
-        <base />
+        <retry condition="@(context.Response.StatusCode >= 500 || context.Response.StatusCode == 429)" count="2" interval="1" max-interval="10" delta="1">
+            <forward-request />
+        </retry>
     </backend>
     <outbound>
         <azure-openai-semantic-cache-store duration="60" />

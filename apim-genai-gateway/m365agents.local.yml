@@ -48,12 +48,6 @@ provision:
         - path: ./infra/apim-new-ai-service/main.bicep
           parameters: ./infra/apim-new-ai-service/main.parameters.json
           deploymentName: Deploy-APIM-Resources-With-New-Cognitive-Service
-        
-        # Deploy all APIM modules with a single main deployment using an existing cognitive service
-        # - path: ./infra/apim-using-exist-cognitive-service/main.bicep
-        #   parameters: ./infra/apim-using-exist-cognitive-service/main.parameters.json
-        #   deploymentName: Deploy-APIM-Resources
-
       bicepCliVersion: v0.9.1
 
   # Validate using manifest schema
