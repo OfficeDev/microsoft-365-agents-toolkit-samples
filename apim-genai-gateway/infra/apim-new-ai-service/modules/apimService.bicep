@@ -7,14 +7,16 @@ param location string = resourceGroup().location
 
 @description('The pricing tier of this API Management service')
 @allowed([
-  'Developer'
   'Basic'
-  'Basicv2'
-  'Standard'
-  'Standardv2'
+  'BasicV2'
+  'Consumption'
+  'Developer'
+  'Isolated'
   'Premium'
+  'Standard'
+  'StandardV2'
 ])
-param apimSku string = 'Basicv2'
+param apimSku string
 
 @description('The email address of the owner of the service')
 param apimPublisherEmail string = 'noreply@microsoft.com'

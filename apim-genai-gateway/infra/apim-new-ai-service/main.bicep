@@ -7,31 +7,33 @@ param location string = resourceGroup().location
 
 @description('The pricing tier of this API Management service')
 @allowed([
-  'Developer'
   'Basic'
-  'Basicv2'
-  'Standard'
-  'Standardv2'
+  'BasicV2'
+  'Consumption'
+  'Developer'
+  'Isolated'
   'Premium'
+  'Standard'
+  'StandardV2'
 ])
-param apimSku string = 'Developer'
+param apimSku string
 
 @description('SKU for the Content Safety service')
 @allowed([
   'F0'  // Free tier
   'S0'  // Standard tier
 ])
-param contentSafetySku string = 'S0'
+param contentSafetySku string
 
 @description('SKU for the AI Services')
 @allowed([
   'F0'  // Free tier
   'S0'  // Standard tier
 ])
-param aiServicesSku string = 'S0'
+param aiServicesSku string
 
 @description('Whether to enable Content Safety integration')
-param enableContentSafety bool = true
+param enableContentSafety bool
 
 @description('The email address of the owner of the service')
 param apimPublisherEmail string = 'noreply@microsoft.com'

@@ -4,6 +4,18 @@
     "parameters": {
       "resourceBaseName": {
         "value": "bot${{RESOURCE_SUFFIX}}"
+      },
+      "apimSku": {
+        "value": "Developer" 
+      },
+      "aiServicesSku": {
+        "value": "S0"
+      },
+      "contentSafetySku": {
+        "value": "S0"
+      },
+      "enableContentSafety": {
+        "value": false
       }
     }
   }
