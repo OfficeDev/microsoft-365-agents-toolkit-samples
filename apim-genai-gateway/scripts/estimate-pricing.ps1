@@ -6,8 +6,8 @@ param(
     [string]$Location = "East US",
     
     [Parameter(Mandatory=$false)]
-    [ValidateSet("Developer", "Basic", "Standard", "Premium")]
-    [string]$ApimSku = "Basic",
+    [ValidateSet("Basic", "BasicV2", "Consumption", "Developer", "Isolated", "Premium", "Standard", "StandardV2")]
+    [string]$ApimSku = "Developer",
     
     [Parameter(Mandatory=$false)]
     [ValidateSet("F0", "S0")]
@@ -51,10 +51,14 @@ function Write-SubHeader {
 # Pricing data (as of 2025 - should be updated regularly)
 $PricingData = @{
     ApiManagement = @{
-        Developer = @{ Monthly = 56.93; Calls = 1000000; Description = "1M calls, 1 unit, no SLA" }
         Basic = @{ Monthly = 182.50; Calls = 100000; Description = "100K calls/unit, 2 units max" }
-        Standard = @{ Monthly = 292.00; Calls = 250000; Description = "250K calls/unit, 4 units max" }
+        BasicV2 = @{ Monthly = 185.00; Calls = 100000; Description = "100K calls/unit, improved performance" }
+        Consumption = @{ Monthly = 0; Calls = 0; Description = "Pay-per-call serverless tier (~$0.0035 per call)" }
+        Developer = @{ Monthly = 56.93; Calls = 1000000; Description = "1M calls, 1 unit, no SLA" }
+        Isolated = @{ Monthly = 750.00; Calls = 250000; Description = "250K calls/unit, dedicated infrastructure" }
         Premium = @{ Monthly = 2920.00; Calls = 250000; Description = "250K calls/unit, 12 units max, multi-region" }
+        Standard = @{ Monthly = 292.00; Calls = 250000; Description = "250K calls/unit, 4 units max" }
+        StandardV2 = @{ Monthly = 295.00; Calls = 250000; Description = "250K calls/unit, improved performance" }
     }
     
     AiServices = @{
@@ -97,9 +101,15 @@ Write-Host "  Currency: $Currency"
 Write-SubHeader "Core Infrastructure Costs"
 
 # API Management
-$apimCost = $PricingData.ApiManagement[$ApimSku].Monthly
-Write-Host "  API Management ($ApimSku): `$$($apimCost.ToString('F2'))/month"
-Write-Host "    Features: $($PricingData.ApiManagement[$ApimSku].Description)"
+if ($ApimSku -eq "Consumption") {
+    $apimCost = 0  # Will be calculated separately based on usage
+    Write-Host "  API Management ($ApimSku): Pay-per-call pricing"
+    Write-Host "    Features: $($PricingData.ApiManagement[$ApimSku].Description)"
+} else {
+    $apimCost = $PricingData.ApiManagement[$ApimSku].Monthly
+    Write-Host "  API Management ($ApimSku): `$$($apimCost.ToString('F2'))/month"
+    Write-Host "    Features: $($PricingData.ApiManagement[$ApimSku].Description)"
+}
 
 # AI Services (2 instances)
 $aiServiceCost = $PricingData.AiServices[$AiServicesSku].Monthly * 2
@@ -151,13 +161,22 @@ $totalBaseCost = $apimCost + $aiServiceCost + $redisCost + $monitoringCost + $co
 $totalEstimatedCost = $totalBaseCost + $totalUsageCost
 
 Write-ColoredText "  Base Infrastructure Cost: `$$($totalBaseCost.ToString('F2'))/month" Cyan
+if ($ApimSku -eq "Consumption") {
+    Write-ColoredText "  Note: APIM Consumption tier costs not included (pay-per-call)" Yellow
+}
 Write-ColoredText "  Estimated Usage Cost: `$$($totalUsageCost.ToString('F2'))/month" Cyan
 Write-ColoredText "  TOTAL ESTIMATED COST: `$$($totalEstimatedCost.ToString('F2'))/month" Yellow
 
 Write-SubHeader "Cost Optimization Recommendations"
 
-if ($ApimSku -eq "Premium") {
+if ($ApimSku -eq "Premium" -or $ApimSku -eq "Isolated") {
     Write-ColoredText "  ⚠️  Consider starting with Developer ($56.93) or Standard ($292) for testing" Yellow
+}
+
+if ($ApimSku -eq "Consumption") {
+    Write-ColoredText "  💡 Consumption tier is pay-per-call (~$0.0035 per call). Cost-effective for low traffic." Green
+    $estimatedConsumptionCost = ($EstimatedMonthlyTokens / 1000) * 0.0035 * 2  # Rough estimate
+    Write-ColoredText "     Estimated consumption cost: ~`$$($estimatedConsumptionCost.ToString('F2'))/month" Cyan
 }
 
 if ($AiServicesSku -eq "S0" -and $EstimatedMonthlyTokens -lt 40000) {
