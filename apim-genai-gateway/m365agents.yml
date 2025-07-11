@@ -34,6 +34,17 @@ provision:
 
   - uses: arm/deploy # Deploy given ARM templates parallelly.
     with:
+      subscriptionId: ${{AZURE_SUBSCRIPTION_ID}}
+      resourceGroupName: ${{AZURE_RESOURCE_GROUP_NAME}}
+      templates:
+        # Deploy all APIM modules with a single main deployment using a new cognitive service
+        - path: ./infra/apim-new-ai-service/main.bicep
+          parameters: ./infra/apim-new-ai-service/main.parameters.json
+          deploymentName: Deploy-APIM-Resources-With-New-Cognitive-Service
+      bicepCliVersion: v0.9.1
+
+  - uses: arm/deploy # Deploy given ARM templates parallelly.
+    with:
       # AZURE_SUBSCRIPTION_ID is a built-in environment variable,
       # if its value is empty, TeamsFx will prompt you to select a subscription.
       # Referencing other environment variables with empty values
@@ -52,7 +63,7 @@ provision:
           # variable before ARM deployment.
           parameters: ./infra/azure.parameters.json
           # Required when deploying ARM template
-          deploymentName: Create-resources-for-tab
+          deploymentName: Create-resources-for-bot
       # Teams Toolkit will download this bicep CLI version from github for you,
       # will use bicep CLI in PATH if you remove this config.
       bicepCliVersion: v0.9.1
@@ -145,4 +156,3 @@ publish:
     # the specified environment variable(s).
     writeToEnvironmentFile:
       publishedAppId: TEAMS_APP_PUBLISHED_APP_ID
-projectId: 6c19dd75-79af-4bdb-95b3-0a2e17c4f49d

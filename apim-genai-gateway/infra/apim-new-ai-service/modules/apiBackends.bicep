@@ -133,12 +133,12 @@ resource backendPoolAIServices 'Microsoft.ApiManagement/service/backends@2024-05
     pool: {
       services: [
         {
-          id: '/subscriptions/${subscription().subscriptionId}/resourceGroups/${resourceGroup().name}/providers/Microsoft.ApiManagement/service/${apimService.name}/backends/AIServices1'
+          id: '/backends/AIServices1'
           weight: 50
           priority: 1
         }
         {
-          id: '/subscriptions/${subscription().subscriptionId}/resourceGroups/${resourceGroup().name}/providers/Microsoft.ApiManagement/service/${apimService.name}/backends/AIServices2'
+          id: '/backends/AIServices2'
           weight: 50
           priority: 1
         }

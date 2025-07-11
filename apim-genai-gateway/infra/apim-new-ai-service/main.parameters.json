@@ -15,7 +15,7 @@
         "value": "S0"
       },
       "enableContentSafety": {
-        "value": false
+        "value": true
       }
     }
   }
