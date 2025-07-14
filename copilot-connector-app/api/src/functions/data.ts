@@ -2,20 +2,10 @@
 import "isomorphic-fetch";
 import { app, InvocationContext, HttpRequest, HttpResponseInit } from "@azure/functions";
 import { Client } from "@microsoft/microsoft-graph-client";
-import { TokenCredentialAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials";
-import { AppCredential, AppCredentialAuthConfig } from "@microsoft/teamsfx";
+import { getGraphClient } from "../graphClient";
 import { readFile } from "fs/promises";
 import * as path from "path";
 import { parse } from "csv-parse/sync";
-import config from "../config";
-
-
-const authConfig: AppCredentialAuthConfig = {
-  authorityHost: config.authorityHost,
-  clientId: config.clientId,
-  tenantId: config.tenantId,
-  clientSecret: config.clientSecret,
-};
 
 /**
  * @param {HttpRequest} req - The HTTP request.
@@ -35,21 +25,6 @@ export async function data(
     jsonBody: {},
   };
 
-  let appCredential;
-  try {
-    appCredential = new AppCredential(authConfig);
-  } catch (e) {
-    context.error(e);
-    return {
-      status: 500,
-      jsonBody: {
-        error:
-          "Failed to construct AppCredential with Application Identity. " +
-          "Ensure your function app is configured with the right Azure AD App registration.",
-      },
-    };
-  }
-
   // Ingest data
   try {
     const csvFileContent = (
@@ -64,16 +39,7 @@ export async function data(
       columns: true,
       skip_empty_lines: true,
     });
-    // Create an instance of the TokenCredentialAuthenticationProvider by passing the tokenCredential instance and options to the constructor
-    const authProvider = new TokenCredentialAuthenticationProvider(
-      appCredential,
-      {
-        scopes: ["https://graph.microsoft.com/.default"],
-      }
-    );
-    const graphClient: Client = Client.initWithMiddleware({
-      authProvider: authProvider,
-    });
+    const graphClient: Client = getGraphClient();
     for (const item of records) {
       await graphClient
         .api(`/external/connections/${connectionId}/items/${item.PartNumber}`)

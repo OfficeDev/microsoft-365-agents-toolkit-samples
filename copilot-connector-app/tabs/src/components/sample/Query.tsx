@@ -11,7 +11,7 @@ import {
   TableHeaderCell,
 } from "@fluentui/react-components";
 import { SearchRegular } from "@fluentui/react-icons";
-import { TeamsUserCredential } from "@microsoft/teamsfx";
+import { TeamsUserCredential } from "./lib/TeamsUserCredential";
 import { Client } from "@microsoft/microsoft-graph-client";
 import { TokenCredentialAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials";
 import { ConnectionId, Scopes } from "./lib/constants";
@@ -59,8 +59,8 @@ export function Query() {
 
       try {
         const credential = new TeamsUserCredential({
-          initiateLoginEndpoint: config.initiateLoginEndpoint,
-          clientId: config.clientId,
+          initiateLoginEndpoint: config.initiateLoginEndpoint!,
+          clientId: config.clientId!,
         });
         
         // Create an instance of the TokenCredentialAuthenticationProvider by passing the tokenCredential instance and options to the constructor

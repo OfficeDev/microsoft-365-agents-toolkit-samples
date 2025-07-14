@@ -2,16 +2,7 @@
 import "isomorphic-fetch";
 import { app, InvocationContext, HttpRequest, HttpResponseInit } from "@azure/functions";
 import { Client, ResponseType } from "@microsoft/microsoft-graph-client";
-import { TokenCredentialAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials";
-import { AppCredential, AppCredentialAuthConfig } from "@microsoft/teamsfx";
-import config from "../config";
-
-const authConfig: AppCredentialAuthConfig = {
-  authorityHost: config.authorityHost,
-  clientId: config.clientId,
-  tenantId: config.tenantId,
-  clientSecret: config.clientSecret,
-};
+import { getGraphClient } from "../graphClient";
 
 /**
  * @param {HttpRequest} req - The HTTP request.
@@ -31,33 +22,9 @@ export async function schema(
     jsonBody: {},
   };
 
-  let appCredential;
-  try {
-    appCredential = new AppCredential(authConfig);
-  } catch (e) {
-    context.error(e);
-    return {
-      status: 500,
-      jsonBody: {
-        error:
-          "Failed to construct AppCredential with Application Identity. " +
-          "Ensure your function app is configured with the right Azure AD App registration.",
-      },
-    };
-  }
-
   // Register schema
   try {
-    // Create an instance of the TokenCredentialAuthenticationProvider by passing the tokenCredential instance and options to the constructor
-    const authProvider = new TokenCredentialAuthenticationProvider(
-      appCredential,
-      {
-        scopes: ["https://graph.microsoft.com/.default"],
-      }
-    );
-    const graphClient: Client = Client.initWithMiddleware({
-      authProvider: authProvider,
-    });
+    const graphClient: Client = getGraphClient();
     const result = await graphClient
       .api(`/external/connections/${connectionId}/schema`)
       .responseType(ResponseType.RAW)

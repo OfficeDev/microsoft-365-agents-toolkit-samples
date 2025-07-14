@@ -1,4 +1,4 @@
-import { TeamsUserCredential } from "@microsoft/teamsfx";
+import { TeamsUserCredential } from "./sample/lib/TeamsUserCredential";
 import { createContext } from "react";
 import { Theme } from "@fluentui/react-components";
 
