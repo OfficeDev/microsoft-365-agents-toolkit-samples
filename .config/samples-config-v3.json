@@ -596,27 +596,6 @@
             "suggested": true
         },
         {
-            "id": "copilot-connector-bot",
-            "shortId": "copilot-connector-bot",
-            "onboardDate": "2023-11-07",
-            "title": "Copilot connector Bot",
-            "shortDescription": "This sample app showcases how to build a Teams command bot that queries custom data ingested into Microsoft Graph using Copilot connector.",
-            "fullDescription": "This project is a Copilot connector Bot for Microsoft Teams. It uses Azure Bot Service and Azure Active Directory for bot registration and authentication. The bot leverages Adaptive Cards for interactive messaging. The project is configured with Azure Resource Manager templates for infrastructure setup. The Teams app package is built and validated using TeamsFx actions, and the app is published to the Teams Admin Center for review and approval. The project uses environment variables for configuration and supports multiple environments.",
-            "types": [
-              "Bot"
-            ],
-            "tags": [
-              "Bot",
-              "TS",
-              "Copilot connector"
-            ],
-            "time": "30min to run",
-            "configuration": "Manual configurations required",
-            "thumbnailPath": "assets/thumbnail.png",
-            "gifPath": "assets/sampleDemo.gif",
-            "suggested": false
-        },
-        {
             "id": "bot-conversation-python",
             "shortId": "bot-conversation-py",
             "onboardDate": "2023-11-08",
