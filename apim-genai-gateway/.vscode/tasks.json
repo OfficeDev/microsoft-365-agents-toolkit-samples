@@ -8,6 +8,7 @@
             "label": "Start App in Microsoft 365 Agents Playground",
             "dependsOn": [
                 "Validate prerequisites (Microsoft 365 Agents Playground)",
+                "Provision (Microsoft 365 Agents Playground)",
                 "Deploy (Microsoft 365 Agents Playground)",
                 "Start application (Microsoft 365 Agents Playground)",
                 "Start Microsoft 365 Agents Playground",
@@ -30,6 +31,14 @@
                     9239, // app inspector port for Node.js debugger
                     56150, // Microsoft 365 Agents Playground port
                 ]
+            }
+        },
+        {
+            "label": "Provision (Microsoft 365 Agents Playground)",
+            "type": "teamsfx",
+            "command": "provision",
+            "args": {
+                "env": "playground",
             }
         },
         {
@@ -62,7 +71,7 @@
                 "background": {
                     "activeOnStart": true,
                     "beginsPattern": "[nodemon] starting",
-                    "endsPattern": "Agent started|erver listening to port|[nodemon] app crashed"
+                    "endsPattern": "app listening to|Bot/ME service listening at|[nodemon] app crashed"
                 }
             }
         },
@@ -197,7 +206,7 @@
                 "background": {
                     "activeOnStart": true,
                     "beginsPattern": "[nodemon] starting",
-                    "endsPattern": "Agent started|Server listening to port|[nodemon] app crashed"
+                    "endsPattern": "app listening to|Bot/ME service listening at|[nodemon] app crashed"
                 }
             }
         },

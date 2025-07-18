@@ -4,13 +4,12 @@
 param resourceBaseName string
 
 @secure()
-@description('Required in your bot project to access Azure OpenAI service. You can get it from Azure Portal > OpenAI > Keys > Key1 > Resource Management > Endpoint')  
-param azureOpenaiKey string
-param azureOpenaiModelDeploymentName string
-param azureOpenaiEndpoint string
+param azureOpenAIEndpoint string
+
+@secure()
+param azureOpenAIDeploymentName string
 
 param webAppSKU string
-param linuxFxVersion string
 
 @maxLength(42)
 param botDisplayName string
@@ -19,7 +18,17 @@ param serverfarmsName string = resourceBaseName
 param webAppName string = resourceBaseName
 param identityName string = resourceBaseName
 param location string = resourceGroup().location
-param pythonVersion string = linuxFxVersion
+
+// Reference to the existing APIM service created in the first deployment
+resource apimService 'Microsoft.ApiManagement/service@2024-05-01' existing = {
+  name: 'apim-${resourceBaseName}'
+}
+
+// Reference to the existing APIM subscription created in the first deployment
+resource apimSubscription 'Microsoft.ApiManagement/service/subscriptions@2024-05-01' existing = {
+  name: 'aiservices-subscription'
+  parent: apimService
+}
 
 resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   location: location
@@ -28,60 +37,56 @@ resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' 
 
 // Compute resources for your Web App
 resource serverfarm 'Microsoft.Web/serverfarms@2021-02-01' = {
-  kind: 'app,linux'
+  kind: 'app'
   location: location
   name: serverfarmsName
   sku: {
     name: webAppSKU
   }
-  properties:{
-    reserved: true
-  }
 }
 
-// Web App that hosts your bot
+// Web App that hosts your agent
 resource webApp 'Microsoft.Web/sites@2021-02-01' = {
-  kind: 'app,linux'
+  kind: 'app'
   location: location
   name: webAppName
   properties: {
     serverFarmId: serverfarm.id
+    httpsOnly: true
     siteConfig: {
       alwaysOn: true
-      appCommandLine: 'gunicorn --bind 0.0.0.0 --worker-class aiohttp.worker.GunicornWebWorker --timeout 600 app:app'
-      linuxFxVersion: pythonVersion
       appSettings: [
         {
-          name: 'WEBSITES_CONTAINER_START_TIME_LIMIT'
-          value: '600'
+          name: 'WEBSITE_RUN_FROM_PACKAGE'
+          value: '1' // Run Azure App Service from a package file
         }
         {
-          name: 'SCM_DO_BUILD_DURING_DEPLOYMENT'
-          value: 'true'
+          name: 'WEBSITE_NODE_DEFAULT_VERSION'
+          value: '~18' // Set NodeJS version to 18.x for your site
         }
         {
-          name: 'BOT_ID'
+          name: 'RUNNING_ON_AZURE'
+          value: '1'
+        }
+        {
+          name: 'clientId'
           value: identity.properties.clientId
         }
         {
-          name: 'AZURE_OPENAI_API_KEY'
-          value: azureOpenaiKey
+          name: 'tenantId'
+          value: identity.properties.tenantId
         }
         {
-          name: 'AZURE_OPENAI_MODEL_DEPLOYMENT_NAME'
-          value: azureOpenaiModelDeploymentName
+          name: 'AZURE_OPENAI_API_KEY'
+          value: apimSubscription.listSecrets().primaryKey
         }
         {
           name: 'AZURE_OPENAI_ENDPOINT'
-          value: azureOpenaiEndpoint
+          value: azureOpenAIEndpoint
         }
         {
-          name: 'BOT_TENANT_ID'
-          value: identity.properties.tenantId
-        }
-        { 
-          name: 'BOT_TYPE'
-          value: 'UserAssignedMsi' 
+          name: 'AZURE_OPENAI_DEPLOYMENT_NAME'
+          value: azureOpenAIDeploymentName
         }
       ]
       ftpsState: 'FtpsOnly'

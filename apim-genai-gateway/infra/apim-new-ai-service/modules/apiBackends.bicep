@@ -159,5 +159,5 @@ resource apimSubscription 'Microsoft.ApiManagement/service/subscriptions@2023-05
   }
 }
 
-#disable-next-line outputs-should-not-contain-secrets
-output subscriptionPrimaryKey string = apimSubscription.listSecrets().primaryKey
+// Secret subscription key is not output for security reasons
+// Use the get-api-key.ps1 script to retrieve the subscription primary key after deployment

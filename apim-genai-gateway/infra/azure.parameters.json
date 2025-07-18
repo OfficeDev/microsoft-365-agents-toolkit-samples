@@ -5,23 +5,17 @@
     "resourceBaseName": {
       "value": "bot${{RESOURCE_SUFFIX}}"
     },
-    "azureOpenaiKey": {
-      "value": "${{SECRET_AZURE_OPENAI_API_KEY}}"
-    },
-    "azureOpenaiModelDeploymentName" : {
-      "value": "${{AZURE_OPENAI_DEPLOYMENT_NAME}}"
-    },
-    "azureOpenaiEndpoint" : {
+    "azureOpenAIEndpoint": {
       "value": "${{AZURE_OPENAI_ENDPOINT}}"
+    },
+    "azureOpenAIDeploymentName": {
+      "value": "${{AZURE_OPENAI_DEPLOYMENT_NAME}}"
     },
     "webAppSKU": {
       "value": "B1"
     },
     "botDisplayName": {
-      "value": "rag-custom"
-    },
-    "linuxFxVersion": {
-      "value": "PYTHON|3.11"
+      "value": "basic"
     }
   }
 }

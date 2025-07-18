@@ -139,7 +139,6 @@
                 "--remote-debugging-port=9223",
                 "--no-first-run"
             ]
-
         }
     ],
     "compounds": [

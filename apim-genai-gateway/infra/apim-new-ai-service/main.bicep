@@ -128,7 +128,11 @@ module emitTokenMetrics './modules/emitTokenMetrics.bicep' = {
 
 output AZURE_OPENAI_ENDPOINT string = apimService.outputs.gatewayUrl
 
-#disable-next-line outputs-should-not-contain-secrets
-output SECRET_AZURE_OPENAI_API_KEY string = apiBackends.outputs.subscriptionPrimaryKey
+// Secret API key is not output for security reasons
+// Use the get-api-key.ps1 script to retrieve the subscription primary key after deployment
 
 output AZURE_OPENAI_DEPLOYMENT_NAME string = aiService1.outputs.aiServiceDeploymentName
+
+// Information needed to retrieve the API key via Azure CLI
+output APIM_SERVICE_NAME string = 'apim-${resourceBaseName}'
+output APIM_SUBSCRIPTION_NAME string = 'aiservices-subscription'

@@ -25,12 +25,7 @@ const onTurnErrorHandler = async (context, error) => {
 
     // Send a message to the user
     await context.sendActivity("The agent encountered an error or bug.");
-    if (error.status == 400 || error.status == 403) {
-      await context.sendActivity("Your messages maybe failed content safety check.")
-    }
-    else {
-      await context.sendActivity("To continue to run this agent, please fix the agent source code.");
-    }
+    await context.sendActivity("To continue to run this agent, please fix the agent source code.");
   }
 };
 
