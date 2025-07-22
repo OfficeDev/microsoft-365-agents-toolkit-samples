@@ -25,7 +25,7 @@ This sample deploys a complete AI gateway infrastructure including:
 - **Content Safety Service** (optional) for additional content moderation
 
 ### Custom Engine Agent
-- The Custom Engine Agent is built using the Mcicrosoft Agents SDK and operates as a collaborative bot within Microsoft 365 Copilot. It connects through the APIM gateway to access AI services, benefiting from enterprise-grade load balancing, caching, monitoring, and security features while maintaining the flexibility to implement custom orchestration and AI workflows.
+- The Custom Engine Agent is built using the Microsoft Agents SDK and operates as a collaborative bot within Microsoft 365 Copilot. It connects through the APIM gateway to access AI services, benefiting from enterprise-grade load balancing, caching, monitoring, and security features while maintaining the flexibility to implement custom orchestration and AI workflows.
 
 ## Benefits of This Architecture
 
