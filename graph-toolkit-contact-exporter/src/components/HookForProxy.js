@@ -4,7 +4,7 @@
  * The backend code in api folder will send the Graph API request to proxy which will skip the access token check.
  */
 
-import { TeamsUserCredential } from "@microsoft/teamsfx";
+import { TeamsUserCredential } from "./lib/TeamsUserCredential";
 import { Base64 } from "js-base64";
 
 export function shouldHookForProxy() {

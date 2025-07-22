@@ -1,5 +1,5 @@
 const notificationTemplate = require("./adaptiveCards/notification-default.json");
-const { notificationApp } = require("./internal/initialize");
+const { notificationApp, adapter } = require("./internal/initialize");
 const ACData = require("adaptivecards-templating");
 const { TeamsBot } = require("./teamsBot");
 const express = require("express");
@@ -23,7 +23,7 @@ expressApp.post("/api/notification", async (req, res) => {
   const pageSize = 100;
   let continuationToken = undefined;
   do {
-    const pagedData = await notificationApp.notification.getPagedInstallations(
+    const pagedData = await notificationApp.getPagedInstallations(
       pageSize,
       continuationToken
     );
@@ -44,7 +44,7 @@ expressApp.post("/api/notification", async (req, res) => {
 
       /****** To distinguish different target types ******/
       /** "Channel" means this bot is installed to a Team (default to notify General channel)
-        if (target.type === NotificationTargetType.Channel) {
+        if (target.type === "channel") {
           // Directly notify the Team (to the default General channel)
           await target.sendAdaptiveCard(...);
 
@@ -70,7 +70,7 @@ expressApp.post("/api/notification", async (req, res) => {
         **/
 
       /** "Group" means this bot is installed to a Group Chat
-        if (target.type === NotificationTargetType.Group) {
+        if (target.type === "groupChat") {
           // Directly notify the Group Chat
           await target.sendAdaptiveCard(...);
 
@@ -90,7 +90,7 @@ expressApp.post("/api/notification", async (req, res) => {
         **/
 
       /** "Person" means this bot is installed as a Personal app
-        if (target.type === NotificationTargetType.Person) {
+        if (target.type === "personal") {
           // Directly notify the individual person
           await target.sendAdaptiveCard(...);
         }
@@ -99,14 +99,14 @@ expressApp.post("/api/notification", async (req, res) => {
   } while (continuationToken);
 
   /** You can also find someone and notify the individual person
-    const member = await notificationApp.notification.findMember(
+    const member = await notificationApp.findMember(
       async (m) => m.account.email === "someone@contoso.com"
     );
     await member?.sendAdaptiveCard(...);
     **/
 
   /** Or find multiple people and notify them
-    const members = await notificationApp.notification.findAllMembers(
+    const members = await notificationApp.findAllMembers(
       async (m) => m.account.email?.startsWith("test")
     );
     for (const member of members) {
@@ -120,7 +120,7 @@ expressApp.post("/api/notification", async (req, res) => {
 // Bot Framework message handler.
 const teamsBot = new TeamsBot();
 expressApp.post("/api/messages", async (req, res) => {
-  await notificationApp.requestHandler(req, res, async (context) => {
+  await adapter.process(req, res, async (context) => {
     await teamsBot.run(context);
   });
 });

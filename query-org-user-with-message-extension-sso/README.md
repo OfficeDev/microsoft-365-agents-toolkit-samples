@@ -12,7 +12,7 @@ extensions:
   createdDate: "2022-09-20"
 ---
 # Getting Start with Query Org User with Message Extension SSO
-This is a simple search-based message extension app demonstrating how to integrate with Bot Framework SDK, TeamsFx SDK and Microsoft Graph API to implement a feature that queries organization's user with single sign on (SSO) capability.
+This is a simple search-based message extension app demonstrating how to integrate with Bot Framework SDK, Teams AI library and Microsoft Graph API to implement a feature that queries organization's user with single sign on (SSO) capability.
 
 ![TotalShow](./images/total.gif)
 ![LinkUnfurling](./images/link-unfurling.gif)
@@ -80,6 +80,7 @@ This could be an intermittent issue, to mitigate, try to use a different Microso
 |---|---|---|
 |Sep 20 2022| wenytang-ms | onboard |
 |Apr 3, 2023| wenytang-ms | update to support Teams Toolkit v5.0.0|
+|Jun 25, 2025| nliu-ms | update dependency to Teams AI library|
 
 ## Feedback
 We really appreciate your feedback! If you encounter any issue or error, please report issues to us following the [Supporting Guide](https://github.com/OfficeDev/TeamsFx-Samples/blob/dev/SUPPORT.md). Meanwhile you can make [recording](https://aka.ms/teamsfx-record) of your journey with our product, they really make the product better. Thank you!

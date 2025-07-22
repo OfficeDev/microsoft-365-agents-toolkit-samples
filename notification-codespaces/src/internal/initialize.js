@@ -1,18 +1,19 @@
-const { BotBuilderCloudAdapter } = require("@microsoft/teamsfx");
-const ConversationBot = BotBuilderCloudAdapter.ConversationBot;
-const config = require("./config");
+const { NotificationBot } = require("../notification/notification");
+const { loadAuthConfigFromEnv, CloudAdapter } = require("@microsoft/agents-hosting");
+const { LocalConversationReferenceStore } = require("../notification/storage");
+const path = require("path");
 
-// Create bot.
-const notificationApp = new ConversationBot({
-  // The bot id and password to create CloudAdapter.
-  // See https://aka.ms/about-bot-adapter to learn more about adapters.
-  adapterConfig: config,
-  // Enable notification
-  notification: {
-    enabled: true,
-  },
-});
+const authConfig = loadAuthConfigFromEnv();
+// Create adapter
+const adapter = new CloudAdapter(authConfig);
+
+const localStorage = new LocalConversationReferenceStore(
+  path.resolve(process.env.RUNNING_ON_AZURE === "1" ? process.env.TEMP ?? "./" : "./")
+);
+
+const notificationApp = new NotificationBot(adapter, localStorage, authConfig.clientId);
 
 module.exports = {
+  adapter,
   notificationApp,
 };

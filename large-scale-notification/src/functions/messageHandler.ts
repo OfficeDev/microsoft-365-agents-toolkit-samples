@@ -4,8 +4,7 @@ import {
   HttpResponseInit,
   InvocationContext,
 } from "@azure/functions";
-import { notificationApp } from "../internal/initialize";
-import { Request, Response } from "botbuilder";
+import { adapter } from "../internal/initialize";
 
 export async function messages(
   request: HttpRequest,
@@ -25,12 +24,18 @@ export async function messages(
       res.status = code;
     },
     socket: {},
-  } as Response;
-  await notificationApp.requestHandler(await requestAdaptor(request), response);
+  } as any;
+  await adapter.process(
+    await requestAdaptor(request),
+    response,
+    async (context) => {
+      // Add your bot logic here if needed
+    }
+  );
   return res;
 }
 
-async function requestAdaptor(request: HttpRequest): Promise<Request> {
+async function requestAdaptor(request: HttpRequest): Promise<any> {
   return {
     body: (await request.json()) as any,
     headers: (await Promise.all(request.headers.entries())).reduce(

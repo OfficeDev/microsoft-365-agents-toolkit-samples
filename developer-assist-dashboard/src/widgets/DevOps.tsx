@@ -13,7 +13,7 @@ import {
   CircleSmall20Filled,
   MoreHorizontal32Regular,
 } from "@fluentui/react-icons";
-import { BaseWidget, IWidgetClassNames } from "@microsoft/teamsfx-react";
+import { BaseWidget, IWidgetClassNames } from "./BaseWidget";
 
 import { getImageByTheme } from "../components/ThemeImg";
 import config from "../lib/config";

@@ -1,4 +1,4 @@
-import { ConversationReference } from "botbuilder";
+import { ConversationReference } from "@microsoft/agents-activity";
 
 import { InstallationReference } from "./types/installationReference";
 
@@ -15,8 +15,8 @@ export function extractKeyDataFromConversationReference(reference: Partial<Conve
 export function constructConversationReference(entity: InstallationReference): Partial<ConversationReference> {
   return {
     channelId: "msteams",
-    bot: {
-      id: `28:${process.env.BOT_ID}`,
+    agent: {
+      id: `28:${process.env.clientId}`,
       name: "notification-scale-demo",
     },
     user: {

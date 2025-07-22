@@ -28,7 +28,7 @@ import { TeamsFxProvider } from "@microsoft/mgt-teamsfx-provider";
 import { CacheService } from "@microsoft/mgt";
 import config from "./lib/config";
 
-import { TeamsUserCredential } from "@microsoft/teamsfx";
+import { TeamsUserCredential } from "./lib/TeamsUserCredential";
 
 class Tab extends React.Component {
   constructor(props) {

@@ -16,7 +16,7 @@ import TermsOfUse from "./TermsOfUse";
 import Tab from "./Tab";
 import "./App.css";
 import TabConfig from "./TabConfig";
-import { useTeams } from "@microsoft/teamsfx-react";
+import { useTeams } from "./lib/useTeams";
 
 /**
  * The main app which handles the initialization and routing

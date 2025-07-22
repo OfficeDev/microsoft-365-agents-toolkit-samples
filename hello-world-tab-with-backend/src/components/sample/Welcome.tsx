@@ -1,4 +1,5 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
+import { app } from "@microsoft/teams-js";
 import {
   Image,
   TabList,
@@ -11,10 +12,9 @@ import "./Welcome.css";
 import { EditCode } from "./EditCode";
 import { AzureFunctions } from "./AzureFunctions";
 import { CurrentUser } from "./CurrentUser";
-import { useData } from "@microsoft/teamsfx-react";
+import { useData } from "./lib/useData";
 import { Deploy } from "./Deploy";
 import { Publish } from "./Publish";
-import { TeamsFxContext } from "../Context";
 
 export function Welcome(props: { showFunction?: boolean; environment?: string }) {
   const { showFunction, environment } = {
@@ -33,11 +33,13 @@ export function Welcome(props: { showFunction?: boolean; environment?: string })
   const onTabSelect = (event: SelectTabEvent, data: SelectTabData) => {
     setSelectedValue(data.value);
   };
-  const { teamsUserCredential } = useContext(TeamsFxContext);
   const { loading, data, error } = useData(async () => {
-    if (teamsUserCredential) {
-      const userInfo = await teamsUserCredential.getUserInfo();
-      return userInfo;
+    await app.initialize();
+    const context = await app.getContext();
+    if (context.user) {
+      return {
+        displayName: context.user.displayName || "",
+      };
     }
   });
   const userName = loading || error ? "" : data!.displayName;

@@ -9,7 +9,7 @@ import {
   CalendarLtr24Regular,
   MoreHorizontal32Regular,
 } from "@fluentui/react-icons";
-import { BaseWidget, IWidgetClassNames } from "@microsoft/teamsfx-react";
+import { BaseWidget, IWidgetClassNames } from "./BaseWidget";
 
 import { extractTime } from "../common/dateUtils";
 import { CalendarModel } from "../models/calendarModel";

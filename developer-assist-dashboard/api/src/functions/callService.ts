@@ -14,10 +14,7 @@ import {
 } from "@azure/functions";
 import { Client, ResponseType } from "@microsoft/microsoft-graph-client";
 import { TokenCredentialAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials";
-import {
-  OnBehalfOfCredentialAuthConfig,
-  OnBehalfOfUserCredential,
-} from "@microsoft/teamsfx";
+import { OnBehalfOfCredential } from "@azure/identity";
 import { Octokit } from "@octokit/core";
 
 import config from "../config";
@@ -59,16 +56,16 @@ export async function callService(
   }
 
   // Construct teamsfx.
-  const oboAuthConfig: OnBehalfOfCredentialAuthConfig = {
+  const oboAuthConfig = {
     authorityHost: config.authorityHost,
     clientId: config.clientId,
     tenantId: config.tenantId,
     clientSecret: config.clientSecret,
   };
 
-  let oboCredential: OnBehalfOfUserCredential;
+  let oboCredential: OnBehalfOfCredential;
   try {
-    oboCredential = new OnBehalfOfUserCredential(accessToken, oboAuthConfig);
+    oboCredential = new OnBehalfOfCredential({ userAssertionToken: accessToken, ...oboAuthConfig});
   } catch (e) {
     context.error(e);
     return {
@@ -103,7 +100,7 @@ export async function callService(
 }
 
 async function handleRequest(
-  oboCredential: OnBehalfOfUserCredential,
+  oboCredential: OnBehalfOfCredential,
   serviceType: string,
   method: string,
   req: any
@@ -232,7 +229,7 @@ async function createIssue(reqData: any) {
  * @returns An array of tasks, each containing the task ID, title, priority, percent complete, assigned users, and over-assigned users.
  */
 async function getPlanner(
-  oboCredential: OnBehalfOfUserCredential
+  oboCredential: OnBehalfOfCredential
 ): Promise<any> {
   // Create an instance of the TokenCredentialAuthenticationProvider by passing the tokenCredential instance and options to the constructor
   const authProvider = new TokenCredentialAuthenticationProvider(
@@ -279,7 +276,7 @@ async function getPlanner(
  * @returns The response from the POST request to create the new task.
  */
 async function createPlannerTask(
-  oboCredential: OnBehalfOfUserCredential,
+  oboCredential: OnBehalfOfCredential,
   reqData: any
 ): Promise<any> {
   // Create an instance of the TokenCredentialAuthenticationProvider by passing the tokenCredential instance and options to the constructor
@@ -316,7 +313,7 @@ async function createPlannerTask(
  * @returns An object containing the user's ID, display name, and avatar (if available).
  */
 async function getUser(
-  oboCredential: OnBehalfOfUserCredential,
+  oboCredential: OnBehalfOfCredential,
   userId: string
 ): Promise<any> {
   // Create an instance of the TokenCredentialAuthenticationProvider by passing the tokenCredential instance and options to the constructor

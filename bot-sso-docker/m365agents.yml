@@ -1,7 +1,7 @@
-# yaml-language-server: $schema=https://aka.ms/teams-toolkit/v1.8/yaml.schema.json
+# yaml-language-server: $schema=https://aka.ms/m365-agents-toolkits/v1.9/yaml.schema.json
 # Visit https://aka.ms/teamsfx-v5.0-guide for details on this file
 # Visit https://aka.ms/teamsfx-actions for details on actions
-version: v1.8
+version: v1.9
 
 additionalMetadata:
   sampleTag: TeamsFx-Samples:sso-bot-docker
@@ -93,8 +93,8 @@ deploy:
     name: deploy container image
     with:
       run: az containerapp up -n ${{AZURE_CONTAINER_APP_NAME}} --image
-        ${{AZURE_CONTAINER_IMAGE}} --env-vars "BOT_ID=secretref:bot-id"
-        "BOT_TENANT_ID=secretref:bot-tenant-id" "BOT_TYPE=secretref:bot-type" "BOT_DOMAIN=${{BOT_DOMAIN}}"
+        ${{AZURE_CONTAINER_IMAGE}} --env-vars "clientId=secretref:bot-id"
+        "tenantId=secretref:bot-tenant-id" "BOT_TYPE=secretref:bot-type" "BOT_DOMAIN=${{BOT_DOMAIN}}"
         "AAD_APP_CLIENT_ID=secretref:aad-app-client-id"
         "AAD_APP_CLIENT_SECRET=secretref:aad-app-client-secret"
         "AAD_APP_TENANT_ID=secretref:aad-app-tenant-id"

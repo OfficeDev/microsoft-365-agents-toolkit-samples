@@ -14,12 +14,8 @@ import {
 } from "@azure/functions";
 import { Client } from "@microsoft/microsoft-graph-client";
 import { TokenCredentialAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials";
-import {
-  AppCredential,
-  AppCredentialAuthConfig,
-  OnBehalfOfCredentialAuthConfig,
-  OnBehalfOfUserCredential,
-} from "@microsoft/teamsfx";
+import { OnBehalfOfCredential, TokenCredential } from "@azure/identity";
+import { AppCredential } from "../AppCredential";
 
 import config from "../config";
 
@@ -77,25 +73,25 @@ export async function callGraph(
     };
   }
 
-  // Set up the configuration for the OnBehalfOfUserCredential.
-  const oboAuthConfig: OnBehalfOfCredentialAuthConfig = {
+  // Set up the configuration for the OnBehalfOfCredential.
+  const oboAuthConfig = {
     authorityHost: config.authorityHost,
     clientId: config.clientId,
     tenantId: config.tenantId,
     clientSecret: config.clientSecret,
   };
 
-  let oboCredential: OnBehalfOfUserCredential;
+  let oboCredential: OnBehalfOfCredential;
   try {
-    // Construct the OnBehalfOfUserCredential using the access token and configuration.
-    oboCredential = new OnBehalfOfUserCredential(accessToken, oboAuthConfig);
+    // Construct the OnBehalfOfCredential using the access token and configuration.
+    oboCredential = new OnBehalfOfCredential({userAssertionToken:  accessToken, ...oboAuthConfig });
   } catch (e) {
     context.error(e);
     return {
       status: 500,
       jsonBody: {
         error:
-          "Failed to construct OnBehalfOfUserCredential using your accessToken. " +
+          "Failed to construct OnBehalfOfCredential using your accessToken. " +
           "Ensure your function app is configured with the right Azure AD App registration.",
       },
     };
@@ -130,14 +126,14 @@ export async function callGraph(
 /**
  * Handles the request based on the given graphType and method.
  *
- * @param {OnBehalfOfUserCredential} oboCredential - The on-behalf-of user credential.
+ * @param {OnBehalfOfCredential} oboCredential - The on-behalf-of user credential.
  * @param {string} graphType - The type of graph to query (e.g. "calendar", "task").
  * @param {string} method - The HTTP method to use (e.g. "GET", "POST").
  * @param {any} req - The request data to use (if applicable).
  * @returns {Promise<any>} - A promise that resolves with the result of the request.
  */
 async function handleRequest(
-  oboCredential: OnBehalfOfUserCredential,
+  oboCredential: OnBehalfOfCredential,
   graphType: string,
   method: string,
   req: any
@@ -180,10 +176,10 @@ async function handleRequest(
 /**
  * Retrieves the user's calendar events for the current day.
  *
- * @param {OnBehalfOfUserCredential} oboCredential - The on-behalf-of user credential.
+ * @param {OnBehalfOfCredential} oboCredential - The on-behalf-of user credential.
  * @returns A promise that resolves with an array of calendar events.
  */
-async function getCalendarEvents(oboCredential: OnBehalfOfUserCredential) {
+async function getCalendarEvents(oboCredential: OnBehalfOfCredential) {
   // Create an instance of the TokenCredentialAuthenticationProvider by passing the tokenCredential instance and options to the constructor
   const authProvider = new TokenCredentialAuthenticationProvider(
     oboCredential,
@@ -225,10 +221,10 @@ async function getCalendarEvents(oboCredential: OnBehalfOfUserCredential) {
 /**
  * Retrieves the tasks that are not completed from the user's to-do list.
  *
- * @param {OnBehalfOfUserCredential} oboCredential - The on-behalf-of user credential.
+ * @param {OnBehalfOfCredential} oboCredential - The on-behalf-of user credential.
  * @returns {Promise<TaskModel[]>} - A promise that resolves with an array of tasks.
  */
-async function getTasksInfo(oboCredential: OnBehalfOfUserCredential) {
+async function getTasksInfo(oboCredential: OnBehalfOfCredential) {
   // Create an instance of the TokenCredentialAuthenticationProvider by passing the tokenCredential instance and options to the constructor
   const authProvider = new TokenCredentialAuthenticationProvider(
     oboCredential,
@@ -270,12 +266,12 @@ async function getTasksInfo(oboCredential: OnBehalfOfUserCredential) {
 /**
  * Creates a new task in the user's to-do list and retrieves the tasks that are not completed.
  *
- * @param {OnBehalfOfUserCredential} oboCredential - The on-behalf-of user credential.
+ * @param {OnBehalfOfCredential} oboCredential - The on-behalf-of user credential.
  * @param {any} reqData - The request data containing the task title.
  * @returns A promise that resolves with an array of tasks.
  */
 async function createTask(
-  oboCredential: OnBehalfOfUserCredential,
+  oboCredential: OnBehalfOfCredential,
   reqData: any
 ) {
   // Create an instance of the TokenCredentialAuthenticationProvider by passing the tokenCredential instance and options to the constructor
@@ -303,7 +299,7 @@ async function createTask(
     .post({ title: reqData.taskTitle });
 
   // Import the TeamsFx SDK and create a new instance for the app identity
-  const authConfig: AppCredentialAuthConfig = {
+  const authConfig = {
     authorityHost: config.authorityHost,
     clientId: config.clientId,
     tenantId: config.tenantId,
@@ -391,10 +387,10 @@ async function sendActivityNotification(
 /**
  * Retrieves the user's recently accessed files.
  *
- * @param {OnBehalfOfUserCredential} oboCredential - The on-behalf-of user credential.
+ * @param {OnBehalfOfCredential} oboCredential - The on-behalf-of user credential.
  * @returns A promise that resolves with an array of files.
  */
-async function getFiles(oboCredential: OnBehalfOfUserCredential) {
+async function getFiles(oboCredential: OnBehalfOfCredential) {
   // Create an instance of the TokenCredentialAuthenticationProvider by passing the tokenCredential instance and options to the constructor
   const authProvider = new TokenCredentialAuthenticationProvider(
     oboCredential,

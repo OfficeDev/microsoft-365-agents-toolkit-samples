@@ -60,11 +60,11 @@ resource functionApp 'Microsoft.Web/sites@2021-02-01' = {
           value: '~18' // Set NodeJS version to 18.x
         }
         {
-          name: 'BOT_ID'
+          name: 'clientId'
           value: identity.properties.clientId
         }
         {
-          name: 'BOT_TENANT_ID'
+          name: 'tenantId'
           value: identity.properties.tenantId
         }
         {

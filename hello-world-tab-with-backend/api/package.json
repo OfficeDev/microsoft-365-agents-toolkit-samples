@@ -16,7 +16,8 @@
   "dependencies": {
     "@azure/functions": "^4.2.0",
     "@microsoft/microsoft-graph-client": "^3.0.5",
-    "@microsoft/teamsfx": "^2.0.0",
+    "@azure/identity": "^4.4.1",
+    "jwt-decode": "^4.0.0",
     "hpagent": "^1.2.0",
     "isomorphic-fetch": "^3.0.0",
     "node-fetch": "^2.7.0"

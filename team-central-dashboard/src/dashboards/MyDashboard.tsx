@@ -1,7 +1,7 @@
 import "../styles/MyDashboard.css";
 
 import { Image, Spinner } from "@fluentui/react-components";
-import { BaseDashboard } from "@microsoft/teamsfx-react";
+import { BaseDashboard } from "./BaseDashboard";
 
 import { loginAction } from "../internal/login";
 import { TeamsUserCredentialContext } from "../internal/singletonContext";

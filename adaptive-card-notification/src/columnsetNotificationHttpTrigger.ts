@@ -36,7 +36,7 @@ const httpTrigger: AzureFunction = async function (
   const pageSize = 100;
   let continuationToken: string | undefined;
   do {
-    const pagedInstallations = await notificationApp.notification.getPagedInstallations(pageSize, continuationToken);
+    const pagedInstallations = await notificationApp.getPagedInstallations(pageSize, continuationToken);
     continuationToken = pagedInstallations.continuationToken;
     const targets = pagedInstallations.data;
     for (const target of targets) {

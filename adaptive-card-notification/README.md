@@ -77,17 +77,13 @@ Adaptive Card Notification provides an easy way to send notification in Teams. T
     };
    ```
 1. Use Azure Blob Storage to persist notification connections
-   This sample provides an implementation of `NotificationTargetStorage` at `src/storage/blobsStore.ts`, which connects to Azure Blob Storage to persist notification connections.
+   This sample provides an implementation of `IStorage` at `src/storage/blobsStore.ts`, which connects to Azure Blob Storage to persist notification connections.
 
-   To try it, uncomment the `notification.store` settings of your bot in `src/internal/initialize.ts`, then enter your own connection string and container name.
+   To try it, uncomment the `BlobStore` initialization in `src/internal/initialize.ts`, then enter your own connection string and container name.
 
    ```typescript
-   ...
-     notification: {
-       enabled: true,
-       store: new BlobStore("{your-connection-string}", "{your-container-name}"),
-     },
-   ...
+    export const blobStorage = new BlobStore("{your-connection-string}", "{your-container-name}");
+    export const notificationApp = new NotificationBot(adapter, blobStorage, authConfig.clientId);
    ```
 
 1. Author an adaptive card
@@ -108,6 +104,7 @@ Adaptive Card Notification provides an easy way to send notification in Teams. T
 | ------------ | ----------- | -------------------------------------- |
 | May 23, 2022 | XiaofuHuang | update to support Teams Toolkit V4.0.0 |
 | Dec 12, 2022 | XiaofuHuang | update to support Teams Toolkit v5.0.0 |
+| Jun 24, 2025 | nliu        | Update dependency to Microsoft 365 Agents SDK |
 
 ## Feedback
 

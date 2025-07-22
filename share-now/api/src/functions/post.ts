@@ -2,10 +2,9 @@
 // Licensed under the MIT License.
 import "isomorphic-fetch";
 import { HttpRequest, HttpResponseInit, InvocationContext, app } from "@azure/functions";
-import { OnBehalfOfCredentialAuthConfig, OnBehalfOfUserCredential } from "@microsoft/teamsfx";
 import { executeQuery, getSQLConnection, PostRequest, PostTypes, ResponsePost, LengthLimit } from "../utils/common";
 import { checkPost } from "../utils/query";
-import config from "../config";
+import { jwtDecode } from "jwt-decode";
 
 interface Response {
   status: number;
@@ -32,16 +31,7 @@ export default async function posts(
       .get("Authorization")
       ?.replace("Bearer ", "")
       .trim();
-    const oboAuthConfig: OnBehalfOfCredentialAuthConfig = {
-      authorityHost: config.authorityHost,
-      clientId: config.clientId,
-      tenantId: config.tenantId,
-      clientSecret: config.clientSecret,
-    };
-
-    const oboCredential = new OnBehalfOfUserCredential(accessToken, oboAuthConfig);
-
-    const currentUser = await oboCredential.getUserInfo();
+    const currentUser = jwtDecode(accessToken) as { oid: string, name: string };
     let query;
     let postID;
     let check;
@@ -53,20 +43,20 @@ export default async function posts(
         const pageSize = inputSize == 0 ? 8 : inputSize;
         query = `SELECT * FROM [dbo].[TeamPostEntity] where IsRemoved = 0 ORDER BY PostID DESC OFFSET ${pageSize * pageCount} ROWS FETCH NEXT ${pageSize} ROWS ONLY;`;
         const posts = await executeQuery(query, connection);
-        const data = await decoratePosts(posts, currentUser.objectId, connection);
+        const data = await decoratePosts(posts, currentUser.oid, connection);
         res.body = JSON.stringify(data);
         return res;
       case "post":
         const createRequest = await getPostRequest(req);
-        query = `INSERT TeamPostEntity (ContentUrl, CreatedByName, CreatedDate, Description, IsRemoved, Tags, Title, TotalVotes, Type, UpdatedDate, UserID) OUTPUT Inserted.PostID VALUES (N'${createRequest.contentUrl}',N'${currentUser.displayName}', CURRENT_TIMESTAMP, N'${createRequest.description}', 0, N'${createRequest.tags}', N'${createRequest.title}', 0,${createRequest.type}, CURRENT_TIMESTAMP, '${currentUser.objectId}');`;
+        query = `INSERT TeamPostEntity (ContentUrl, CreatedByName, CreatedDate, Description, IsRemoved, Tags, Title, TotalVotes, Type, UpdatedDate, UserID) OUTPUT Inserted.PostID VALUES (N'${createRequest.contentUrl}',N'${currentUser.name}', CURRENT_TIMESTAMP, N'${createRequest.description}', 0, N'${createRequest.tags}', N'${createRequest.title}', 0,${createRequest.type}, CURRENT_TIMESTAMP, '${currentUser.oid}');`;
         const created = await executeQuery(query, connection);
         const createdId = created[0].PostID;
-        const detail = await postDetail(createdId, currentUser.objectId, connection);
+        const detail = await postDetail(createdId, currentUser.oid, connection);
         res.body = JSON.stringify(detail);
         return res;
       case "delete":
         postID = +req.params.id;
-        check = await checkPost(postID, connection, currentUser.objectId);
+        check = await checkPost(postID, connection, currentUser.oid);
         if (!check) {
           throw new Error("invalid postID");
         }
@@ -76,14 +66,14 @@ export default async function posts(
         return res;
       case "put":
         postID = +req.params.id;
-        check = await checkPost(postID, connection, currentUser.objectId);
+        check = await checkPost(postID, connection, currentUser.oid);
         if (!check) {
           throw new Error("invalid postID");
         }
         const updateRequest = await getPostRequest(req);
         query = `update TeamPostEntity set ContentUrl = N'${updateRequest.contentUrl}', Description = N'${updateRequest.description}', Tags = N'${updateRequest.tags}', Title = N'${updateRequest.title}', Type = ${updateRequest.type}, UpdatedDate = CURRENT_TIMESTAMP where PostID = ${postID};`;
         await executeQuery(query, connection);
-        const updatedDetail = await postDetail(postID, currentUser.objectId, connection);
+        const updatedDetail = await postDetail(postID, currentUser.oid, connection);
         res.body = JSON.stringify(updatedDetail);
         return res;
     }

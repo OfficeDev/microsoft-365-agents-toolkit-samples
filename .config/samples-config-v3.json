@@ -1,6 +1,7 @@
 {
     "filterOptions": {
         "capabilities": [
+            "Declarative Agent",
             "Tab",
             "Bot",
             "Message Extension",
@@ -115,7 +116,7 @@
             "shortDescription": "A template for apps using only in the context of a Teams meeting",
             "fullDescription": "My first meeting app is a simple template to show how to build a tab app that can be installed and used in a meeting, in all of meeting lifecycles: pre-meeting chat, in-meeting, post-meeting chat. This sample contains tab as side panel, meeting chat tab, or meeting details tab. The template also includes simple codes to fetch meeting info and user profile.",
             "types": [
-                "Tab"
+                "Meeting"
             ],
             "tags": [
                 "Meeting Extension",
@@ -465,7 +466,7 @@
             "shortDescription": "This sample introduces Microsoft Live Share and Azure Fluid Relay to enable a shared experience between multiple users.",
             "fullDescription": "This sample is a a collaboration tool used in a Teams meeting that enables you to share your experience with others in real time. Azure Fluid Relay is a part of this service. It allows multiple users to roll a dice and see the results. This sample is a great way to get started with Live Share and Fluid.",
             "types": [
-                "Tab"
+                "Meeting"
             ],
             "tags": [
                 "Live Share",
@@ -593,27 +594,6 @@
             "gifPath": "assets/thumbnail.png",
             "thumbnailPath": "assets/thumbnail.png",
             "suggested": true
-        },
-        {
-            "id": "copilot-connector-bot",
-            "shortId": "copilot-connector-bot",
-            "onboardDate": "2023-11-07",
-            "title": "Copilot connector Bot",
-            "shortDescription": "This sample app showcases how to build a Teams command bot that queries custom data ingested into Microsoft Graph using Copilot connector.",
-            "fullDescription": "This project is a Copilot connector Bot for Microsoft Teams. It uses Azure Bot Service and Azure Active Directory for bot registration and authentication. The bot leverages Adaptive Cards for interactive messaging. The project is configured with Azure Resource Manager templates for infrastructure setup. The Teams app package is built and validated using TeamsFx actions, and the app is published to the Teams Admin Center for review and approval. The project uses environment variables for configuration and supports multiple environments.",
-            "types": [
-              "Bot"
-            ],
-            "tags": [
-              "Bot",
-              "TS",
-              "Copilot connector"
-            ],
-            "time": "30min to run",
-            "configuration": "Manual configurations required",
-            "thumbnailPath": "assets/thumbnail.png",
-            "gifPath": "assets/sampleDemo.gif",
-            "suggested": false
         },
         {
             "id": "bot-conversation-python",

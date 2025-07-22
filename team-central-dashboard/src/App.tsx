@@ -10,16 +10,13 @@ import {
   teamsLightTheme,
 } from "@fluentui/react-components";
 import { app } from "@microsoft/teams-js";
-import { useTeamsUserCredential } from "@microsoft/teamsfx-react";
+import { useTeams } from "./internal/useTeams";
 
 import MyDashboard from "./dashboards/MyDashboard";
 import { TeamsFxContext } from "./internal/context";
 
 export default function App() {
-  const { loading, themeString } = useTeamsUserCredential({
-    initiateLoginEndpoint: import.meta.env.VITE_APP_START_LOGIN_PAGE_URL!,
-    clientId: import.meta.env.VITE_APP_CLIENT_ID!,
-  });
+  const { loading, themeString } = useTeams()[0];
   useEffect(() => {
     loading &&
       app.initialize().then(() => {

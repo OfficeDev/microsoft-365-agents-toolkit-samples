@@ -1,4 +1,4 @@
-import { TeamsUserCredential } from "@microsoft/teamsfx";
+import { TeamsUserCredential } from "./TeamUserCredential";
 
 /**
  * Singleton class that manages the TeamsUserCredential instance.

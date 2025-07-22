@@ -1,10 +1,10 @@
-import { ConversationReference } from "botbuilder";
+import { ConversationReference } from "@microsoft/agents-activity";
 import { ContainerClient, ContainerListBlobFlatSegmentResponse } from "@azure/storage-blob";
 import { ManagedIdentityCredential } from "@azure/identity";
-import { ConversationReferenceStore, ConversationReferenceStoreAddOptions, PagedData } from "@microsoft/teamsfx";
+import { IStorage, PagedData } from "../notification/interface";
 
 // A sample implementation to use Azure Blob Storage as conversation reference store
-export class BlobStore implements ConversationReferenceStore {
+export class BlobStore implements IStorage {
   private readonly client: ContainerClient;
   private initializePromise?: Promise<unknown>;
 
@@ -23,70 +23,56 @@ export class BlobStore implements ConversationReferenceStore {
   // constructor(containerUrl: string) {
   //   this.client = new ContainerClient(containerUrl, new ManagedIdentityCredential());
   // }
-
-  async get(key: string): Promise<Partial<ConversationReference>> {
+  public async read(keys: string[]): Promise<{ [key: string]: Partial<ConversationReference> }> {
     await this.initialize();
 
-    const blobName = this.normalizeKey(key);
-
-    try {
-      const stream = await this.client.getBlobClient(blobName).download();
-      const content = await this.streamToBuffer(stream.readableStreamBody);
-      return JSON.parse(content.toString());
-    } catch (error) {
-      if (error.statusCode === 404) {
-        return undefined;
-      } else {
-        throw error;
+    const result: { [key: string]: Partial<ConversationReference> } = {};
+    for (const key of keys) {
+      const blobName = this.normalizeKey(key);
+      try {
+        const stream = await this.client.getBlobClient(blobName).download();
+        const content = await this.streamToBuffer(stream.readableStreamBody);
+        result[key] = JSON.parse(content.toString());
+      } catch (error) {
+        if (error.statusCode !== 404) {
+          throw error;
+        }
       }
     }
+    return result;
   }
 
-  async add(
-    key: string,
-    reference: Partial<ConversationReference>,
-    options?: ConversationReferenceStoreAddOptions
-  ): Promise<boolean> {
+  public async write(changes: { [key: string]: Partial<ConversationReference> }): Promise<void> {
     await this.initialize();
 
-    const blobName = this.normalizeKey(key);
-
-    try {
+    for (const key of Object.keys(changes)) {
+      const blobName = this.normalizeKey(key);
+      const reference = changes[key];
       const content = JSON.stringify(reference);
-      if (options.overwrite) {
-        await this.client.getBlockBlobClient(blobName).upload(content, Buffer.byteLength(content));
-        return true;
-      } else if (await this.get(key) === undefined) {
-        await this.client.getBlockBlobClient(blobName).upload(content, Buffer.byteLength(content));
-        return true;
-      }
-    } catch (error) {
-      if (error.statusCode !== 404) {
-        throw error;
-      }
+      await this.client.getBlockBlobClient(blobName).upload(content, Buffer.byteLength(content));
     }
-
-    return false;
   }
 
-  async remove(key: string, reference: Partial<ConversationReference>): Promise<boolean> {
+  public async delete(keys: string[]): Promise<void> {
     await this.initialize();
 
-    const blobName = this.normalizeKey(key);
+    for (const key of keys) {
+      const blobName = this.normalizeKey(key);
 
-    try {
-      await this.client.getBlobClient(blobName).delete();
-      return true;
-    } catch (error) {
-      if (error.statusCode !== 404) {
-        throw error;
+      try {
+        await this.client.getBlobClient(blobName).delete();
+      } catch (error) {
+        if (error.statusCode !== 404) {
+          throw error;
+        }
       }
-
-      return false;
     }
   }
 
-  async list(pageSize?: number, continuationToken?: string): Promise<PagedData<Partial<ConversationReference>>> {
+  public async list(
+    pageSize?: number,
+    continuationToken?: string
+  ): Promise<PagedData<Partial<ConversationReference>>> {
     await this.initialize();
 
     const result = new Array<Partial<ConversationReference>>();

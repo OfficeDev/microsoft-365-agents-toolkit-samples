@@ -15,8 +15,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@types/node": "^18.0.0",
     "@azure/functions": "^4.1.0",
-    "@microsoft/teamsfx": "^2.0.0",
+    "@azure/identity": "^4.4.1",
+    "jwt-decode": "^4.0.0",
     "@microsoft/microsoft-graph-client": "^3.0.5",
     "isomorphic-fetch": "^3.0.0"
   },
