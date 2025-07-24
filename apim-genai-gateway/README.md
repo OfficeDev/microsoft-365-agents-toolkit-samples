@@ -115,6 +115,8 @@ By default, **Microsoft 365 Agents Toolkit** handles this automatically when you
 - `teamsapp deploy`
 - VS Code F5 debugging
 
+> You'll need to run `az login` with the Azure account, which you used to deploy the APIM Azure resource. 
+
 The toolkit will automatically retrieve the APIM subscription key and store it in your environment file.
 
 <details>
@@ -152,6 +154,7 @@ az rest --method post \
 ### Conversation with Agent
 1. Select the Microsoft 365 Agents Toolkit icon on the left in the VS Code toolbar.
 1. In the Account section, sign in with your [Microsoft 365 account](https://docs.microsoft.com/microsoftteams/platform/toolkit/accounts) if you haven't already.
+1. Run `az login` with your Azure account in a VS Code terminal.
 1. Press F5 to start debugging which launches your app in Teams using a web browser. Select `Debug in Copilot (Edge)` or `Debug in Copilot (Chrome)`.
 1. When Copilot launches in the browser, select the Add button in the dialog to install your app to Copilot.
 1. You will receive a welcome message from the agent, or send any message to get a response.
