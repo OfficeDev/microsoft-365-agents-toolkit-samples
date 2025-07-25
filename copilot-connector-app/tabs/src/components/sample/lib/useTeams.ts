@@ -65,7 +65,7 @@ export function useTeams(options?: {
     }
   };
   const overrideThemeHandler = useCallback(
-    (theme) => {
+    (theme: string | undefined) => {
       if (options?.setThemeHandler) {
         options.setThemeHandler(theme);
       } else {
