@@ -65,6 +65,6 @@ export function useData<T>(
   }
   useEffect(() => {
     if (auto) reload();
-  }, []);
+  }, [auto, reload]);
   return { data, loading, error, reload };
 }
