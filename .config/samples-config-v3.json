@@ -2,6 +2,7 @@
     "filterOptions": {
         "capabilities": [
             "Declarative Agent",
+            "Custom Engine Agent",
             "Tab",
             "Bot",
             "Message Extension",
@@ -872,6 +873,29 @@
                 "ref": "main",
                 "dir": "samples/da-ristorante-api"
             }
+        },
+        {
+            "id": "apim-genai-gateway",
+            "shortId": "apim-genai-gateway",
+            "onboardDate": "2025-07-25",
+            "title": "Custom Engine Agent using APIM GenAI Gateway",
+            "shortDescription": "This sample demonstrates how to build a Custom Engine Agent that leverages Azure API Management (APIM) GenAI Gateway capabilities to provide a robust, enterprise-ready AI assistant experience in Microsoft Teams.",
+            "fullDescription": "This sample demonstrates how to build a Custom Engine Agent that leverages Azure API Management (APIM) GenAI Gateway capabilities to provide a robust, enterprise-ready AI assistant experience in Microsoft Teams.",
+            "types": [
+                "Custom Engine Agent"
+            ],
+            "tags": [
+              "TS",
+              "Declarative Agent",
+              "APIM",
+              "GenAI Gateway",
+              "Agents SDK"
+            ],
+            "time": "30 mins to run",
+            "configuration": "Manual configurations required",
+            "thumbnailPath": "assets/thumbnail.png",
+            "gifPath": "assets/thumbnail.png",
+            "suggested": false
         }
     ]
 }
