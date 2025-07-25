@@ -52,7 +52,7 @@ const app = new ApplicationBuilder()
             }
         },
         autoSignIn: (context) => {
-          if (context.activity.type == "message" && context.activity.text != "profile" || context.activity.text != "photo") {
+          if (context.activity.type == "message" && (context.activity.text != "profile" && context.activity.text != "photo")) {
             return Promise.resolve(false);
           }
           return Promise.resolve(true);

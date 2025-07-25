@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=https://aka.ms/teams-toolkit/v1.8/yaml.schema.json
+# Visit https://aka.ms/teamsfx-v5.0-guide for details on this file
+# Visit https://aka.ms/teamsfx-actions for details on actions
+version: v1.8
+
+provision:
+    - uses: arm/deploy # Deploy given ARM templates parallelly.
+      with:
+        subscriptionId: ${{AZURE_SUBSCRIPTION_ID}}
+        resourceGroupName: ${{AZURE_RESOURCE_GROUP_NAME}}
+        templates:
+          # Deploy all APIM modules with a single main deployment using a new cognitive service
+          - path: ./infra/apim-new-ai-service/main.bicep
+            parameters: ./infra/apim-new-ai-service/main.parameters.json
+            deploymentName: Deploy-APIM-Resources-With-New-Cognitive-Service
+        bicepCliVersion: v0.9.1
+
+      # Retrieve APIM subscription key and write to environment file  
+    - uses: script
+      with:
+        shell: pwsh
+        run: |
+          $url = 'https://management.azure.com/subscriptions/${{AZURE_SUBSCRIPTION_ID}}/resourceGroups/${{AZURE_RESOURCE_GROUP_NAME}}/providers/Microsoft.ApiManagement/service/${{APIM_SERVICE_NAME}}/subscriptions/${{APIM_SUBSCRIPTION_NAME}}/listSecrets?api-version=2021-08-01'
+          $key = az rest --method post --url $url --query primaryKey -o tsv
+          $content = Get-Content env/.env.playground.user
+          $filtered = @()
+          foreach ($line in $content) {
+            if (-not ($line.StartsWith('SECRET_AZURE_OPENAI_API_KEY='))) {
+              $filtered += $line
+            }
+          }
+          $newLine = 'SECRET_AZURE_OPENAI_API_KEY=' + $key
+          $filtered += $newLine
+          $filtered | Set-Content env/.env.playground.user
+
+deploy:
+  # Install development tool(s)
+  - uses: devTool/install
+    with:
+      testTool:
+        version: ~0.2.7
+        symlinkDir: ./devTools/playground
+
+  # Run npm command
+  - uses: cli/runNpmCommand
+    with:
+      args: install --no-audit
+
+  # Generate runtime environment variables
+  - uses: file/createOrUpdateEnvironmentFile
+    with:
+      target: ./.localConfigs.playground
+      envs:
+        TEAMSFX_NOTIFICATION_STORE_FILENAME: ${{TEAMSFX_NOTIFICATION_STORE_FILENAME}}
+        BOT_ID: ""
+        BOT_PASSWORD: ""
+        AZURE_OPENAI_API_KEY: ${{SECRET_AZURE_OPENAI_API_KEY}}
+        AZURE_OPENAI_DEPLOYMENT_NAME: ${{AZURE_OPENAI_DEPLOYMENT_NAME}}
+        AZURE_OPENAI_ENDPOINT: ${{AZURE_OPENAI_ENDPOINT}}
