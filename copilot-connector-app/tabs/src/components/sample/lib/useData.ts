@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useReducer } from "react";
+import { useCallback, useEffect, useReducer, useRef } from "react";
 
 type State<T> = {
   /**
@@ -57,17 +57,21 @@ export function useData<T>(
   const [{ data, loading, error }, dispatch] = useReducer(createReducer<T>(), {
     loading: auto,
   });
+  const fetchDataRef = useRef(fetchDataAsync);
+  fetchDataRef.current = fetchDataAsync;
   const reload = useCallback(
     () => {
       if (!loading) dispatch({ type: "loading" });
-      fetchDataAsync()
+      fetchDataRef.current()
         .then((data) => dispatch({ type: "result", result: data }))
         .catch((error) => dispatch({ type: "error", error }));
-    },
-    [fetchDataAsync, loading]
-  );
+  }, [loading]);
+  const hasLoadedRef = useRef(false);
   useEffect(() => {
-    if (auto) reload();
+    if (auto && !hasLoadedRef.current) {
+      hasLoadedRef.current = true;
+      reload();
+    }
   }, [auto, reload]);
   return { data, loading, error, reload };
 }
