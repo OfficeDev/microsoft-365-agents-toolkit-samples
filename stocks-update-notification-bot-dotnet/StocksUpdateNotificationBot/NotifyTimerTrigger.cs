@@ -1,30 +1,30 @@
 using StocksUpdateNotificationBot.Models;
+using StocksUpdateNotificationBot.Notification;
 using AdaptiveCards.Templating;
-using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using Microsoft.TeamsFx.Conversation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
-using ExecutionContext = Microsoft.Azure.WebJobs.ExecutionContext;
 
 namespace StocksUpdateNotificationBot
 {
     public sealed class NotifyTimerTrigger
     {
-        private readonly ConversationBot _conversation;
+        private readonly NotificationBot _notification;
         private readonly ILogger<NotifyTimerTrigger> _log;
         private readonly HttpClient _client = new();
 
-        public NotifyTimerTrigger(ConversationBot conversation, ILogger<NotifyTimerTrigger> log)
+        public NotifyTimerTrigger(NotificationBot notification, ILogger<NotifyTimerTrigger> log)
         {
-            _conversation = conversation;
+            _notification = notification;
             _log = log;
         }
 
-        [FunctionName("NotifyTimerTrigger")]
-        public async Task Run([TimerTrigger("*/30 * * * * *")] TimerInfo myTimer, ExecutionContext context, CancellationToken cancellationToken)
+        [Function("NotifyTimerTrigger")]
+        public async Task Run([TimerTrigger("*/30 * * * * *")]TimerInfo myTimer, CancellationToken cancellationToken)
         {
+            _log.LogInformation($"NotifyTimerTrigger is triggered at {DateTime.Now}.");
+            
             try
             {
                 // Get quote data from Alpha Vantage API
@@ -52,7 +52,7 @@ namespace StocksUpdateNotificationBot
                 };
 
                 // Read adaptive card template
-                var adaptiveCardFilePath = Path.Combine(context.FunctionAppDirectory, "Resources", "NotificationDefault.json");
+                var adaptiveCardFilePath = Path.Combine("Resources", "NotificationDefault.json");
                 var cardTemplate = await File.ReadAllTextAsync(adaptiveCardFilePath, cancellationToken);
 
                 // Get bot installation
@@ -61,7 +61,7 @@ namespace StocksUpdateNotificationBot
                 string continuationToken = null;
                 do
                 {
-                    var pagedInstallations = await _conversation.Notification.GetPagedInstallationsAsync(pageSize, continuationToken, cancellationToken);
+                    var pagedInstallations = await _notification.GetPagedInstallationsAsync(pageSize, continuationToken, cancellationToken);
                     continuationToken = pagedInstallations.ContinuationToken;
                     installations.AddRange(pagedInstallations.Data);
                 } while (!string.IsNullOrEmpty(continuationToken));
@@ -70,7 +70,7 @@ namespace StocksUpdateNotificationBot
                 {
                     // Build and send adaptive card
                     var cardContent = new AdaptiveCardTemplate(cardTemplate).Expand(globalQuote);
-                    await installation.SendAdaptiveCard(JsonConvert.DeserializeObject(cardContent), cancellationToken);
+                    await installation.SendAdaptiveCard(cardContent, cancellationToken);
                 }
             }
             catch (HttpRequestException e)
