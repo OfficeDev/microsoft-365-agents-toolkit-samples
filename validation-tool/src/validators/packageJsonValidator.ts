@@ -35,7 +35,7 @@ export default async function validatePackageJson(
       return result;
     }
     if (!satisfies("22.0.0", packageJson.engines.node)) {
-      result.failed = [`'engines.node' field should be compatible with 22.`];
+      result.warning = [`'engines.node' field should be compatible with 22.`];
       return result;
     }
   } catch (error: unknown) {
