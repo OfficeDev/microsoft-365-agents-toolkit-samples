@@ -10,7 +10,7 @@ import { Result } from "../resultType";
 const lifecycleActions = [
   {
     name: "provision",
-    actions: ["teamsApp/create", "teamsApp/zipAppPackage", "teamsApp/update"],
+    actions: ["teamsApp/create"],
   },
   {
     name: "deploy",

@@ -3,9 +3,10 @@
 
 import fs from "fs-extra";
 import path from "path";
+import semver from "semver";
 import { Result } from "../resultType";
 
-const MANIFEST_VERSION = "1.22";
+const LATEST_MANIFEST_VERSION = "1.22.0";
 const MANIFEST_PREVIEW_VERSION = "devPreview";
 
 /**
@@ -47,18 +48,24 @@ export default async function validateTeamsAppManifest(
       `id is referencing placeholder from env: \${{TEAMS_APP_ID}}.`
     );
   }
-  if (jsonData.manifestVersion === MANIFEST_VERSION) {
-    result.passed.push(
-      `Manifest version is aligned with Microsoft 365 Agents Toolkit.`
-    );
-  } else if (jsonData.manifestVersion === MANIFEST_PREVIEW_VERSION) {
+  if (jsonData.manifestVersion === MANIFEST_PREVIEW_VERSION) {
     result.warning.push(
       `Manifest version(${MANIFEST_PREVIEW_VERSION}) is using preview version.`
     );
   } else {
-    result.warning.push(
-      `Manifest version(${jsonData.manifestVersion}) is NOT aligned with Microsoft 365 Agents Toolkit(${MANIFEST_VERSION}).`
-    );
+    const manifestVersion = semver.coerce(jsonData.manifestVersion as string);
+    if (
+      manifestVersion &&
+      semver.eq(manifestVersion, LATEST_MANIFEST_VERSION)
+    ) {
+      result.passed.push(
+        `Manifest version is aligned with Microsoft 365 Agents Toolkit.`
+      );
+    } else {
+      result.warning.push(
+        `Manifest version(${jsonData.manifestVersion}) is NOT aligned with Microsoft 365 Agents Toolkit(${LATEST_MANIFEST_VERSION}).`
+      );
+    }
   }
   return result;
 }
