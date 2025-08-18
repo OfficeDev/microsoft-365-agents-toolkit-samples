@@ -8,7 +8,7 @@ import path from "path";
 import { Result } from "../resultType";
 
 /**
- * Rule 1: 'engines.node' field should be compatible with 16 & 18.
+ * Rule 1: 'engines.node' field should be compatible with 22.
  *
  * @param projectDir root directory of the project
  * @returns validation result
