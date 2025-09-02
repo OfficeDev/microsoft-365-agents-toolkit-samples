@@ -8,12 +8,14 @@ import path from "path";
 import { Result } from "../resultType";
 
 /**
- * Rule 1: 'engines.node' field should be compatible with 16 & 18.
- * 
+ * Rule 1: 'engines.node' field should be compatible with 22.
+ *
  * @param projectDir root directory of the project
  * @returns validation result
  */
-export default async function validatePackageJson(projectDir: string): Promise<Result> {
+export default async function validatePackageJson(
+  projectDir: string
+): Promise<Result> {
   const result: Result = {
     name: "package.json",
     passed: [],
@@ -21,25 +23,25 @@ export default async function validatePackageJson(projectDir: string): Promise<R
     warning: [],
   };
   const filePath = path.join(projectDir, "package.json");
-  if (!await fs.exists(filePath)) {
+  if (!(await fs.exists(filePath))) {
     result.failed = [`package.json does not exist.`];
     return result;
   }
-  const fileContent = await fs.readFile(filePath, 'utf8');
+  const fileContent = await fs.readFile(filePath, "utf8");
   try {
     const packageJson = JSON.parse(fileContent);
     if (!packageJson.engines || !packageJson.engines.node) {
       result.warning = [`package.json does not have 'engines.node' field.`];
       return result;
     }
-    if (!satisfies('16.0.0', packageJson.engines.node) && !satisfies('18.0.0', packageJson.engines.node)) {
-      result.failed = [`'engines.node' field should be compatible with 16 or 18.`];
+    if (!satisfies("22.0.0", packageJson.engines.node)) {
+      result.warning = [`'engines.node' field should be compatible with 22.`];
       return result;
     }
   } catch (error: unknown) {
     result.failed = [`package.json is not a valid JSON file.`];
     return result;
   }
-  result.passed = [`'engines.node' field is compatible with 16 or 18.`];
+  result.passed = [`'engines.node' field is compatible with 22.`];
   return result;
 }

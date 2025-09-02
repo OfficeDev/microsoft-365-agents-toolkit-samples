@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { unstable_batchedUpdates as batchedUpdates } from "react-dom";
 import { app, pages } from "@microsoft/teams-js";
 import {
@@ -54,9 +54,16 @@ export function useTeams(options) {
     }
   };
 
-  const overrideThemeHandler = options?.setThemeHandler
-    ? options.setThemeHandler
-    : themeChangeHandler;
+  const overrideThemeHandler = useCallback(
+    (theme) => {
+      if (options?.setThemeHandler) {
+        options.setThemeHandler(theme);
+      } else {
+        themeChangeHandler(theme);
+      }
+    },
+    [options]
+  );
 
   useEffect(() => {
     // set initial theme based on options or query string
@@ -91,7 +98,7 @@ export function useTeams(options) {
         setLoading(false);
         setInTeams(false);
       });
-  }, []);
+  }, [initialTheme, overrideThemeHandler]);
 
   return [
     { inTeams, fullScreen, theme, context, themeString, loading },
