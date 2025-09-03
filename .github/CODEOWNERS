@@ -14,7 +14,7 @@
 /adaptive-card-notification @kimizhu @dooriya @swatDong @XiaofuHuang
 /bot-sso @eriolchan @yukun-dong
 /bot-sso-docker @wh-alice @tecton
-/command-bot-with-sso @adashen @SLdragon
+/command-bot-with-sso @wh-alice @yuqizhou77
 /graph-connector-app @adashen @formulahendry
 /graph-connector-bot @adashen @formulahendry
 /graph-toolkit-contact-exporter @adashen @SLdragon
@@ -28,7 +28,7 @@
 /hello-world-teams-tab-and-outlook-add-in @wh-alice @jayzhang @HuihuiWu-Microsoft
 /incoming-webhook-notification @kimizhu @dooriya @swatDong @XiaofuHuang
 /notification-codespaces @kimizhu @dooriya @qinezh
-/query-org-user-with-message-extension-sso @adashen @wenytang-ms
+/query-org-user-with-message-extension-sso @wh-alice @yuqizhou77
 /share-now @adashen @xzf0587
 /stocks-update-notification-bot @kimizhu @dooriya @swatDong @XiaofuHuang
 /stocks-update-notification-bot-dotnet @kimizhu @dooriya @swatDong @XiaofuHuang
