@@ -12,6 +12,11 @@ This is a simple command bot with single sign-on feature to retrieve profile and
 
 ![SSO Command and Response Bot](./images/sso-command-bot.gif)
 
+
+> **Note**
+>
+> [Teams AI library V2](https://aka.ms/teams-ai-library-v2) is recommended. This template will be upgraded to Teams AI V2 soon.
+
 ## This sample illustrates
 
 - How to use Microsoft 365 Agents Toolkit to create a Teams bot app.
