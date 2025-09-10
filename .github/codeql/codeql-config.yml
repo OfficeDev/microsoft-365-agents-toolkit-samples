@@ -2,7 +2,6 @@ name: "Custom CodeQL config"
 
 paths-ignore:
   - large-scale-notification/src/internal/tableStore.ts
-  - large-scale-notification/src/internal/tableStore.ts
   - large-scale-notification/src/functions/enqueueTasksForInstallationsActivity.ts
   - large-scale-notification/src/functions/durableFunctionHttpTrigger.ts
   - large-scale-notification/src/functions/waitSendingFinishActivity.ts
