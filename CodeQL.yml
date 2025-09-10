@@ -1,7 +1,0 @@
-path_classifiers:
-  tests:
-    - "large-scale-notification/src/internal/tableStore.ts"
-    - "large-scale-notification/src/functions/enqueueTasksForInstallationsActivity.ts"
-    - "large-scale-notification/src/functions/durableFunctionHttpTrigger.ts"
-    - "large-scale-notification/src/functions/waitSendingFinishActivity.ts"
-    - "large-scale-notification/script/mockInstallationData.ts"
