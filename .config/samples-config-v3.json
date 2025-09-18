@@ -504,7 +504,7 @@
             "downloadUrlInfo": {
                 "owner": "microsoft",
                 "repository": "teams-ai",
-                "ref": "main",
+                "ref": "js-1.7.4",
                 "dir": "js/samples/04.ai-apps/a.teamsChefBot"
             }
         },
