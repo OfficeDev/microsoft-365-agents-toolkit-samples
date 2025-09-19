@@ -9,5 +9,6 @@
 # In each subsection folders are ordered first by depth, then alphabetically.
 # This should make it easy to add new rules without breaking existing ones.
 
-/ @wh-alice @qinzhouxu @llhmm01 @tecton @sherylueen @Alive-Fish @HuihuiWu-Microsoft @yuqizhou77 @qinqingxu
+* @wh-alice @qinzhouxu @llhmm01 @tecton @sherylueen @Alive-Fish @HuihuiWu-Microsoft @yuqizhou77 @qinqingxu
+/.github/CODEOWNERS @wh-alice @zhenjiao-ms
 /.config/samples-config-v3.json @HuihuiWu-Microsoft @tecton @wh-alice
