@@ -196,7 +196,7 @@
                 "owner": "OfficeDev",
                 "repository": "Microsoft-Teams-Samples",
                 "ref": "main",
-                "dir": "samples/bot-proactive-messaging-teamsfx"
+                "dir": "samples/bot-proactive-messaging-teamsfx/nodejs"
             }
         },
         {
