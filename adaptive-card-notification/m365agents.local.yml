@@ -93,4 +93,4 @@ deploy:
       envs:
         clientId: ${{BOT_ID}}
         clientSecret: ${{SECRET_BOT_PASSWORD}}
-        TENANT_ID: ${{TEAMS_APP_TENANT_ID}}
+        tenantId: ${{TEAMS_APP_TENANT_ID}}

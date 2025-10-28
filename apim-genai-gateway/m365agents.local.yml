@@ -123,7 +123,7 @@ deploy:
       envs:
         clientId: ${{BOT_ID}}
         clientSecret: ${{SECRET_BOT_PASSWORD}}
-        TENANT_ID: ${{TEAMS_APP_TENANT_ID}}
+        tenantId: ${{TEAMS_APP_TENANT_ID}}
         AZURE_OPENAI_API_KEY: ${{SECRET_AZURE_OPENAI_API_KEY}}
         AZURE_OPENAI_DEPLOYMENT_NAME: ${{AZURE_OPENAI_DEPLOYMENT_NAME}}
         AZURE_OPENAI_ENDPOINT: ${{AZURE_OPENAI_ENDPOINT}}
