@@ -1,12 +1,10 @@
-# yaml-language-server: $schema=https://aka.ms/teams-toolkit/1.0.0/yaml.schema.json
-#
-# The teamsapp.yml composes automation tasks for M365 Agents Toolkit when running other environment configurations.
-# This file is used when selecting the Provision, Deploy, or Publish menu items in the M365 Agents Toolkit for Visual Studio Code window
-# or with the TeamsFx CLI commands.
-# i.e. `teamsfx provision --env {environment name}` or `teamsfx deploy --env {environment name}`.
-#
-# You can customize this file. Visit https://aka.ms/teamsfx-v5.0-guide for more info about M365 Agents Toolkit project files.
-version: 1.0.0
+# yaml-language-server: $schema=https://aka.ms/m365-agents-toolkits/v1.9/yaml.schema.json
+# Visit https://aka.ms/teamsfx-v5.0-guide for details on this file
+# Visit https://aka.ms/teamsfx-actions for details on actions
+version: v1.9
+
+additionalMetadata:
+  sampleTag: TeamsFx-Samples:collaborator-agent
 
 environmentFolderPath: ./env
 
@@ -113,3 +111,13 @@ publish:
   - uses: teamsApp/update
     with:
       appPackagePath: ./appPackage/build/appPackage.${{TEAMSFX_ENV}}.zip
+  # Publish the app to
+  # Teams Admin Center (https://admin.teams.microsoft.com/policies/manage-apps)
+  # for review and approval
+  - uses: teamsApp/publishAppPackage
+    with:
+      appPackagePath: ./appPackage/build/appPackage.${{TEAMSFX_ENV}}.zip
+    # Write the information of created resources into environment file for
+    # the specified environment variable(s).
+    writeToEnvironmentFile:
+      publishedAppId: TEAMS_APP_PUBLISHED_APP_ID
