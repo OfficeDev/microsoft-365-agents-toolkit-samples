@@ -4,7 +4,7 @@ This intelligent collaboration assistant is built with the [Teams AI Library v2]
 
 The Collaborator Agent enhances team productivity by providing intelligent conversation analysis, automatic task management, and powerful search capabilities. It can listen to all messages in a group chat (even without being @mentioned) using RSC (Resource Specific Control) permissions, making it a seamless addition to any team workflow.
 
-![Collaborator Agent Demo](https://www.youtube.com/watch?v=RuIfcNcBB_8)
+**[Watch the Collaborator Agent Demo](https://www.youtube.com/watch?v=RuIfcNcBB_8)**
 
 ## This sample illustrates
 - Use Microsoft 365 Agents Toolkit to create an AI-powered collaboration assistant

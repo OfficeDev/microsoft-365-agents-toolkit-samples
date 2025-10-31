@@ -49,7 +49,7 @@ provision:
     with:
       manifestPath: ./appPackage/manifest.json
       outputZipPath: ./appPackage/build/appPackage.${{TEAMSFX_ENV}}.zip
-      outputJsonPath: ./appPackage/build/manifest.${{TEAMSFX_ENV}}.json
+      outputFolder: ./appPackage/build
 
   # Optional: Automates an app package check for errors that would prevent the app from being published and reports any problems.
   - uses: teamsApp/validateAppPackage
@@ -99,7 +99,7 @@ publish:
     with:
       manifestPath: ./appPackage/manifest.json
       outputZipPath: ./appPackage/build/appPackage.${{TEAMSFX_ENV}}.zip
-      outputJsonPath: ./appPackage/build/manifest.${{TEAMSFX_ENV}}.json
+      outputFolder: ./appPackage/build
 
   # Optional: Automates an app package check for errors that would prevent the app from being published and reports any problems.
   - uses: teamsApp/validateAppPackage

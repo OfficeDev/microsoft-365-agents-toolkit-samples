@@ -64,7 +64,7 @@
     {
       "name": "Debug (Edge)",
       "configurations": ["Launch App (Edge)", "Attach to Local Service"],
-      "preLaunchTask": "Start Teams App Locally",
+      "preLaunchTask": "Start App Locally",
       "presentation": {
         "group": "all",
         "order": 1
@@ -74,7 +74,7 @@
     {
       "name": "Debug (Chrome)",
       "configurations": ["Launch App (Chrome)", "Attach to Local Service"],
-      "preLaunchTask": "Start Teams App Locally",
+      "preLaunchTask": "Start App Locally",
       "presentation": {
         "group": "all",
         "order": 2
@@ -82,9 +82,9 @@
       "stopAll": true
     },
     {
-      "name": "Debug in Test Tool",
+      "name": "Debug in Microsoft 365 Agents Playground",
       "configurations": ["Attach to Local Service"],
-      "preLaunchTask": "Start Teams App (Test Tool)",
+      "preLaunchTask": "Start application (Microsoft 365 Agents Playground)",
       "presentation": {
         "group": "local",
         "order": 1
