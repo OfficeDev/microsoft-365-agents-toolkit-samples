@@ -11,7 +11,8 @@
         "languages": [
             "TS",
             "JS",
-            "Python"
+            "Python",
+            "C#"
         ],
         "technologies": [
             "Azure",
@@ -868,6 +869,31 @@
             "configuration": "Manual configurations required",
             "thumbnailPath": "assets/thumbnail.png",
             "gifPath": "assets/thumbnail.png",
+            "suggested": false
+        },
+        {
+            "id": "travel-agent",
+            "shortId": "travel-agent",
+            "onboardDate": "2025-10-31",
+            "title": "Travel Agent",
+            "shortDescription": "An intelligent travel agent that provides comprehensive travel assistance using Microsoft 365 Agents Toolkit and Azure OpenAI.",
+            "fullDescription": "This sample demonstrates how to build an intelligent travel agent using the Microsoft 365 Agents Toolkit, Agent Framework and .NET 9.0. The agent provides comprehensive travel assistance by answering travel-related questions, helping users understand company travel policies, and finding flights and hotels that comply with organizational guidelines. The Travel Agent leverages Azure OpenAI and the Microsoft 365 Retrieval API to access company travel documents and policies stored in SharePoint or OneDrive for Business, providing contextual and policy-compliant travel recommendations directly within Microsoft Teams.",
+            "types": [
+                "Custom Engine Agent"
+            ],
+            "tags": [
+              "C#",
+              "Custom Engine Agent",
+              "Azure OpenAI",
+              "Retrieval API",
+              "Agents SDK",
+              "Agent Framework",
+              ".NET 9.0"
+            ],
+            "time": "1hr to run",
+            "configuration": "Manual configurations required",
+            "thumbnailPath": "assets/sampleResponse.png",
+            "gifPath": "assets/sampleResponse.png",
             "suggested": false
         }
     ]
