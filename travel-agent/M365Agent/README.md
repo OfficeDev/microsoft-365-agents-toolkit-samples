@@ -4,7 +4,7 @@ This sample demonstrates how to build an intelligent travel agent using the Micr
 
 The Travel Agent leverages Azure OpenAI and the Microsoft 365 Retrieval API to access company travel documents and policies stored in SharePoint or OneDrive for Business, providing contextual and policy-compliant travel recommendations directly within Microsoft Teams.
 
-![Sample response from agent](assets/sampleResponse.gif)
+![Sample response from agent](../assets/sampleResponse.png)
 
 ## This sample illustrates
 
