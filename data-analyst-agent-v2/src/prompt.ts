@@ -59,9 +59,9 @@ User: ${ex.user_message}
 Assistant: ${JSON.stringify(ex.data_analyst_response, null, 2)}`
     ).join('\n')}`,
     model: new OpenAIChatModel({
-      model: process.env.AOAI_MODEL!,
-      apiKey: process.env.AOAI_API_KEY!,
-      endpoint: process.env.AOAI_ENDPOINT!,
+      model: process.env.AZURE_OPENAI_DEPLOYMENT_NAME!,
+      apiKey: process.env.SECRET_AZURE_OPENAI_API_KEY!,
+      endpoint: process.env.AZURE_OPENAI_ENDPOINT!,
       apiVersion: '2025-04-01-preview'
     })
   }).function(
@@ -97,9 +97,9 @@ Assistant: ${JSON.stringify(ex.data_analyst_response, null, 2)}`
   const cardPromptInstance = new ChatPrompt({
     instructions: 'You generate adaptive cards and charts from provided data. Use the generate_card function to create visualizations.',
     model: new OpenAIChatModel({
-      model: process.env.AOAI_MODEL!,
-      apiKey: process.env.AOAI_API_KEY!,
-      endpoint: process.env.AOAI_ENDPOINT!,
+      model: process.env.AZURE_OPENAI_DEPLOYMENT_NAME!,
+      apiKey: process.env.SECRET_AZURE_OPENAI_API_KEY!,
+      endpoint: process.env.AZURE_OPENAI_ENDPOINT!,
       apiVersion: '2025-04-01-preview'
     })
   }).function(
@@ -114,9 +114,9 @@ Assistant: ${JSON.stringify(ex.data_analyst_response, null, 2)}`
   const mainPrompt = new ChatPrompt({
     instructions: systemMessage,
     model: new OpenAIChatModel({
-      model: process.env.AOAI_MODEL!,
-      apiKey: process.env.AOAI_API_KEY!,
-      endpoint: process.env.AOAI_ENDPOINT!,
+      model: process.env.AZURE_OPENAI_DEPLOYMENT_NAME!,
+      apiKey: process.env.SECRET_AZURE_OPENAI_API_KEY!,
+      endpoint: process.env.AZURE_OPENAI_ENDPOINT!,
       apiVersion: '2025-04-01-preview'
     }),
     messages: conversationHistory

@@ -81,26 +81,21 @@ This manager may route to a capability based on the request--this capability ret
     npm install
     ```
 
-2. Copy the sample environment file:
-    ```bash
-    cp sample.env .env
-    ```
+2. Configure environment variables:
+    - Open the project in Visual Studio Code
+    - The Microsoft 365 Agents Toolkit will automatically generate the required environment files
+    - Update the `env/.env.local.user` file with your Azure OpenAI configuration:
+      - `SECRET_AZURE_OPENAI_API_KEY`: Your Azure OpenAI API key
+      - `AZURE_OPENAI_ENDPOINT`: Your Azure OpenAI endpoint URL
+      - `AZURE_OPENAI_DEPLOYMENT_NAME`: Your GPT-4 model deployment name
 
-3. Update the `.env` file with your configuration:
-    - `CLIENT_ID`: Your Microsoft Teams bot ID (will be automatically generated if using Microsoft 365 Agents Toolkit)
-    - `CLIENT_SECRET`: Your bot's password (will be automatically generated if using Microsoft 365 Agents Toolkit)
-    - `AOAI_API_KEY`: Your Azure OpenAI API key
-    - `AOAI_ENDPOINT`: Your Azure OpenAI endpoint URL
-    - `AOAI_MODEL`: Your GPT-4 model deployment name
-    - See `.env` for more details.
-
-4. Open the project in Visual Studio Code
-5. Press F5 to start the debug session (Debug Edge)
-6. Microsoft 365 Agents Toolkit will handle:
+3. Open the project in Visual Studio Code
+4. Press F5 to start the debug session (Debug Edge)
+5. Microsoft 365 Agents Toolkit will handle:
     - Starting the local bot server
     - Tunneling for external access
     - Opening Teams with your bot loaded
-7. @mention the bot in any conversation to start using its capabilities!
+6. @mention the bot in any conversation to start using its capabilities!
 
 ### Deploy the app to Azure
 1. Open the project in Visual Studio Code

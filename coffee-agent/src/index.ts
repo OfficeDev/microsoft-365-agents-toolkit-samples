@@ -85,9 +85,9 @@ const prompt = new ChatPrompt(
             'every day, you will randomly select a team member to place an order for coffee.',
         ].join('\n'),
         model: new OpenAIChatModel({
-            model: process.env.AOAI_MODEL,
-            apiKey: process.env.AOAI_API_KEY,
-            endpoint: process.env.AOAI_ENDPOINT,
+            model: process.env.AZURE_OPENAI_DEPLOYMENT_NAME,
+            apiKey: process.env.SECRET_AZURE_OPENAI_API_KEY,
+            endpoint: process.env.AZURE_OPENAI_ENDPOINT,
             apiVersion: '2025-04-01-preview',
         } as AzureOpenAIChatModelOptions),
     },
@@ -119,5 +119,5 @@ const prompt = new ChatPrompt(
     });
 
 (async () => {
-    await app.start(+(process.env.PORT || 3000));
+    await app.start(+(process.env.PORT || 3978));
 })();

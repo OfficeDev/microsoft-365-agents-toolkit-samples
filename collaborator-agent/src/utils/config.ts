@@ -13,40 +13,40 @@ export const AI_MODELS = {
   // Manager Capability - Uses lighter, faster model for routing decisions
   MANAGER: {
     model: 'gpt-4o-mini',
-    apiKey: process.env.AOAI_API_KEY!,
-    endpoint: process.env.AOAI_ENDPOINT!,
+    apiKey: process.env.SECRET_AZURE_OPENAI_API_KEY!,
+    endpoint: process.env.AZURE_OPENAI_ENDPOINT!,
     apiVersion: '2025-04-01-preview',
   } as ModelConfig,
 
   // Summarizer Capability - Uses more capable model for complex analysis
   SUMMARIZER: {
-    model: process.env.AOAI_MODEL || 'gpt-4o',
-    apiKey: process.env.AOAI_API_KEY!,
-    endpoint: process.env.AOAI_ENDPOINT!,
+    model: process.env.AZURE_OPENAI_DEPLOYMENT_NAME || 'gpt-4o',
+    apiKey: process.env.SECRET_AZURE_OPENAI_API_KEY!,
+    endpoint: process.env.AZURE_OPENAI_ENDPOINT!,
     apiVersion: '2025-04-01-preview',
   } as ModelConfig,
 
   // Action Items Capability - Uses capable model for analysis and task management
   ACTION_ITEMS: {
-    model: process.env.AOAI_MODEL || 'gpt-4o',
-    apiKey: process.env.AOAI_API_KEY!,
-    endpoint: process.env.AOAI_ENDPOINT!,
+    model: process.env.AZURE_OPENAI_DEPLOYMENT_NAME || 'gpt-4o',
+    apiKey: process.env.SECRET_AZURE_OPENAI_API_KEY!,
+    endpoint: process.env.AZURE_OPENAI_ENDPOINT!,
     apiVersion: '2025-04-01-preview',
   } as ModelConfig,
 
   // Search Capability - Uses capable model for semantic search and deep linking
   SEARCH: {
-    model: process.env.AOAI_MODEL || 'gpt-4o',
-    apiKey: process.env.AOAI_API_KEY!,
-    endpoint: process.env.AOAI_ENDPOINT!,
+    model: process.env.AZURE_OPENAI_DEPLOYMENT_NAME || 'gpt-4o',
+    apiKey: process.env.SECRET_AZURE_OPENAI_API_KEY!,
+    endpoint: process.env.AZURE_OPENAI_ENDPOINT!,
     apiVersion: '2025-04-01-preview',
   } as ModelConfig,
 
   // Default model configuration (fallback)
   DEFAULT: {
-    model: process.env.AOAI_MODEL || 'gpt-4o',
-    apiKey: process.env.AOAI_API_KEY!,
-    endpoint: process.env.AOAI_ENDPOINT!,
+    model: process.env.AZURE_OPENAI_DEPLOYMENT_NAME || 'gpt-4o',
+    apiKey: process.env.SECRET_AZURE_OPENAI_API_KEY!,
+    endpoint: process.env.AZURE_OPENAI_ENDPOINT!,
     apiVersion: '2025-04-01-preview',
   } as ModelConfig,
 };
@@ -69,7 +69,7 @@ export function getModelConfig(capabilityType: string): ModelConfig {
 
 // Environment validation
 export function validateEnvironment(logger: ILogger): void {
-  const requiredEnvVars = ['AOAI_API_KEY', 'AOAI_ENDPOINT'];
+  const requiredEnvVars = ['SECRET_AZURE_OPENAI_API_KEY', 'AZURE_OPENAI_ENDPOINT'];
   const missing = requiredEnvVars.filter(envVar => !process.env[envVar]);
   
   if (missing.length > 0) {

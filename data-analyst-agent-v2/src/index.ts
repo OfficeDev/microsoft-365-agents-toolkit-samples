@@ -57,5 +57,5 @@ app.on('message', async ({ send, activity, stream }) => {
 });
 
 (async () => {
-    await app.start(+(process.env.PORT || 3000));
+    await app.start(+(process.env.PORT || 3978));
 })();

@@ -36,19 +36,17 @@ The Data Analyst Agent v2 transforms how teams interact with data by providing a
     npm install
     ```
 
-3. Copy the sample environment file:
-    ```bash
-    cp sample.env .env
-    ```
+2. Configure environment variables:
+    - Open the project in Visual Studio Code
+    - The Microsoft 365 Agents Toolkit will automatically generate the required environment files
+    - Update the `env/.env.local.user` file with your Azure OpenAI configuration:
+      - `SECRET_AZURE_OPENAI_API_KEY`: Your Azure OpenAI API key
+      - `AZURE_OPENAI_ENDPOINT`: Your Azure OpenAI endpoint
+      - `AZURE_OPENAI_DEPLOYMENT_NAME`: Your Azure OpenAI deployment name (e.g., gpt-4o)
 
-4. Update the `.env` file with your configuration:
-    - `BOT_ID`: Your Microsoft Teams bot ID (will be automatically generated if using Microsoft 365 Agents Toolkit)
-    - `BOT_PASSWORD`: Your bot's password (will be automatically generated if using Microsoft 365 Agents Toolkit)
-    - Azure OpenAI or OpenAI configurations. See `sample.env` for more details.
-
-5. Open the project in Visual Studio Code
-6. Press F5 to start the debug session (Debug Edge)
-7. Microsoft 365 Agents Toolkit will handle:
+3. Open the project in Visual Studio Code
+4. Press F5 to start the debug session (Debug Edge)
+5. Microsoft 365 Agents Toolkit will handle:
     - Starting the local bot server
     - Tunneling for external access
     - Opening Teams with your bot loaded
@@ -60,8 +58,8 @@ The Data Analyst Agent v2 transforms how teams interact with data by providing a
 
 ```
 SECRET_AZURE_OPENAI_API_KEY=<api key>
-SECRET_AZURE_OPENAI_API_BASE=<api base> // Example: https://<id>-eastus2.openai.azure.com/
-SECRET_AZURE_OPENAI_API_VERSION=<api version> // Example: 2024-08-01-preview
+AZURE_OPENAI_ENDPOINT=<api endpoint> // Example: https://<id>-eastus2.openai.azure.com/
+AZURE_OPENAI_DEPLOYMENT_NAME=<deployment name> // Example: gpt-4o
 ```
 
 3. Navigate over to the Microsoft 365 Agents Toolkit Extension in VSCode, and login to your Azure & M365 credentials.

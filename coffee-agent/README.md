@@ -35,23 +35,21 @@ This Coffee Agent helps teams coordinate their daily coffee orders by randomly s
     npm install
     ```
 
-2. Copy the sample environment file:
-    ```bash
-    cp sample.env .env
-    ```
+2. Configure environment variables:
+    - Open the project in Visual Studio Code
+    - The Microsoft 365 Agents Toolkit will automatically generate the required environment files
+    - Update the `env/.env.local.user` file with your Azure OpenAI configuration:
+      - `SECRET_AZURE_OPENAI_API_KEY`: Your Azure OpenAI API key
+      - `AZURE_OPENAI_ENDPOINT`: Your Azure OpenAI endpoint
+      - `AZURE_OPENAI_DEPLOYMENT_NAME`: Your Azure OpenAI deployment name (e.g., gpt-4o)
 
-3. Update the `.env` file with your configuration:
-    - `CLIENT_ID`: Your Microsoft Teams bot ID (will be automatically generated if using Microsoft 365 Agents Toolkit)
-    - `CLIENT_SECRET`: Your bot's password (will be automatically generated if using Microsoft 365 Agents Toolkit)
-    - Azure OpenAI or OpenAI configurations. See `sample.env` for more details.
-
-4. Open the project in Visual Studio Code
-5. Press F5 to start the debug session (Debug Edge)
-6. Microsoft 365 Agents Toolkit will handle:
+3. Open the project in Visual Studio Code
+4. Press F5 to start the debug session (Debug Edge)
+5. Microsoft 365 Agents Toolkit will handle:
     - Starting the local bot server
     - Tunneling for external access
     - Opening Teams with your bot loaded
-7. Upon installation, the bot will automatically send an adaptive card with your team's coffee order for today!
+6. Upon installation, the bot will automatically send an adaptive card with your team's coffee order for today!
 
 ### Deploy the app to Azure
 1. Open the project in Visual Studio Code
