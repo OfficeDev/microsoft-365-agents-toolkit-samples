@@ -482,33 +482,6 @@
             "suggested": false
         },
         {
-            "id": "teams-chef-bot",
-            "shortId": "chef-bot",
-            "onboardDate": "2023-06-25",
-            "title": "Teams Chef Bot",
-            "shortDescription": "Demonstrates how to build bot with Microsoft Teams AI Library.",
-            "fullDescription": "This project, Teams Chef, is a conversational bot designed to guide junior developers in Microsoft Teams app development. It uses the Teams AI Library and the gpt-3.5-turbo model to facilitate interactions. The bot leverages Retrieval Augmented Generation (RAG) and a local Vector Database, Vectra, for contextual information retrieval. Semantic Search is employed to find relevant information from its index, which includes Getting Started docs and the source code for the Teams AI Library. The bot is configured for Azure deployment, with infrastructure defined using Bicep.",
-            "types": [
-                "Bot"
-            ],
-            "tags": [
-                "Bot",
-                "TS",
-                "Teams AI Library"
-            ],
-            "time": "5min to run",
-            "configuration": "Ready for debug",
-            "thumbnailPath": "assets/TeamsChef003.png",
-            "gifPath": "assets/TeamsChef003.png",
-            "suggested": true,
-            "downloadUrlInfo": {
-                "owner": "microsoft",
-                "repository": "teams-ai",
-                "ref": "js-1.7.4",
-                "dir": "js/samples/04.ai-apps/a.teamsChefBot"
-            }
-        },
-        {
             "id": "spfx-productivity-dashboard",
             "shortId": "spfx-dashboard",
             "onboardDate": "2023-08-09",
