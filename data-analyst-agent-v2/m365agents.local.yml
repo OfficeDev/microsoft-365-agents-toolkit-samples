@@ -1,7 +1,7 @@
-# yaml-language-server: $schema=https://aka.ms/m365-agents-toolkits/v1.9/yaml.schema.json
+# yaml-language-server: $schema=https://aka.ms/m365-agents-toolkits/v1.11/yaml.schema.json
 # Visit https://aka.ms/teamsfx-v5.0-guide for details on this file
 # Visit https://aka.ms/teamsfx-actions for details on actions
-version: v1.9
+version: v1.11
 
 environmentFolderPath: ./env
 
@@ -15,14 +15,21 @@ provision:
     writeToEnvironmentFile:
         teamsAppId: TEAMS_APP_ID
 
-  # Automates the creation an Azure AD app registration which is required for a bot.
-  # The Bot ID (AAD app client ID) and Bot Password (AAD app client secret) are saved to an environment file.
-  - uses: botAadApp/create
+  # Create or reuse an existing Microsoft Entra application for bot.
+  - uses: aadApp/create
     with:
-        name: QA3${{APP_NAME_SUFFIX}}
+      # The Microsoft Entra application's display name
+      name: QA3${{APP_NAME_SUFFIX}}
+      generateClientSecret: true
+      generateServicePrincipal: true
+      signInAudience: AzureADMultipleOrgs
     writeToEnvironmentFile:
-        botId: BOT_ID
-        botPassword: SECRET_BOT_PASSWORD
+      # The Microsoft Entra application's client id created for bot.
+      clientId: BOT_ID
+      # The Microsoft Entra application's client secret created for bot.
+      clientSecret: SECRET_BOT_PASSWORD
+      # The Microsoft Entra application's object id created for bot.
+      objectId: BOT_OBJECT_ID
 
   # Automates the creation and configuration of a Bot Framework registration which is required for a bot.
   # This configures the bot to use the Azure AD app registration created in the previous step.
@@ -71,3 +78,4 @@ deploy:
           PORT: 3978
           CLIENT_ID: ${{BOT_ID}}
           CLIENT_SECRET: ${{SECRET_BOT_PASSWORD}}
+          TENANT_ID: ${{TEAMS_APP_TENANT_ID}}
