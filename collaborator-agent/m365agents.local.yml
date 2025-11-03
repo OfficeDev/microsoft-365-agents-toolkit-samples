@@ -73,7 +73,7 @@ deploy:
   # Provides the M365 Agents Toolkit .env file values to the apps runtime so they can be accessed with `process.env`.
   - uses: file/createOrUpdateEnvironmentFile
     with:
-        target: ./.env
+        target: ./.localConfigs
         envs:
           PORT: 3978
           CLIENT_ID: ${{BOT_ID}}

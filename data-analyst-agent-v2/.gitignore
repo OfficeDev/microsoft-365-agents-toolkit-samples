@@ -7,3 +7,6 @@ env/
 dist/
 
 evals/logs/
+
+.localConfigs
+.localConfigs.playground

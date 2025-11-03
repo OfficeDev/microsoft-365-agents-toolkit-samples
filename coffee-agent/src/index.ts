@@ -2,7 +2,6 @@ import { App } from '@microsoft/teams.apps';
 import { ChatPrompt } from '@microsoft/teams.ai';
 import { AzureOpenAIChatModelOptions, OpenAIChatModel } from '@microsoft/teams.openai';
 import { ConsoleLogger, LocalStorage } from '@microsoft/teams.common';
-import { DevtoolsPlugin } from '@microsoft/teams.dev';
 import { InvokeResponse, TaskModuleResponse } from '@microsoft/teams.api';
 import { CoffeeShop, Member, StorageState } from './interfaces';
 import { generateOrderCard, generateOrderDialogCard, generateSubmittedOrderCard } from './cards';
@@ -13,8 +12,7 @@ const storage = new LocalStorage<StorageState>();
 storage.set('local', { coffeeShops: initialCafes, currOrder: initialOrder } as StorageState);
 
 const app = new App({
-    logger: new ConsoleLogger('@samples/coffee', { level: 'debug' }),
-    plugins: [new DevtoolsPlugin()],
+    logger: new ConsoleLogger('@samples/coffee', { level: 'debug' })
 });
 
 app.on('install.add', async ({ send }) => {
@@ -86,7 +84,7 @@ const prompt = new ChatPrompt(
         ].join('\n'),
         model: new OpenAIChatModel({
             model: process.env.AZURE_OPENAI_DEPLOYMENT_NAME,
-            apiKey: process.env.SECRET_AZURE_OPENAI_API_KEY,
+            apiKey: process.env.AZURE_OPENAI_API_KEY,
             endpoint: process.env.AZURE_OPENAI_ENDPOINT,
             apiVersion: '2025-04-01-preview',
         } as AzureOpenAIChatModelOptions),

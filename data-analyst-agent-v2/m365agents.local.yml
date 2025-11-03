@@ -70,10 +70,10 @@ deploy:
     name: install dependencies
     with:
         args: install --no-audit --workspaces=false
-  # Provides the Teams Toolkit .env file values to the apps runtime so they can be accessed with `process.env`.
+  # Provides the M365 Agents Toolkit .env file values to the apps runtime so they can be accessed with `process.env`.
   - uses: file/createOrUpdateEnvironmentFile
     with:
-        target: ./.env
+        target: ./.localConfigs
         envs:
           PORT: 3978
           CLIENT_ID: ${{BOT_ID}}

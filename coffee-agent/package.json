@@ -14,9 +14,9 @@
     "build": "npx tsup",
     "start": "node .",
     "dev": "npx nodemon -w \"./src/**\" -e ts --exec \"node -r ts-node/register -r dotenv/config ./src/index.ts\"",
-    "dev:teamsfx": "npx env-cmd --silent -f .env npm run dev",
-    "dev:teamsfx:testtool": "npx env-cmd --silent -f .env npm run dev",
-    "dev:teamsfx:launch-testtool": "npx env-cmd --silent -f env/.env.testtool teamsapptester start"
+    "dev:teamsfx": "env-cmd --silent -f .localConfigs npm run dev",
+    "dev:teamsfx:playground": "env-cmd --silent -f .localConfigs.playground npm run dev",
+    "dev:teamsfx:launch-playground": "env-cmd --silent -f env/.env.playground teamsapptester start"
   },
   "dependencies": {
     "@microsoft/teams.ai": "^2.0.0-preview.3",

@@ -1,5 +1,4 @@
 import { App } from '@microsoft/teams.apps';
-import { DevtoolsPlugin } from '@microsoft/teams.dev';
 import { ManagerPrompt } from './agent/manager';
 import { validateEnvironment, logModelConfigs } from './utils/config';
 import { finalizePromptResponse, createMessageRecords } from './utils/utils';
@@ -10,7 +9,6 @@ import { ConsoleLogger } from '@microsoft/teams.common';
 const logger = new ConsoleLogger('collaborator', { level: 'debug' });
 
 const app = new App({
-  plugins: [new DevtoolsPlugin()],
   logger
 });
 

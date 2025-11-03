@@ -9,7 +9,7 @@ deploy:
     with:
       testTool:
         version: ~0.2.1
-        symlinkDir: ./devTools/teamsapptester
+        symlinkDir: ./devTools/playground
 
   # Run npm command
   - uses: cli/runNpmCommand
@@ -19,7 +19,7 @@ deploy:
   # Generate runtime environment variables
   - uses: file/createOrUpdateEnvironmentFile
     with:
-      target: ./.env
+      target: ./.localConfigs.playground
       envs:
         NODE_ENV: local
         PORT: 3978

@@ -1,6 +1,5 @@
 import { App } from '@microsoft/teams.apps';
 import { ConsoleLogger } from '@microsoft/teams.common';
-import { DevtoolsPlugin } from '@microsoft/teams.dev';
 import { createDataAnalystPrompt } from './prompt';
 import { MessageActivity } from '@microsoft/teams.api';
 import { Message } from '@microsoft/teams.ai';
@@ -8,8 +7,7 @@ import { Message } from '@microsoft/teams.ai';
 const conversationHistoryById = new Map<string, Message[]>();
 
 const app = new App({
-    logger: new ConsoleLogger('adventureworks-data-analyst', { level: 'debug' }),
-    plugins: [new DevtoolsPlugin()],
+    logger: new ConsoleLogger('adventureworks-data-analyst', { level: 'debug' })
 });
 
 app.on('install.add', async ({ send }) => {

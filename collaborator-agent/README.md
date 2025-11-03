@@ -84,7 +84,7 @@ This manager may route to a capability based on the request--this capability ret
 2. Configure environment variables:
     - Open the project in Visual Studio Code
     - The Microsoft 365 Agents Toolkit will automatically generate the required environment files
-    - Update the `env/.env.local.user` file with your Azure OpenAI configuration:
+    - Update the `.localConfigs` file (or `.localConfigs.playground` if debug with playground) with your Azure OpenAI configuration:
       - `SECRET_AZURE_OPENAI_API_KEY`: Your Azure OpenAI API key
       - `AZURE_OPENAI_ENDPOINT`: Your Azure OpenAI endpoint URL
       - `AZURE_OPENAI_DEPLOYMENT_NAME`: Your GPT-4 model deployment name

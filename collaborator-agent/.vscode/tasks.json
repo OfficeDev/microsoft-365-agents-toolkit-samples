@@ -102,7 +102,7 @@
       }
     },
     {
-      "label": "Start application (Microsoft 365 Agents Playground)",
+      "label": "Start App in Microsoft 365 Agents Playground",
       "dependsOn": [
         "Validate prerequisites (Microsoft 365 Agents Playground)",
         "Deploy (Microsoft 365 Agents Playground)",
@@ -142,7 +142,7 @@
     {
       "label": "Start application (Microsoft 365 Agents Playground)",
       "type": "shell",
-      "command": "npm run dev:teamsfx:testtool",
+      "command": "npm run dev:teamsfx:playground",
       "isBackground": true,
       "options": {
         "cwd": "${workspaceFolder}"
@@ -166,7 +166,7 @@
     {
       "label": "Start Microsoft 365 Agents Playground",
       "type": "shell",
-      "command": "npm run dev:teamsfx:launch-testtool",
+      "command": "npm run dev:teamsfx:launch-playground",
       "isBackground": true,
       "options": {
         "env": {
@@ -192,7 +192,7 @@
         "background": {
           "activeOnStart": true,
           "beginsPattern": ".*",
-          "endsPattern": "listening on"
+          "endsPattern": "Listening on"
         }
       },
       "presentation": {
