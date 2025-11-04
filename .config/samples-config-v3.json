@@ -882,13 +882,10 @@
                 "Custom Engine Agent"
             ],
             "tags": [
-              "C#",
               "Custom Engine Agent",
-              "Azure OpenAI",
-              "Retrieval API",
+              "M365 Copilot Retrieval API",
               "Agents SDK",
-              "Agent Framework",
-              ".NET 9.0"
+              "Agent Framework"
             ],
             "time": "1hr to run",
             "configuration": "Manual configurations required",
