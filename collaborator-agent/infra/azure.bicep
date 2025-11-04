@@ -3,6 +3,15 @@
 @description('Used to generate names for all resources in this file')
 param resourceBaseName string
 
+@secure()
+param azureOpenAIKey string
+
+@secure()
+param azureOpenAIEndpoint string
+
+@secure()
+param azureOpenAIDeploymentName string
+
 param webAppSKU string
 
 @maxLength(42)
@@ -45,23 +54,31 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' = {
         }
         {
           name: 'WEBSITE_NODE_DEFAULT_VERSION'
-          value: '~20' // Set NodeJS version to 20.x for your site
+          value: '~22' // Set NodeJS version to 22.x for your site
         }
         {
           name: 'RUNNING_ON_AZURE'
           value: '1'
         }
         {
-          name: 'BOT_ID'
+          name: 'clientId'
           value: identity.properties.clientId
         }
         {
-          name: 'BOT_TENANT_ID'
+          name: 'tenantId'
           value: identity.properties.tenantId
         }
-        { 
-          name: 'BOT_TYPE' 
-          value: 'UserAssignedMsi'
+        {
+          name: 'AZURE_OPENAI_API_KEY'
+          value: azureOpenAIKey
+        }
+        {
+          name: 'AZURE_OPENAI_ENDPOINT'
+          value: azureOpenAIEndpoint
+        }
+        {
+          name: 'AZURE_OPENAI_DEPLOYMENT_NAME'
+          value: azureOpenAIDeploymentName
         }
       ]
       ftpsState: 'FtpsOnly'

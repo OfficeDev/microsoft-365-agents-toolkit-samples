@@ -1,6 +1,6 @@
 # Getting Started with Data Analyst Agent v2
 
-This sample demonstrates how to build an AI-powered data analyst agent using **Teams AI Library SDK v2** that can be integrated into Microsoft Teams. This template is an updated version of the previous Data Analyst Agent built in v1 of the SDK. It leverages the latest capabilities of the Teams AI Library to help users explore and visualize data through natural language conversations and Adaptive Cards charts.
+This sample demonstrates how to build an AI-powered data analyst agent using **Microsoft Teams SDK** that can be integrated into Microsoft Teams. This template is an updated version of the previous Data Analyst Agent built in v1 of the SDK. It leverages the latest capabilities of the Microsoft Teams SDK to help users explore and visualize data through natural language conversations and Adaptive Cards charts.
 
 The Data Analyst Agent v2 transforms how teams interact with data by providing a natural language interface for database exploration and visualization. Users can ask questions in plain English and receive both SQL insights and interactive charts, making data analysis accessible to everyone on the team.
 
@@ -8,7 +8,7 @@ The Data Analyst Agent v2 transforms how teams interact with data by providing a
 
 ## This sample illustrates
 - Use Microsoft 365 Agents Toolkit to create an AI-powered data analysis bot
-- Implement natural language to SQL query conversion using Teams AI Library v2
+- Implement natural language to SQL query conversion using Microsoft Teams SDK
 - Generate interactive data visualizations using Adaptive Cards
 - Build real-time streamed responses for immediate user feedback
 - Integrate with databases for live data exploration and analysis
@@ -151,7 +151,7 @@ Both evaluations will provide detailed feedback including:
 
 | Date         | Author     | Comments                               |
 | ------------ | ---------- | -------------------------------------- |
-| Oct 31, 2025  | qinzhouxu   | Onboard sample with Teams AI Library V2 |
+| Oct 31, 2025  | qinzhouxu   | Onboard sample with Microsoft Teams SDK |
 
 ## Feedback
 We really appreciate your feedback! If you encounter any issue or error, please report issues to us following the [Supporting Guide](https://github.com/OfficeDev/TeamsFx-Samples/blob/dev/SUPPORT.md). Meanwhile you can make [recording](https://aka.ms/teamsfx-record) of your journey with our product, they really make the product better. Thank you!

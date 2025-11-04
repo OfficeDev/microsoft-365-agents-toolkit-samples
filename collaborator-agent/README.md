@@ -1,6 +1,6 @@
 # Getting Started with Collaborator Agent
 
-This intelligent collaboration assistant is built with the [Teams AI Library v2](https://aka.ms/teamsai-v2), and showcases how to create a sophisticated bot that can analyze conversations, manage tasks, and search through chat history using advanced AI capabilities and natural language processing.
+This intelligent collaboration assistant is built with the [Microsoft Teams SDK](https://aka.ms/teamsai-v2), and showcases how to create a sophisticated bot that can analyze conversations, manage tasks, and search through chat history using advanced AI capabilities and natural language processing.
 
 The Collaborator Agent enhances team productivity by providing intelligent conversation analysis, automatic task management, and powerful search capabilities. It can listen to all messages in a group chat (even without being @mentioned) using RSC (Resource Specific Control) permissions, making it a seamless addition to any team workflow.
 
@@ -9,7 +9,7 @@ The Collaborator Agent enhances team productivity by providing intelligent conve
 ## This sample illustrates
 - Use Microsoft 365 Agents Toolkit to create an AI-powered collaboration assistant
 - Implement RSC (Resource Specific Control) permissions for group chat monitoring
-- Use Teams AI Library v2 for advanced conversation analysis and task management
+- Use Microsoft Teams SDK for advanced conversation analysis and task management
 - Build multi-capability architecture with specialized AI functions
 - Create natural language search and time-based query processing
 - Implement SQLite database integration for conversation history storage
@@ -177,7 +177,7 @@ This manager may route to a capability based on the request--this capability ret
 
 | Date         | Author     | Comments                               |
 | ------------ | ---------- | -------------------------------------- |
-| Oct 31, 2025  | qinzhouxu   | Onboard sample with Teams AI Library V2 |
+| Oct 31, 2025  | qinzhouxu   | Onboard sample with Microsoft Teams SDK |
 
 ## Feedback
 We really appreciate your feedback! If you encounter any issue or error, please report issues to us following the [Supporting Guide](https://github.com/OfficeDev/TeamsFx-Samples/blob/dev/SUPPORT.md). Meanwhile you can make [recording](https://aka.ms/teamsfx-record) of your journey with our product, they really make the product better. Thank you!
