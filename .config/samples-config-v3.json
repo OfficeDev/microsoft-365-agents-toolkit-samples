@@ -876,7 +876,7 @@
             "onboardDate": "2025-10-31",
             "title": "Coffee Agent",
             "shortDescription": "Originally from our Build 2025 Lab - simple coffee agent demonstration.",
-            "fullDescription": "This sample is built with the Teams AI Library v2, and showcases how easy it is to use activity handlers, adaptive cards, and AI to create a fun, interactive bot with just a few building blocks.",
+            "fullDescription": "This sample is built with the Microsoft Teams SDK, and showcases how easy it is to use activity handlers, adaptive cards, and AI to create a fun, interactive bot with just a few building blocks.",
             "types": [
                 "Custom Engine Agent"
             ],
@@ -884,7 +884,7 @@
                 "TS",
                 "Custom Engine Agent",
                 "Adaptive Cards",
-                "Teams AI Library"
+                "Microsoft Teams SDK"
             ],
             "time": "5 mins to run",
             "configuration": "Manual configurations required",
@@ -898,7 +898,7 @@
             "onboardDate": "2025-10-31",
             "title": "Collaborator Agent",
             "shortDescription": "Collaboration agent with advanced conversation analysis and task management capabilities.",
-            "fullDescription": "This sample is built with the Teams AI Library v2, and showcases how to create an intelligent collaboration assistant that can analyze conversations, manage action items, and search through chat history using natural language processing and time-based queries.",
+            "fullDescription": "This sample is built with the Microsoft Teams SDK, and showcases how to create an intelligent collaboration assistant that can analyze conversations, manage action items, and search through chat history using natural language processing and time-based queries.",
             "types": [
                 "Custom Engine Agent"
             ],
@@ -907,7 +907,7 @@
                 "Custom Engine Agent",
                 "Conversation Analysis",
                 "Task Management",
-                "Teams AI Library"
+                "Microsoft Teams SDK"
             ],
             "time": "10 mins to run",
             "configuration": "Manual configurations required",
@@ -921,7 +921,7 @@
             "onboardDate": "2025-10-31",
             "title": "Data Analyst Agent v2",
             "shortDescription": "Natural language interface for data exploration and visualization.",
-            "fullDescription": "This sample demonstrates how to build an AI-powered data analyst agent using Teams AI Library SDK v2 that can be integrated into Microsoft Teams. It helps users explore and visualize data through natural language conversations and Adaptive Cards charts.",
+            "fullDescription": "This sample demonstrates how to build an AI-powered data analyst agent using Microsoft Teams SDK that can be integrated into Microsoft Teams. It helps users explore and visualize data through natural language conversations and Adaptive Cards charts.",
             "types": [
                 "Custom Engine Agent"
             ],
@@ -931,7 +931,7 @@
                 "Data Visualization",
                 "Adaptive Cards",
                 "LLM SQL",
-                "Teams AI Library"
+                "Microsoft Teams SDK"
             ],
             "time": "10 mins to run",
             "configuration": "Manual configurations required",

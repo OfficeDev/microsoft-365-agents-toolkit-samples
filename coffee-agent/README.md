@@ -1,6 +1,6 @@
 # Getting Started with Coffee Agent
 
-Originally from our Build 2025 Lab, this sample is built with the [Teams AI Library v2](https://aka.ms/teamsai-v2), and showcases how easy it is to use activity handlers, adaptive cards, and AI to create a fun, interactive bot with just a few building blocks.
+Originally from our Build 2025 Lab, this sample is built with the [Microsoft Teams SDK](https://aka.ms/teamsai-v2), and showcases how easy it is to use activity handlers, adaptive cards, and AI to create a fun, interactive bot with just a few building blocks.
 
 This Coffee Agent helps teams coordinate their daily coffee orders by randomly selecting coffee shops and orderers, managing team coffee orders, and maintaining information about available coffee shops and their offerings. It's perfect for teams that want to streamline their coffee coordination process while having fun with their daily caffeine routine.
 
@@ -8,7 +8,7 @@ This Coffee Agent helps teams coordinate their daily coffee orders by randomly s
 
 ## This sample illustrates
 - Use Microsoft 365 Agents Toolkit to create an AI-powered Teams bot
-- Use Teams AI Library v2 for activity handlers and adaptive cards
+- Use Microsoft Teams SDK for activity handlers and adaptive cards
 - Implement tool calling and function execution in Teams bots
 - Create interactive experiences with adaptive cards and AI responses
 - Build a collaborative team management bot for daily coordination
@@ -38,7 +38,7 @@ This Coffee Agent helps teams coordinate their daily coffee orders by randomly s
 2. Configure environment variables:
     - Open the project in Visual Studio Code
     - The Microsoft 365 Agents Toolkit will automatically generate the required environment files
-    - Update the `.localConfigs` file (or `.localConfigs.playground` if debug with playground) with your Azure OpenAI configuration:
+    - Update the `env/.env.local.user` file (or `env/.env.playground.user` if debug with playground) with your Azure OpenAI configuration:
       - `SECRET_AZURE_OPENAI_API_KEY`: Your Azure OpenAI API key
       - `AZURE_OPENAI_ENDPOINT`: Your Azure OpenAI endpoint
       - `AZURE_OPENAI_DEPLOYMENT_NAME`: Your Azure OpenAI deployment name (e.g., gpt-4o)
@@ -74,7 +74,7 @@ You can ask the agent questions like:
 
 | Date         | Author     | Comments                               |
 | ------------ | ---------- | -------------------------------------- |
-| Oct 31, 2025  | qinzhouxu   | Onboard sample with Teams AI Library V2 |
+| Oct 31, 2025  | qinzhouxu   | Onboard sample with Microsoft Teams SDK |
 
 ## Feedback
 We really appreciate your feedback! If you encounter any issue or error, please report issues to us following the [Supporting Guide](https://github.com/OfficeDev/TeamsFx-Samples/blob/dev/SUPPORT.md). Meanwhile you can make [recording](https://aka.ms/teamsfx-record) of your journey with our product, they really make the product better. Thank you!
