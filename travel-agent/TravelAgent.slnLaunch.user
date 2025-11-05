@@ -1,0 +1,62 @@
+[
+  {
+    "Name": "Microsoft Teams (browser)",
+    "Projects": [
+      {
+        "Path": "M365Agent\\M365Agent.atkproj",
+        "Action": "StartWithoutDebugging",
+        "DebugTarget": "Microsoft Teams (browser)"
+      },
+      {
+        "Path": "TravelAgent\\TravelAgent.csproj",
+        "Action": "Start",
+        "DebugTarget": "Start Project"
+      }
+    ]
+  },
+  {
+    "Name": "Microsoft Teams (browser) (skip update app)",
+    "Projects": [
+      {
+        "Path": "M365Agent\\M365Agent.atkproj",
+        "Action": "StartWithoutDebugging",
+        "DebugTarget": "Microsoft Teams (browser) (skip update app)"
+      },
+      {
+        "Path": "TravelAgent\\TravelAgent.csproj",
+        "Action": "Start",
+        "DebugTarget": "Start Project"
+      }
+    ]
+  },
+  {
+    "Name": "Microsoft 365 Copilot (browser)",
+    "Projects": [
+      {
+        "Path": "M365Agent\\M365Agent.atkproj",
+        "Action": "StartWithoutDebugging",
+        "DebugTarget": "Microsoft 365 Copilot (browser)"
+      },
+      {
+        "Path": "TravelAgent\\TravelAgent.csproj",
+        "Action": "Start",
+        "DebugTarget": "Start Project"
+      }
+    ]
+  },
+  {
+    "Name": "Microsoft 365 Copilot (browser) (skip update app)",
+    "Projects": [
+      {
+        "Path": "M365Agent\\M365Agent.atkproj",
+        "Action": "StartWithoutDebugging",
+        "DebugTarget": "Microsoft 365 Copilot (browser) (skip update app)"
+      },
+      {
+        "Path": "TravelAgent\\TravelAgent.csproj",
+        "Action": "Start",
+        "DebugTarget": "Start Project"
+      }
+    ]
+  }
+]
