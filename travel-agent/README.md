@@ -18,8 +18,8 @@ The Travel Agent leverages Azure OpenAI and the Microsoft 365 Retrieval API to a
 ## Prerequisites to use this sample
 
 - [.NET 9.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
-- [Visual Studio 2026](https://visualstudio.microsoft.com/) or [Visual Studio Code](https://code.visualstudio.com/) with [C# extension](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
-- [Microsoft 365 Agents Toolkit for Visual Studio](https://aka.ms/teams-toolkit-vs) or [Microsoft 365 Agents Toolkit CLI](https://aka.ms/teams-toolkit-cli)
+- [Visual Studio 2026](https://visualstudio.microsoft.com/)
+- [Microsoft 365 Agents Toolkit for Visual Studio](https://aka.ms/teams-toolkit-vs)
 - A Microsoft 365 tenant with administrative permissions to:
   - Create Azure Active Directory applications
   - Grant admin consent for API permissions
@@ -45,14 +45,22 @@ AZURE_OPENAI_DEPLOYMENT_NAME="<your-azure-openai-deployment-name>"
 #### Step 2: Upload Sample Documents
 
 1. Navigate to the `TravelAgent/SampleDocuments` folder
-2. Upload all sample documents to your SharePoint site or OneDrive for Business
-3. Wait several hours for the Retrieval API to complete document indexing
+2. Upload all sample documents to your **OneDrive for Business** following the steps in the ["Prepare the grounding data"](https://learn.microsoft.com/en-us/training/modules/copilot-declarative-agents-build-your-first/5-exercise-custom-knowledge) section of the tutorial
+3. Documents uploaded to OneDrive for Business are available instantly for the Microsoft 365 Retrieval API
+
+> **Note**: SharePoint is also an option for document storage, but it requires several hours for document indexing to complete. If you choose SharePoint, expect significant delays before the documents become available for retrieval. OneDrive for Business is recommended for immediate availability.
 
 #### Step 3: Configure Retrieval Plugin
 
 1. Open `TravelAgent/Bot/Plugins/RetrievalPlugin.cs`
 2. Review the [Retrieval API documentation](https://learn.microsoft.com/microsoft-365-copilot/extensibility/api/ai-services/retrieval/copilotroot-retrieval)
-3. Replace the `DataSource` and `FilterExpression` with your actual SharePoint or OneDrive configuration
+3. Replace the `DataSource` and `FilterExpression` with your actual configuration. Example values are as below:
+   - For **OneDrive for Business** (recommended):
+     - `DataSource`: `RetrievalDataSource.OneDriveBusiness`
+     - `FilterExpression`: `"(path:\"https://{tenant}-my.sharepoint.com/personal/{user}/Documents/{foldername}\")"`
+   - For **SharePoint**:
+     - `DataSource`: `RetrievalDataSource.SharePoint`
+     - `FilterExpression`: `"(path:\"https://{tenant}.sharepoint.com/\")"`
 
 #### Step 4: Set Up Development Tunnel
 
@@ -70,25 +78,35 @@ AZURE_OPENAI_DEPLOYMENT_NAME="<your-azure-openai-deployment-name>"
 
 1. Set the **Startup Item** to **Microsoft Teams (browser)**
 2. Press **F5** or select **Debug** > **Start Debugging** to launch the application
+3. Follow the instructions for provisioning necessary infrastructure when prompted
 
-### Deploy the app to Azure
-
-The deployment process will be handled through the Microsoft 365 Agents Toolkit. Detailed deployment instructions will be provided in the toolkit documentation.
-
-### Preview the app in Teams
-
-#### Step 1: Grant Admin Consent
+#### Step 7: Grant Admin Consent
 
 1. After deployment completes, navigate to the [Microsoft Entra ID portal](https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/Overview)
 2. Search for the application using the `AAD_APP_CLIENT_ID` value from `M365Agent/env/.env.local`
 3. Navigate to the **API permissions** tab
 4. Click **Grant admin consent**
 
-#### Step 2: Install and Test the Agent
+### Deploy the app to Azure
 
-1. In the Teams web browser window, select **Add** to install the application
-2. In the chat interface, type any message to interact with your travel agent
-3. Try asking questions about travel policies, flight bookings, or hotel recommendations
+>Here are the instructions to run the sample in **Visual Studio 2026**.
+
+1. Clone the repo to your local workspace or directly download the source code
+2. Download [Visual Studio 2026](https://visualstudio.microsoft.com/) and install [Microsoft 365 Agents Toolkit for Visual Studio](https://aka.ms/teams-toolkit-vs).
+3. Open the project in Visual Studio
+4. Open **env/.env.dev.user** file, set value for `SECRET_AZURE_OPENAI_API_KEY`, `AZURE_OPENAI_ENDPOINT` and `AZURE_OPENAI_DEPLOYMENT_NAME`
+5. Open **m365agents.yml** file, go to `Project` menu and select `Microsoft 365 Agents Toolkit` -> `Provision in the Cloud`
+6. Once provision is completed, open `Project` menu and select `Microsoft 365 Agents Toolkit` -> `Deploy to the Cloud`
+7. Grant admin consent for application with `AAD_APP_CLIENT_ID` in `M365Agent/env/.env.dev` same as step 7 in local debug.
+
+### Preview the app in Teams
+
+#### Step 1: Install and Test the Agent
+
+1. After the previous debugging step completes, a Teams web browser window will pop up automatically
+2. In the Teams web browser window, select **Add** to install the application
+3. In the chat interface, type any message to interact with your travel agent
+4. Try asking questions about travel policies, flight bookings, or hotel recommendations
 
 > **Note**: For local debugging using the Microsoft 365 Agents Toolkit CLI, refer to the [CLI debugging setup guide](https://aka.ms/teamsfx-cli-debugging).
 
@@ -100,7 +118,7 @@ You can extend the Travel Agent's capabilities by:
 
 1. **Adding Custom Plugins**: Create additional plugins in the `TravelAgent/Bot/Plugins/` directory to handle specific travel scenarios
 2. **Modifying Company Policies**: Update the sample documents in `TravelAgent/SampleDocuments/` with your organization's actual travel policies
-3. **Integrating External APIs**: Add connections to airline, hotel, or car rental APIs for real-time booking capabilities
+3. **Integrating External APIs**: Replace the mocked methods in `TravelAgent/Bot/Plugins/DataPlugin.cs` with actual connections to airline, hotel, or car rental APIs for real-time booking capabilities
 4. **Enhancing Conversation Flow**: Modify the conversation logic to handle more complex travel planning scenarios
 
 ### Configuration Options
