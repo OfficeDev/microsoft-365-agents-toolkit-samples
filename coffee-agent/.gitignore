@@ -1,0 +1,6 @@
+env
+node_modules/
+.env
+appPackage/build
+.localConfigs
+.localConfigs.playground

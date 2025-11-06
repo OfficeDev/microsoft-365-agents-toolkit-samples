@@ -893,6 +893,75 @@
             "thumbnailPath": "assets/sampleResponse.png",
             "gifPath": "assets/sampleResponse.png",
             "suggested": false
+        },
+        {
+            "id": "coffee-agent",
+            "shortId": "coffee-agent",
+            "onboardDate": "2025-10-31",
+            "title": "Coffee Agent",
+            "shortDescription": "Originally from our Build 2025 Lab - simple coffee agent demonstration.",
+            "fullDescription": "This sample is built with the Microsoft Teams SDK, and showcases how easy it is to use activity handlers, adaptive cards, and AI to create a fun, interactive bot with just a few building blocks.",
+            "types": [
+                "Custom Engine Agent"
+            ],
+            "tags": [
+                "TS",
+                "Custom Engine Agent",
+                "Adaptive Cards",
+                "Microsoft Teams SDK"
+            ],
+            "time": "5 mins to run",
+            "configuration": "Manual configurations required",
+            "thumbnailPath": "assets/coffee-agent-thumbnail.png",
+            "gifPath": "assets/coffee-agent-thumbnail.png",
+            "suggested": false
+        },
+        {
+            "id": "collaborator-agent",
+            "shortId": "collaborator-agent",
+            "onboardDate": "2025-10-31",
+            "title": "Collaborator Agent",
+            "shortDescription": "Collaboration agent with advanced conversation analysis and task management capabilities.",
+            "fullDescription": "This sample is built with the Microsoft Teams SDK, and showcases how to create an intelligent collaboration assistant that can analyze conversations, manage action items, and search through chat history using natural language processing and time-based queries.",
+            "types": [
+                "Custom Engine Agent"
+            ],
+            "tags": [
+                "TS",
+                "Custom Engine Agent",
+                "Conversation Analysis",
+                "Task Management",
+                "Microsoft Teams SDK"
+            ],
+            "time": "10 mins to run",
+            "configuration": "Manual configurations required",
+            "thumbnailPath": "assets/collaborator-agent-thumbnail.png",
+            "gifPath": "assets/collaborator-agent-thumbnail.png",
+            "suggested": false
+        },
+        {
+            "id": "data-analyst-agent-v2",
+            "shortId": "data-analyst-v2",
+            "onboardDate": "2025-10-31",
+            "title": "Data Analyst Agent v2",
+            "shortDescription": "Natural language interface for data exploration and visualization.",
+            "fullDescription": "This sample demonstrates how to build an AI-powered data analyst agent using Microsoft Teams SDK that can be integrated into Microsoft Teams. It helps users explore and visualize data through natural language conversations and Adaptive Cards charts.",
+            "types": [
+                "Custom Engine Agent"
+            ],
+            "tags": [
+                "TS",
+                "Custom Engine Agent",
+                "Data Visualization",
+                "Adaptive Cards",
+                "LLM SQL",
+                "Microsoft Teams SDK"
+            ],
+            "time": "10 mins to run",
+            "configuration": "Manual configurations required",
+            "thumbnailPath": "assets/demo.gif",
+            "gifPath": "assets/demo.gif",
+            "suggested": false
         }
     ]
 }
