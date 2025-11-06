@@ -1,0 +1,457 @@
+[
+    {
+        "task": "Count of Products by Category",
+        "user_query": "How many products are in each category?",
+        "sql_query": "SELECT pc.CategoryName, COUNT(p.ProductKey) AS ProductCount FROM ProductCategory pc LEFT JOIN ProductSubcategory psc ON pc.ProductCategoryKey = psc.ProductCategoryKey LEFT JOIN Product p ON psc.ProductSubcategoryKey = p.ProductSubcategoryKey GROUP BY pc.CategoryName;",
+        "result": [
+            {
+                "CategoryName": "Accessories",
+                "ProductCount": 29
+            },
+            {
+                "CategoryName": "Bikes",
+                "ProductCount": 97
+            },
+            {
+                "CategoryName": "Clothing",
+                "ProductCount": 35
+            },
+            {
+                "CategoryName": "Components",
+                "ProductCount": 132
+            }
+        ]
+    },
+    {
+        "task": "Average Product Price by Subcategory",
+        "user_query": "What is the average price of products in each subcategory?",
+        "sql_query": "SELECT SubcategoryName, AVG(ProductPrice) as AveragePrice FROM ProductSubcategory ps JOIN Product p ON ps.ProductSubcategoryKey = p.ProductSubcategoryKey GROUP BY SubcategoryName ORDER BY AveragePrice DESC;",
+        "result": [
+            {
+                "SubcategoryName": "Mountain Bikes",
+                "AveragePrice": 1637.01
+            },
+            {
+                "SubcategoryName": "Road Bikes",
+                "AveragePrice": 1529.64
+            },
+            {
+                "SubcategoryName": "Touring Bikes",
+                "AveragePrice": 1425.25
+            },
+            {
+                "SubcategoryName": "Road Frames",
+                "AveragePrice": 671.8
+            },
+            {
+                "SubcategoryName": "Mountain Frames",
+                "AveragePrice": 644.12
+            },
+            {
+                "SubcategoryName": "Touring Frames",
+                "AveragePrice": 631.42
+            },
+            {
+                "SubcategoryName": "Cranksets",
+                "AveragePrice": 278.99
+            },
+            {
+                "SubcategoryName": "Wheels",
+                "AveragePrice": 220.93
+            },
+            {
+                "SubcategoryName": "Forks",
+                "AveragePrice": 184.4
+            },
+            {
+                "SubcategoryName": "Bike Stands",
+                "AveragePrice": 159
+            },
+            {
+                "SubcategoryName": "Panniers",
+                "AveragePrice": 125
+            },
+            {
+                "SubcategoryName": "Bike Racks",
+                "AveragePrice": 120
+            },
+            {
+                "SubcategoryName": "Brakes",
+                "AveragePrice": 106.5
+            },
+            {
+                "SubcategoryName": "Derailleurs",
+                "AveragePrice": 106.48
+            },
+            {
+                "SubcategoryName": "Bottom Brackets",
+                "AveragePrice": 92.24
+            },
+            {
+                "SubcategoryName": "Bib-Shorts",
+                "AveragePrice": 89.99
+            },
+            {
+                "SubcategoryName": "Headsets",
+                "AveragePrice": 87.07
+            },
+            {
+                "SubcategoryName": "Tights",
+                "AveragePrice": 74.99
+            },
+            {
+                "SubcategoryName": "Handlebars",
+                "AveragePrice": 68.74
+            },
+            {
+                "SubcategoryName": "Shorts",
+                "AveragePrice": 64.28
+            },
+            {
+                "SubcategoryName": "Pedals",
+                "AveragePrice": 64.02
+            },
+            {
+                "SubcategoryName": "Vests",
+                "AveragePrice": 63.5
+            },
+            {
+                "SubcategoryName": "Hydration Packs",
+                "AveragePrice": 54.99
+            },
+            {
+                "SubcategoryName": "Jerseys",
+                "AveragePrice": 51.03
+            },
+            {
+                "SubcategoryName": "Saddles",
+                "AveragePrice": 39.63
+            },
+            {
+                "SubcategoryName": "Helmets",
+                "AveragePrice": 34.09
+            },
+            {
+                "SubcategoryName": "Lights",
+                "AveragePrice": 31.32
+            },
+            {
+                "SubcategoryName": "Gloves",
+                "AveragePrice": 30.77
+            },
+            {
+                "SubcategoryName": "Locks",
+                "AveragePrice": 25
+            },
+            {
+                "SubcategoryName": "Pumps",
+                "AveragePrice": 22.49
+            },
+            {
+                "SubcategoryName": "Fenders",
+                "AveragePrice": 21.98
+            },
+            {
+                "SubcategoryName": "Chains",
+                "AveragePrice": 20.24
+            },
+            {
+                "SubcategoryName": "Tires and Tubes",
+                "AveragePrice": 19.48
+            },
+            {
+                "SubcategoryName": "Socks",
+                "AveragePrice": 9.25
+            },
+            {
+                "SubcategoryName": "Caps",
+                "AveragePrice": 8.64
+            },
+            {
+                "SubcategoryName": "Bottles and Cages",
+                "AveragePrice": 7.99
+            },
+            {
+                "SubcategoryName": "Cleaners",
+                "AveragePrice": 7.95
+            }
+        ]
+    },
+    {
+        "task": "Customer Count by Country",
+        "user_query": "How many customers are there in each country?",
+        "sql_query": "SELECT t.Country, COUNT(s.CustomerKey) as CustomerCount FROM Territory t JOIN Sales s ON t.TerritoryKey = s.TerritoryKey GROUP BY t.Country ORDER BY CustomerCount DESC;",
+        "result": [
+            {
+                "Country": "United States",
+                "CustomerCount": 7235
+            },
+            {
+                "Country": "Australia",
+                "CustomerCount": 3480
+            },
+            {
+                "Country": "United Kingdom",
+                "CustomerCount": 1822
+            },
+            {
+                "Country": "France",
+                "CustomerCount": 1705
+            },
+            {
+                "Country": "Germany",
+                "CustomerCount": 1675
+            },
+            {
+                "Country": "Canada",
+                "CustomerCount": 1499
+            }
+        ]
+    },
+    {
+        "task": "Top 10 Most Expensive Products",
+        "user_query": "What are the 10 most expensive products?",
+        "sql_query": "SELECT ProductName, ProductPrice FROM Product ORDER BY ProductPrice DESC LIMIT 10;",
+        "result": [
+            {
+                "ProductName": "Road-150 Red, 62",
+                "ProductPrice": 3578.27
+            },
+            {
+                "ProductName": "Road-150 Red, 44",
+                "ProductPrice": 3578.27
+            },
+            {
+                "ProductName": "Road-150 Red, 48",
+                "ProductPrice": 3578.27
+            },
+            {
+                "ProductName": "Road-150 Red, 52",
+                "ProductPrice": 3578.27
+            },
+            {
+                "ProductName": "Road-150 Red, 56",
+                "ProductPrice": 3578.27
+            },
+            {
+                "ProductName": "Mountain-100 Silver, 38",
+                "ProductPrice": 3399.99
+            },
+            {
+                "ProductName": "Mountain-100 Silver, 42",
+                "ProductPrice": 3399.99
+            },
+            {
+                "ProductName": "Mountain-100 Silver, 44",
+                "ProductPrice": 3399.99
+            },
+            {
+                "ProductName": "Mountain-100 Silver, 48",
+                "ProductPrice": 3399.99
+            },
+            {
+                "ProductName": "Mountain-100 Black, 38",
+                "ProductPrice": 3374.99
+            }
+        ]
+    },
+    {
+        "task": "Customer Distribution by Education",
+        "user_query": "How many customers have each education level?",
+        "sql_query": "SELECT EducationLevel, COUNT(*) as CustomerCount FROM Customer GROUP BY EducationLevel ORDER BY CustomerCount DESC;",
+        "result": [
+            {
+                "EducationLevel": "Bachelors",
+                "CustomerCount": 5261
+            },
+            {
+                "EducationLevel": "Partial College",
+                "CustomerCount": 4966
+            },
+            {
+                "EducationLevel": "High School",
+                "CustomerCount": 3241
+            },
+            {
+                "EducationLevel": "Graduate Degree",
+                "CustomerCount": 3125
+            },
+            {
+                "EducationLevel": "Partial High School",
+                "CustomerCount": 1555
+            }
+        ]
+    },
+    {
+        "task": "Monthly Sales Count for 2021",
+        "user_query": "How many sale transactions were there each month in 2021? ",
+        "sql_query": "SELECT strftime('%Y-%m', OrderDate) as Month, COUNT(*) as SalesCount FROM Sales WHERE OrderDate LIKE '2021%' GROUP BY Month ORDER BY Month;",
+        "result": [
+            {
+                "Month": "2021-01",
+                "SalesCount": 242
+            },
+            {
+                "Month": "2021-02",
+                "SalesCount": 267
+            },
+            {
+                "Month": "2021-03",
+                "SalesCount": 266
+            },
+            {
+                "Month": "2021-04",
+                "SalesCount": 290
+            },
+            {
+                "Month": "2021-05",
+                "SalesCount": 329
+            },
+            {
+                "Month": "2021-06",
+                "SalesCount": 312
+            },
+            {
+                "Month": "2021-07",
+                "SalesCount": 1387
+            },
+            {
+                "Month": "2021-08",
+                "SalesCount": 3736
+            },
+            {
+                "Month": "2021-09",
+                "SalesCount": 3800
+            },
+            {
+                "Month": "2021-10",
+                "SalesCount": 4048
+            },
+            {
+                "Month": "2021-11",
+                "SalesCount": 4092
+            },
+            {
+                "Month": "2021-12",
+                "SalesCount": 5166
+            }
+        ]
+    },
+    {
+        "task": "Products with Most Returns",
+        "user_query": "Which products get returned the most?",
+        "sql_query": "SELECT p.ProductName, SUM(r.ReturnQuantity) AS TotalReturned FROM Returns r JOIN Product p ON r.ProductKey = p.ProductKey GROUP BY p.ProductName ORDER BY TotalReturned DESC LIMIT 10;",
+        "result": [
+            {
+                "ProductName": "Water Bottle - 30 oz.",
+                "TotalReturned": 155
+            },
+            {
+                "ProductName": "Patch Kit/8 Patches",
+                "TotalReturned": 95
+            },
+            {
+                "ProductName": "Mountain Tire Tube",
+                "TotalReturned": 93
+            },
+            {
+                "ProductName": "Mountain Bottle Cage",
+                "TotalReturned": 77
+            },
+            {
+                "ProductName": "Sport-100 Helmet, Red",
+                "TotalReturned": 70
+            },
+            {
+                "ProductName": "Road Tire Tube",
+                "TotalReturned": 67
+            },
+            {
+                "ProductName": "Sport-100 Helmet, Blue",
+                "TotalReturned": 66
+            },
+            {
+                "ProductName": "Road Bottle Cage",
+                "TotalReturned": 56
+            },
+            {
+                "ProductName": "Fender Set - Mountain",
+                "TotalReturned": 54
+            },
+            {
+                "ProductName": "Sport-100 Helmet, Black",
+                "TotalReturned": 52
+            }
+        ]
+    },
+    {
+        "task": "Orders by Region",
+        "user_query": "How many orders are there in each region?",
+        "sql_query": "SELECT t.Region, COUNT(s.OrderNumber) as TotalOrders FROM Sales s JOIN Territory t ON s.TerritoryKey = t.TerritoryKey GROUP BY t.Region ORDER BY TotalOrders DESC;",
+        "result": [
+            {
+                "Region": "Australia",
+                "OrderCount": 12409
+            },
+            {
+                "Region": "Southwest",
+                "OrderCount": 11463
+            },
+            {
+                "Region": "Northwest",
+                "OrderCount": 8267
+            },
+            {
+                "Region": "Canada",
+                "OrderCount": 6875
+            },
+            {
+                "Region": "United Kingdom",
+                "OrderCount": 6423
+            },
+            {
+                "Region": "Germany",
+                "OrderCount": 5289
+            },
+            {
+                "Region": "France",
+                "OrderCount": 5239
+            },
+            {
+                "Region": "Southeast",
+                "OrderCount": 34
+            },
+            {
+                "Region": "Northeast",
+                "OrderCount": 27
+            },
+            {
+                "Region": "Central",
+                "OrderCount": 20
+            }
+        ]
+    },
+    {
+        "task": "Customer Count by Income Range",
+        "user_query": "How many customers are in each income range? Here are the income ranges: $30k-$50k, $50k-$70k, Over $70k, Under $30k",
+        "sql_query": "SELECT CASE WHEN AnnualIncome < 30000 THEN 'Under $30k' WHEN AnnualIncome < 50000 THEN '$30k-$50k' WHEN AnnualIncome < 70000 THEN '$50k-$70k' ELSE 'Over $70k' END as IncomeRange, COUNT(*) as CustomerCount FROM Customer GROUP BY IncomeRange ORDER BY IncomeRange;",
+        "result": [
+            {
+                "IncomeRange": "$30k-$50k",
+                "CustomerCount": 4924
+            },
+            {
+                "IncomeRange": "$50k-$70k",
+                "CustomerCount": 3733
+            },
+            {
+                "IncomeRange": "Over $70k",
+                "CustomerCount": 6611
+            },
+            {
+                "IncomeRange": "Under $30k",
+                "CustomerCount": 2880
+            }
+        ]
+    }
+]

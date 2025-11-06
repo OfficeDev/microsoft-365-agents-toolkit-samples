@@ -1,0 +1,482 @@
+[
+    {
+        "task": "Vertical Bar Chart",
+        "visualization_type": "vertical bar",
+        "input_data": [
+            {
+                "legend": "Sales Q1",
+                "value": 125000,
+                "color": "CATEGORICALRED"
+            },
+            {
+                "legend": "Sales Q2",
+                "value": 168000,
+                "color": "CATEGORICALBLUE"
+            },
+            {
+                "legend": "Sales Q3",
+                "value": 145000,
+                "color": "CATEGORICALGREEN"
+            }
+        ],
+        "expected_card": {
+            "type": "AdaptiveCard",
+            "version": "1.6",
+            "body": [
+                {
+                    "type": "Chart.VerticalBar",
+                    "title": "Sales Data",
+                    "xAxisTitle": "Quarters",
+                    "yAxisTitle": "Sales Amount (USD)",
+                    "data": [
+                        {
+                            "x": "Sales Q1",
+                            "y": 125000,
+                            "color": "CATEGORICALRED"
+                        },
+                        {
+                            "x": "Sales Q2",
+                            "y": 168000,
+                            "color": "CATEGORICALBLUE"
+                        },
+                        {
+                            "x": "Sales Q3",
+                            "y": 145000,
+                            "color": "CATEGORICALGREEN"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "task": "Horizontal Bar Chart",
+        "visualization_type": "horizontal bar chart",
+        "input_data": [
+            {
+                "legend": "North America",
+                "value": 450000,
+                "color": "CATEGORICALBLUE"
+            },
+            {
+                "legend": "Europe",
+                "value": 380000,
+                "color": "CATEGORICALGREEN"
+            },
+            {
+                "legend": "Asia Pacific",
+                "value": 520000,
+                "color": "CATEGORICALRED"
+            },
+            {
+                "legend": "Latin America",
+                "value": 180000,
+                "color": "CATEGORICALMARIGOLD"
+            }
+        ],
+        "expected_card": {
+            "type": "AdaptiveCard",
+            "version": "1.6",
+            "body": [
+                {
+                    "type": "Chart.HorizontalBar",
+                    "title": "Regional Sales Data",
+                    "xAxisTitle": "Sales Amount (USD)",
+                    "yAxisTitle": "Regions",
+                    "data": [
+                        {
+                            "x": "North America",
+                            "y": 450000,
+                            "color": "CATEGORICALBLUE"
+                        },
+                        {
+                            "x": "Europe",
+                            "y": 380000,
+                            "color": "CATEGORICALGREEN"
+                        },
+                        {
+                            "x": "Asia Pacific",
+                            "y": 520000,
+                            "color": "CATEGORICALRED"
+                        },
+                        {
+                            "x": "Latin America",
+                            "y": 180000,
+                            "color": "CATEGORICALMARIGOLD"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "task": "Line Chart",
+        "visualization_type": "line chart",
+        "input_data": [
+            {
+                "legend": "Website Traffic",
+                "data": [
+                    {
+                        "x": "2024-01-01",
+                        "y": 1200
+                    },
+                    {
+                        "x": "2024-02-01",
+                        "y": 1500
+                    },
+                    {
+                        "x": "2024-03-01",
+                        "y": 1800
+                    },
+                    {
+                        "x": "2024-04-01",
+                        "y": 2200
+                    },
+                    {
+                        "x": "2024-05-01",
+                        "y": 2500
+                    },
+                    {
+                        "x": "2024-06-01",
+                        "y": 2800
+                    }
+                ],
+                "color": "SEQUENTIAL1"
+            }
+        ],
+        "expected_card": {
+            "type": "AdaptiveCard",
+            "version": "1.6",
+            "body": [
+                {
+                    "type": "Chart.Line",
+                    "title": "Website Traffic Over Time",
+                    "xAxisTitle": "Date",
+                    "yAxisTitle": "Visitors",
+                    "data": [
+                        {
+                            "legend": "Website Traffic",
+                            "values": [
+                                {
+                                    "x": "2024-01-01",
+                                    "y": 1200
+                                },
+                                {
+                                    "x": "2024-02-01",
+                                    "y": 1500
+                                },
+                                {
+                                    "x": "2024-03-01",
+                                    "y": 1800
+                                },
+                                {
+                                    "x": "2024-04-01",
+                                    "y": 2200
+                                },
+                                {
+                                    "x": "2024-05-01",
+                                    "y": 2500
+                                },
+                                {
+                                    "x": "2024-06-01",
+                                    "y": 2800
+                                }
+                            ],
+                            "color": "SEQUENTIAL1"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "task": "Pie Chart",
+        "visualization_type": "pie chart",
+        "input_data": {
+            "title": "Device Usage Distribution",
+            "data": [
+                {
+                    "legend": "Mobile",
+                    "value": 45,
+                    "color": "CATEGORICALRED"
+                },
+                {
+                    "legend": "Desktop",
+                    "value": 35,
+                    "color": "CATEGORICALBLUE"
+                },
+                {
+                    "legend": "Tablet",
+                    "value": 20,
+                    "color": "CATEGORICALGREEN"
+                }
+            ]
+        },
+        "expected_card": {
+            "type": "AdaptiveCard",
+            "version": "1.6",
+            "body": [
+                {
+                    "type": "Chart.Pie",
+                    "title": "Device Usage Distribution",
+                    "data": [
+                        {
+                            "legend": "Mobile",
+                            "value": 45,
+                            "color": "CATEGORICALRED"
+                        },
+                        {
+                            "legend": "Desktop",
+                            "value": 35,
+                            "color": "CATEGORICALBLUE"
+                        },
+                        {
+                            "legend": "Tablet",
+                            "value": 20,
+                            "color": "CATEGORICALGREEN"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "task": "Table",
+        "visualization_type": "table",
+        "input_data": {
+            "columns": [
+                {
+                    "title": "Product",
+                    "width": 2
+                },
+                {
+                    "title": "Category",
+                    "width": 1
+                },
+                {
+                    "title": "Price",
+                    "width": 1
+                },
+                {
+                    "title": "Stock",
+                    "width": 1
+                }
+            ],
+            "rows": [
+                [
+                    "Mountain Bike",
+                    "Bikes",
+                    "$899.99",
+                    "15"
+                ],
+                [
+                    "Road Bike",
+                    "Bikes",
+                    "$699.99",
+                    "8"
+                ],
+                [
+                    "Helmet",
+                    "Accessories",
+                    "$49.99",
+                    "45"
+                ],
+                [
+                    "Water Bottle",
+                    "Accessories",
+                    "$9.99",
+                    "120"
+                ]
+            ]
+        },
+        "expected_card": {
+            "type": "AdaptiveCard",
+            "version": "1.5",
+            "body": [
+                {
+                    "type": "Table",
+                    "columns": [
+                        {
+                            "width": 2
+                        },
+                        {
+                            "width": 1
+                        },
+                        {
+                            "width": 1
+                        },
+                        {
+                            "width": 1
+                        }
+                    ],
+                    "rows": [
+                        {
+                            "type": "TableRow",
+                            "cells": [
+                                {
+                                    "type": "TableCell",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "Mountain Bike"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "TableCell",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "Bikes"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "TableCell",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "$899.99"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "TableCell",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "15"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "TableRow",
+                            "cells": [
+                                {
+                                    "type": "TableCell",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "Road Bike"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "TableCell",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "Bikes"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "TableCell",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "$699.99"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "TableCell",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "8"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "TableRow",
+                            "cells": [
+                                {
+                                    "type": "TableCell",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "Helmet"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "TableCell",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "Accessories"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "TableCell",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "$49.99"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "TableCell",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "45"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "TableRow",
+                            "cells": [
+                                {
+                                    "type": "TableCell",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "Water Bottle"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "TableCell",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "Accessories"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "TableCell",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "$9.99"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "TableCell",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "120"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]
