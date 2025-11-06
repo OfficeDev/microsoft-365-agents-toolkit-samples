@@ -34,8 +34,8 @@ namespace TravelAgent.Bot.Plugins
                 var response = await apiClient.Copilot.Retrieval.PostAsync(new RetrievalPostRequestBody()
                 {
                     QueryString = userquery,
-                    DataSource = RetrievalDataSource.SharePoint,
-                    FilterExpression = "(path:\"https://atktesting.sharepoint.com/\")", // replace <tenantname> with your tenant name
+                    DataSource = RetrievalDataSource.OneDriveBusiness,
+                    FilterExpression = "(path:\"https://{tenant}-my.sharepoint.com/personal/{user}/Documents/{foldername}\")", // replace with actual OneDrive URL
                     ResourceMetadata = [string.Empty],
                     MaximumNumberOfResults = 1,
                 });
