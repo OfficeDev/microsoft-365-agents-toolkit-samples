@@ -9,38 +9,6 @@
 # In each subsection folders are ordered first by depth, then alphabetically.
 # This should make it easy to add new rules without breaking existing ones.
 
-/NPM-search-connector-M365 @kimizhu @swatDong @kuojianlu
-/NPM-search-message-extension-codespaces @kimizhu @dooriya @qinezh
-/adaptive-card-notification @kimizhu @dooriya @swatDong @XiaofuHuang
-/bot-sso @eriolchan @yukun-dong
-/bot-sso-docker @wh-alice @tecton
-/command-bot-with-sso @adashen @SLdragon
-/graph-connector-app @adashen @formulahendry
-/graph-connector-bot @adashen @formulahendry
-/graph-toolkit-contact-exporter @adashen @SLdragon
-/graph-toolkit-one-productivity-hub @adashen @SLdragon
-/graph-toolkit-productivity-hub-aspnetcore @adashen @SLdragon
-/hello-world-bot-with-tab @eriolchan @hund030
-/hello-world-in-meeting @eriolchan @JerryYangKai
-/hello-world-tab-codespaces @kimizhu @dooriya @qinezh
-/hello-world-tab-docker @wh-alice @tecton
-/hello-world-tab-with-backend @adashen @SLdragon @KennethBWSong
-/hello-world-teams-tab-and-outlook-add-in @wh-alice @jayzhang @HuihuiWu-Microsoft
-/incoming-webhook-notification @kimizhu @dooriya @swatDong @XiaofuHuang
-/notification-codespaces @kimizhu @dooriya @qinezh
-/query-org-user-with-message-extension-sso @adashen @wenytang-ms
-/share-now @adashen @xzf0587
-/stocks-update-notification-bot @kimizhu @dooriya @swatDong @XiaofuHuang
-/stocks-update-notification-bot-dotnet @kimizhu @dooriya @swatDong @XiaofuHuang
-/todo-list-SPFx @wh-alice @HuihuiWu-Microsoft @yuqizhou77
-/team-central-dashboard @wh-alice @tecton
-/todo-list-with-Azure-backend @adashen @formulahendry
-/todo-list-with-Azure-backend-M365 @kimizhu @swatDong @kuojianlu
-/developer-assist-dashboard @wh-alice @tecton
-/intelligent-data-chart-generator @wh-alice @tecton
-/whos-next-meeting-app @wh-alice @HuihuiWu-Microsoft @tecton
-/teams-chef-bot @wh-alice @HuihuiWu-Microsoft @tecton
-/spfx-productivity-dashboard @wh-alice @HuihuiWu-Microsoft @yuqizhou77
-/react-retail-dashboard @wh-alice @HuihuiWu-Microsoft @tecton @yuqizhou77
-/.config/samples-config-v3.json @HuihuiWu-Microsoft @wenytang-ms @tecton @wh-alice @KennethBWSong @LongOddCode
-/.github/workflows/cd.yml @adashen @LongOddCode @Siglud @qinezh @wenytang-ms
+* @wh-alice @qinzhouxu @llhmm01 @tecton @sherylueen @Alive-Fish @HuihuiWu-Microsoft @yuqizhou77 @qinqingxu
+/.github/CODEOWNERS @wh-alice @zhenjiao-ms
+/.config/samples-config-v3.json @HuihuiWu-Microsoft @tecton @wh-alice

@@ -1,0 +1,144 @@
+[
+    {
+        "user_message": "Create a bar chart showing the count of sub categories in each product category.",
+        "data_analyst_response": {
+            "chartType": "verticalBar",
+            "rows": [
+                ["Accessories", 12],
+                ["Bikes", 3],
+                ["Clothing", 8],
+                ["Components", 14]
+            ],
+            "options": {
+                "title": "Subcategory Count by Product Category",
+                "xAxisTitle": "Category",
+                "yAxisTitle": "Subcategory Count"
+            }
+        }
+    },
+    {
+        "user_message": "Can you list the sub categories in the Bikes category?",
+        "data_analyst_response": {
+            "rows": [
+                ["Subcategories"],
+                ["Mountain Bikes"],
+                ["Road Bikes"],
+                ["Touring Bikes"]
+            ],
+            "options": {
+                "title": "Subcategories in Bikes"
+            }
+        }
+    },
+    {
+        "user_message": "What were the annual sales from 2020-2022?",
+        "data_analyst_response": {
+            "chartType": "verticalBar",
+            "rows": [
+                ["2020", 6404933.5803],
+                ["2021", 9324203.7917],
+                ["2022", 9185449.4473]
+            ],
+            "options": {
+                "title": "Annual Sales from 2020 to 2022",
+                "xAxisTitle": "Year",
+                "yAxisTitle": "Sales Amount"
+            }
+        }
+    },
+    {
+        "user_message": "What are the different product categories?",
+        "data_analyst_response": {
+            "rows": [
+                ["Product Categories"],
+                ["Bikes"],
+                ["Components"],
+                ["Clothing"],
+                ["Accessories"]
+            ],
+            "options": {
+                "title": "Product Categories"
+            }
+        }
+    },
+    {
+        "user_message": "Show examples of charts.",
+        "data_analyst_response": [
+            {
+                "chartType": "verticalBar",
+                "rows": [
+                    ["Category A", 15],
+                    ["Category B", 30],
+                    ["Category C", 22],
+                    ["Category D", 40],
+                    ["Category E", 5]
+                ],
+                "options": {
+                    "title": "Vertical Bar Graph of Random Data",
+                    "xAxisTitle": "Categories",
+                    "yAxisTitle": "Values"
+                }
+            },
+            {
+                "chartType": "horizontalBar",
+                "rows": [
+                    ["Category A", 28],
+                    ["Category B", 18],
+                    ["Category C", 23],
+                    ["Category D", 35],
+                    ["Category E", 10]
+                ],
+                "options": {
+                    "title": "Horizontal Bar Graph of Random Data",
+                    "xAxisTitle": "Values",
+                    "yAxisTitle": "Categories"
+                }
+            },
+            {
+                "chartType": "line",
+                "rows": [
+                    ["2023-01-01", 10, 12],
+                    ["2023-01-02", 15, 18],
+                    ["2023-01-03", 7, 20],
+                    ["2023-01-04", 20, 15],
+                    ["2023-01-05", 30, 25]
+                ],
+                "options": {
+                    "title": "Line Chart of Random Data",
+                    "xAxisTitle": "Date (yyyy-mm-dd)",
+                    "yAxisTitle": "Values"
+                }
+            }
+        ]
+    },
+    {
+        "user_message": "Show a pie chart of product sales by category.",
+        "data_analyst_response": {
+            "chartType": "pie",
+            "rows": [
+                ["Bikes", 5000000],
+                ["Components", 2000000],
+                ["Clothing", 1500000],
+                ["Accessories", 1000000]
+            ],
+            "options": {
+                "title": "Product Sales by Category"
+            }
+        }
+    },
+    {
+        "user_message": "Show a table of the top 3 products by sales.",
+        "data_analyst_response": {
+            "chartType": "table",
+            "rows": [
+                ["Product Name", "Category", "Sales"],
+                ["Road-150 Red, 62", "Bikes", 3578],
+                ["Mountain-200 Black, 46", "Bikes", 2890],
+                ["Sport-100 Helmet, Blue", "Accessories", 1500]
+            ],
+            "options": {
+                "title": "Top 3 Products by Sales"
+            }
+        }
+    }
+]
