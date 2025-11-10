@@ -19,7 +19,7 @@ public class TravelAgentBot : AgentApplication
         _chatClient = chatClient ?? throw new ArgumentNullException(nameof(chatClient));
 
         OnConversationUpdate(ConversationUpdateEvents.MembersAdded, WelcomeMessageAsync);
-        OnActivity(ActivityTypes.Message, MessageActivityAsync, rank: RouteRank.Last);
+        OnActivity(ActivityTypes.Message, MessageActivityAsync, rank: RouteRank.Last, autoSignInHandlers: ["graph"]);
     }
 
     protected async Task MessageActivityAsync(ITurnContext turnContext, ITurnState turnState, CancellationToken cancellationToken)
