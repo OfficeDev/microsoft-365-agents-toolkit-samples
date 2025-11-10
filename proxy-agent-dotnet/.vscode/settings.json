@@ -1,0 +1,44 @@
+{
+    // C# Development
+    "dotnet.defaultSolution": "AzureAgentToM365ATK.sln",
+    "omnisharp.enableRoslynAnalyzers": true,
+    // Microsoft 365 Agents Toolkit
+    "m365agents.telemetry": false,
+    // File Associations
+    "files.associations": {
+        "*.bicep": "bicep",
+        "m365agents*.yml": "yaml",
+        "*.atkproj": "xml"
+    },
+    // Files to exclude from Explorer
+    "files.exclude": {
+        "**/bin": true,
+        "**/obj": true,
+        "**/.env.*.user": true
+    },
+    // Search exclusions
+    "search.exclude": {
+        "**/bin": true,
+        "**/obj": true,
+        "**/node_modules": true
+    },
+    // Editor settings
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit",
+        "source.organizeImports": "explicit"
+    },
+    // Terminal settings
+    "terminal.integrated.cwd": "${workspaceFolder}",
+    // Recommended Extensions
+    "recommendations": [
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.csdevkit",
+        "ms-azuretools.vscode-bicep",
+        "ms-azuretools.azure-dev",
+        "ms-vscode.azure-account",
+        "msazurermtools.azurerm-vscode-tools",
+        "microsoft.vscode-azure-agent-toolkit"
+    ],
+    "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true
+}

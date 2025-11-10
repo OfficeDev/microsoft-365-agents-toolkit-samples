@@ -1,0 +1,12 @@
+{
+    "recommendations": [
+        "ms-dotnettools.csharp",
+        "ms-dotnettools.csdevkit",
+        "ms-azuretools.vscode-bicep",
+        "ms-azuretools.azure-dev",
+        "ms-azuretools.vscode-azureresourcegroups",
+        "microsoft.vscode-azure-agent-toolkit",
+        "ms-vscode.vscode-node-azure-pack",
+        "TeamsDevApp.ms-teams-vscode-extension"
+    ]
+}
