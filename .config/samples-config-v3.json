@@ -915,6 +915,28 @@
             "thumbnailPath": "assets/coffee-agent-thumbnail.png",
             "gifPath": "assets/coffee-agent-thumbnail.png",
             "suggested": false
+        },
+                {
+            "id": "proxy-agent-dotnet",
+            "shortId": "proxy-agent-dotnet",
+            "onboardDate": "2025-11-14",
+            "title": "AI Foundry to M365 Proxy Agent",
+            "shortDescription": "This sample shows how to integrate AI Foundry agents—grounded in SharePoint—into Microsoft 365 Copilot and Teams using Agent Framework v2 and the M365 Agents SDK. It turns a complex, multi-day setup into a secure, two-click experience.",
+            "fullDescription": "This sample shows how to integrate AI Foundry agents—grounded in SharePoint—into Microsoft 365 Copilot and Teams using Agent Framework v2 and the M365 Agents SDK. It turns a complex, multi-day setup into a secure, two-click experience.",
+            "types": [
+                "Custom Engine Agent"
+            ],
+            "tags": [
+                "C#",
+                "Azure",
+                "SSO",
+                "AI Foundry"
+            ],
+            "time": "5 mins to run",
+            "configuration": "Manual configurations required",
+            "thumbnailPath": "images/screen009.jpg.png",
+            "gifPath": "images/screen009.jpg.png",
+            "suggested": false
         }
     ]
 }
