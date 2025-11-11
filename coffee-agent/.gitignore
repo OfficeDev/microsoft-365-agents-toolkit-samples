@@ -4,3 +4,4 @@ node_modules/
 appPackage/build
 .localConfigs
 .localConfigs.playground
+dist

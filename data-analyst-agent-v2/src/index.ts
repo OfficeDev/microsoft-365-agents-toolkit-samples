@@ -1,12 +1,36 @@
+import { ManagedIdentityCredential } from '@azure/identity';
+import { Message } from '@microsoft/teams.ai';
+import { MessageActivity, TokenCredentials } from '@microsoft/teams.api';
 import { App } from '@microsoft/teams.apps';
 import { ConsoleLogger } from '@microsoft/teams.common';
 import { createDataAnalystPrompt } from './prompt';
-import { MessageActivity } from '@microsoft/teams.api';
-import { Message } from '@microsoft/teams.ai';
 
 const conversationHistoryById = new Map<string, Message[]>();
 
+const createTokenFactory = () => {
+  return async (scope: string | string[], tenantId?: string): Promise<string> => {
+    const managedIdentityCredential = new ManagedIdentityCredential({
+        clientId: process.env.CLIENT_ID
+      });
+    const scopes = Array.isArray(scope) ? scope : [scope];
+    const tokenResponse = await managedIdentityCredential.getToken(scopes, {
+      tenantId: tenantId
+    });
+   
+    return tokenResponse.token;
+  };
+};
+
+// Configure authentication using TokenCredentials
+const tokenCredentials: TokenCredentials = {
+  clientId: process.env.CLIENT_ID || '',
+  token: createTokenFactory()
+};
+
+const credentialOptions = process.env.BOT_TYPE === "UserAssignedMsi" ? { ...tokenCredentials } : undefined;
+
 const app = new App({
+    ...credentialOptions,
     logger: new ConsoleLogger('adventureworks-data-analyst', { level: 'debug' })
 });
 
@@ -55,5 +79,8 @@ app.on('message', async ({ send, activity, stream }) => {
 });
 
 (async () => {
-    await app.start(+(process.env.PORT || 3978));
+    await app.start(process.env.PORT || process.env.port || 3978);
+    console.log(`\nAgent started, app listening to`, process.env.PORT || process.env.port || 3978);
 })();
+
+export default app;

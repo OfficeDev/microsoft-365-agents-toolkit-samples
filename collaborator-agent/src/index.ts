@@ -1,14 +1,39 @@
+import { ManagedIdentityCredential } from '@azure/identity';
+import { TokenCredentials } from '@microsoft/teams.api';
 import { App } from '@microsoft/teams.apps';
-import { ManagerPrompt } from './agent/manager';
-import { validateEnvironment, logModelConfigs } from './utils/config';
-import { finalizePromptResponse, createMessageRecords } from './utils/utils';
-import { createMessageContext } from './utils/messageContext';
-import { SqliteKVStore } from './storage/storage';
 import { ConsoleLogger } from '@microsoft/teams.common';
+import { ManagerPrompt } from './agent/manager';
+import { SqliteKVStore } from './storage/storage';
+import { logModelConfigs, validateEnvironment } from './utils/config';
+import { createMessageContext } from './utils/messageContext';
+import { createMessageRecords, finalizePromptResponse } from './utils/utils';
 
 const logger = new ConsoleLogger('collaborator', { level: 'debug' });
 
+const createTokenFactory = () => {
+  return async (scope: string | string[], tenantId?: string): Promise<string> => {
+    const managedIdentityCredential = new ManagedIdentityCredential({
+        clientId: process.env.CLIENT_ID
+      });
+    const scopes = Array.isArray(scope) ? scope : [scope];
+    const tokenResponse = await managedIdentityCredential.getToken(scopes, {
+      tenantId: tenantId
+    });
+   
+    return tokenResponse.token;
+  };
+};
+
+// Configure authentication using TokenCredentials
+const tokenCredentials: TokenCredentials = {
+  clientId: process.env.CLIENT_ID || '',
+  token: createTokenFactory()
+};
+
+const credentialOptions = process.env.BOT_TYPE === "UserAssignedMsi" ? { ...tokenCredentials } : undefined;
+
 const app = new App({
+  ...credentialOptions,
   logger
 });
 
@@ -72,7 +97,6 @@ app.on('install.add', async ({ send }) => {
 });
 
 (async ( ) => {
-  const port = +(process.env.PORT || 3978);
   try {
     validateEnvironment(logger);
     logModelConfigs(logger);
@@ -81,7 +105,8 @@ app.on('install.add', async ({ send }) => {
     process.exit(1);
   }
 
-  await app.start(port);
-
-  logger.debug(`🚀 Collab Agent started on port ${port}`);
+  await app.start(process.env.PORT || process.env.port || 3978);
+  logger.debug(`🚀 Collab Agent started on port ${process.env.PORT || process.env.port || 3978}`);
 })();
+
+export default app;
