@@ -29,7 +29,7 @@ resource botService 'Microsoft.BotService/botServices@2021-03-01' = {
     msaAppId: deployAppService ? identityClientId : botConnectionClientId
     msaAppMSIResourceId: deployAppService ? identityResourceId : ''
     msaAppTenantId: identityTenantId
-    msaAppType: deployAppService ? 'ManagedIdentity' : 'SingleTenant'
+    msaAppType: deployAppService ? 'UserAssignedMSI' : 'SingleTenant'
   }
   sku: {
     name: botServiceSku

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Agents.AI;
+using Microsoft.Agents.Builder;
 using Microsoft.Agents.Builder.App;
 using Microsoft.Extensions.AI;
 using System.Text.Json.Nodes;
@@ -22,7 +23,7 @@ public class TravelAgent
         
         When a customer asks a question about travel policies in domains mentioned, use the Retrieval Plugin to search the documents and find relevant information, and summarize result with referenced document to user.
         
-        When a customer asks a question about booking hotel/flight, first use the Retrieval Plugin to search the documents and find relevant information.
+        When a customer asks a question about booking hotel/flight, first use the RetrievalPlugin to search the documents and find relevant information.
         Then, summarize the relevant information into a set of rules of related policies and the referenced documents.
         After that, use DataPlugin to call the external flight/hotel API to get data. Leave location/destination parameter empty string is user does not specify. Ask for user input if date parameter is missing.
         Finally, combine the rules from documents and the data from external API to answer the user's question.
@@ -42,7 +43,9 @@ public class TravelAgent
     /// Initializes a new instance of the <see cref="TravelAgent"/> class.
     /// </summary>
     /// <param name="chatClient">An instance of <see cref="IChatClient"/> for interacting with an LLM.</param>
-    public TravelAgent(IChatClient chatClient, AgentApplication app)
+    /// <param name="app">The agent application instance.</param>
+    /// <param name="turnContext">The turn context for the current conversation.</param>
+    public TravelAgent(IChatClient chatClient, AgentApplication app, ITurnContext turnContext)
     {
         var tools = new List<AITool>();
         
@@ -55,7 +58,7 @@ public class TravelAgent
         var dataPlugin = new DataPlugin();
         tools.Add(AIFunctionFactory.Create(dataPlugin.GetHotelFlightDataAsync));
         
-        var retrievalPlugin = new RetrievalPlugin(app);
+        var retrievalPlugin = new RetrievalPlugin(app, turnContext);
         tools.Add(AIFunctionFactory.Create(retrievalPlugin.BuildRetrievalAsync));
 
         _agent = chatClient.CreateAIAgent(instructions: AgentInstructions, tools: tools);

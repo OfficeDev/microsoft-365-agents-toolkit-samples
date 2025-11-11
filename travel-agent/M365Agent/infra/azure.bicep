@@ -14,7 +14,7 @@ param webAppSKU string
 param botDisplayName string
 
 param environment string
-param botDomain string
+param botDomain string = ''
 param deployAppService bool = environment != 'local'
 
 // For OAuth connection of bot service, created outside of Bicep
@@ -114,6 +114,7 @@ module azureBotRegistration './botRegistration/azurebot.bicep' = {
 }
 
 // The output will be persisted in .env.{envName}. Visit https://aka.ms/teamsfx-actions/arm-deploy for more details.
+output BOT_AZURE_APP_SERVICE_RESOURCE_ID string = deployAppService ? webApp.id : ''
 output BOT_DOMAIN string = deployAppService ? webApp.properties.defaultHostName : botDomain
 output BOT_ID string = deployAppService ? identity.properties.clientId :aadAppClientId
 output BOT_TENANT_ID string = identity.properties.tenantId

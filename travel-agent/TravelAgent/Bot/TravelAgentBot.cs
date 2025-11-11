@@ -35,7 +35,7 @@ public class TravelAgentBot : AgentApplication
         await turnContext.StreamingResponse.QueueInformativeUpdateAsync("Working on a response for you");
 
         IList<ChatMessage> chatHistory = turnState.GetValue("conversation.chatHistory", () => new List<ChatMessage>());
-        _travelAgent = new Agents.TravelAgent(_chatClient, this);
+        _travelAgent = new Agents.TravelAgent(_chatClient, this, turnContext);
 
         // Invoke the TravelAgent to process the message
         TravelAgentResponse travelResponse = await _travelAgent.InvokeAgentAsync(turnContext.Activity.Text, chatHistory);
