@@ -4,7 +4,7 @@ Originally from our Build 2025 Lab, this sample is built with the [Microsoft Tea
 
 This Coffee Agent helps teams coordinate their daily coffee orders by randomly selecting coffee shops and orderers, managing team coffee orders, and maintaining information about available coffee shops and their offerings. It's perfect for teams that want to streamline their coffee coordination process while having fun with their daily caffeine routine.
 
-![Coffee Agent Demo](assets/coffee-agent-thumbnail.png)
+![Coffee Agent Demo](assets/coffee-agent-sample-response.png)
 
 ## This sample illustrates
 - Use Microsoft 365 Agents Toolkit to create an AI-powered Teams bot
