@@ -892,7 +892,7 @@
             "configuration": "Manual configurations required",
             "thumbnailPath": "assets/sampleResponse.png",
             "gifPath": "assets/sampleResponse.png",
-            "suggested": false
+            "suggested": true
         },
         {
             "id": "coffee-agent",
@@ -914,7 +914,7 @@
             "configuration": "Manual configurations required",
             "thumbnailPath": "assets/coffee-agent-sample-response.png",
             "gifPath": "assets/coffee-agent-sample-response.png",
-            "suggested": false
+            "suggested": true
         },
                 {
             "id": "proxy-agent-dotnet",
@@ -932,11 +932,11 @@
                 "SSO",
                 "AI Foundry"
             ],
-            "time": "5 mins to run",
+            "time": "30 mins to run",
             "configuration": "Manual configurations required",
             "thumbnailPath": "images/screen009.jpg.png",
             "gifPath": "images/screen009.jpg.png",
-            "suggested": false
+            "suggested": true
         }
     ]
 }
