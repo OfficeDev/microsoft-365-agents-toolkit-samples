@@ -5,13 +5,12 @@ using Microsoft.Agents.M365Copilot.Beta.Copilot.Retrieval;
 using Microsoft.Kiota.Abstractions.Authentication;
 using Microsoft.Kiota.Http.HttpClientLibrary;
 using Microsoft.Agents.M365Copilot.Beta.Models;
+using Microsoft.Agents.Builder;
 
 namespace TravelAgent.Bot.Plugins
 {
-    public class RetrievalPlugin(AgentApplication app)
+    public class RetrievalPlugin(AgentApplication app, ITurnContext turnContext)
     {
-        AgentApplication _app = app;
-
         /// <summary>
         /// Retrieve travel policies about expenses use graph API.
         /// </summary>
@@ -20,9 +19,7 @@ namespace TravelAgent.Bot.Plugins
         [Description("This function talks to Microsoft 365 Copilot Retrieval API and gets travel policies about expenses and reimbursements, flight booking, ground transportation, hotel accommodations which are nicely formatted. It accepts user query as input and send out a chunk of relevant text and a link to the file in the results.")]
         public async Task<string> BuildRetrievalAsync(string userquery)
         {
-#pragma warning disable CS0618 // Type or member is obsolete
-            string accessToken = _app.UserAuthorization.GetTurnToken("graph");
-#pragma warning restore CS0618 // Type or member is obsolete
+            string accessToken = await app.UserAuthorization.GetTurnTokenAsync(turnContext, "graph");
             var tokenProvider = new StaticTokenProvider(accessToken);
             var authProvider = new BaseBearerTokenAuthenticationProvider(tokenProvider);
             var requestAdapter = new HttpClientRequestAdapter(authProvider);
