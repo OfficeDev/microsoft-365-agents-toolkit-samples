@@ -11,3 +11,4 @@ src/storage/conversations.db
 
 .localConfigs
 .localConfigs.playground
+dist
