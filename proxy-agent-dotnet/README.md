@@ -246,7 +246,6 @@ The bot uses **Azure Managed Identity** (production) or **Single Tenant + Client
 ### Local Development Cycle
 
 1. **Run Bot Locally** (Press F5 in VS Code)
-   - Agent is automatically sideloaded in Teams/M365 Copilot
    - Set breakpoints in your code
    - Test directly in Teams or Copilot
    - Iterate quickly without deployment
