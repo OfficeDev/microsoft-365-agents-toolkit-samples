@@ -159,13 +159,19 @@ devtunnel --version
 
 ### Required Configuration
 
-**Only 2 values needed** in `M365Agent/env/.env.local`:
+**Only 4 values needed** in `M365Agent/env/.env.local`:
 
 ```bash
-# Your Azure subscription ID
+# Your AI Foundry project endpoint
+AZURE_AI_FOUNDRY_PROJECT_ENDPOINT=<ai-foundry-project-endpoint>
+
+#Your agent ID
+AGENT_ID=<agent-id>
+
+# Your Azure subscription ID(optional)
 AZURE_SUBSCRIPTION_ID=<your-subscription-id>
 
-# Resource group name (can be new or existing)
+# Resource group name (optional, can be new or existing)
 AZURE_RESOURCE_GROUP_NAME=rg-m365agent-local
 ```
 
