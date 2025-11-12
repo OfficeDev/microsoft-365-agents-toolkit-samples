@@ -916,7 +916,7 @@
             "gifPath": "assets/coffee-agent-sample-response.png",
             "suggested": true
         },
-                {
+        {
             "id": "proxy-agent-dotnet",
             "shortId": "proxy-agent-dotnet",
             "onboardDate": "2025-11-14",
