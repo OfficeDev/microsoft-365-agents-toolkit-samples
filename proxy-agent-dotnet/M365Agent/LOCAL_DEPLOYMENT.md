@@ -359,6 +359,15 @@ Microsoft 365 Agents Toolkit orchestrates the entire process automatically:
 ✓ Agent ready to chat!
 ```
 
+### Step 8: Install in Teams
+
+1. Open **Microsoft Teams**
+2. Go to **Apps** → **Manage your apps**
+3. Click **Upload an app** → **Upload a custom app**
+4. Select: `M365Agent/appPackage/build/appPackage.local.zip`
+5. Click **Add** to install your bot
+6. Start chatting with your agent!
+
 **What it does:**
 - Opens your default browser (or specified browser)
 - Navigates directly to Teams or M365 Copilot
