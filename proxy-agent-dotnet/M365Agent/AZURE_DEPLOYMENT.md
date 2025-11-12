@@ -233,7 +233,16 @@ atk deploy --env dev
 
 **Duration:** ~2-3 minutes
 
-### Step 4: Install in Teams
+### Step 4: Update agent environment variables
+
+1. Open the **Environment variables** panel of your Web App from Azure Portal
+2. Update following environment variables related to your agent
+```bash
+AIServices__AgentID=<your-agent-id>
+AIServices__AzureAIFoundryProjectEndpoint=<your-ai-foundry-project-endpoint>
+```
+
+### Step 5: Install in Teams
 
 1. Open **Microsoft Teams**
 2. Go to **Apps** → **Manage your apps**
