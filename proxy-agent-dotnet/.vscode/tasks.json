@@ -6,6 +6,7 @@
       "dependsOn": [
         "Ensure env files",
         "Ensure DevTunnel",
+        "Validate prerequisites",
         "Provision",
         "Start application"
       ],
