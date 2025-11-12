@@ -1,17 +1,41 @@
-import { App } from '@microsoft/teams.apps';
+import { ManagedIdentityCredential } from '@azure/identity';
 import { ChatPrompt } from '@microsoft/teams.ai';
-import { AzureOpenAIChatModelOptions, OpenAIChatModel } from '@microsoft/teams.openai';
+import { InvokeResponse, TaskModuleResponse, TokenCredentials } from '@microsoft/teams.api';
+import { App } from '@microsoft/teams.apps';
 import { ConsoleLogger, LocalStorage } from '@microsoft/teams.common';
-import { InvokeResponse, TaskModuleResponse } from '@microsoft/teams.api';
-import { CoffeeShop, Member, StorageState } from './interfaces';
+import { AzureOpenAIChatModelOptions, OpenAIChatModel } from '@microsoft/teams.openai';
 import { generateOrderCard, generateOrderDialogCard, generateSubmittedOrderCard } from './cards';
+import { CoffeeShop, Member, StorageState } from './interfaces';
 import { addCoffeeShopSchema } from './schema';
 import { initialCafes, initialOrder } from './storage';
 
 const storage = new LocalStorage<StorageState>();
 storage.set('local', { coffeeShops: initialCafes, currOrder: initialOrder } as StorageState);
 
+const createTokenFactory = () => {
+  return async (scope: string | string[], tenantId?: string): Promise<string> => {
+    const managedIdentityCredential = new ManagedIdentityCredential({
+        clientId: process.env.CLIENT_ID
+      });
+    const scopes = Array.isArray(scope) ? scope : [scope];
+    const tokenResponse = await managedIdentityCredential.getToken(scopes, {
+      tenantId: tenantId
+    });
+   
+    return tokenResponse.token;
+  };
+};
+
+// Configure authentication using TokenCredentials
+const tokenCredentials: TokenCredentials = {
+  clientId: process.env.CLIENT_ID || '',
+  token: createTokenFactory()
+};
+
+const credentialOptions = process.env.BOT_TYPE === "UserAssignedMsi" ? { ...tokenCredentials } : undefined;
+
 const app = new App({
+    ...credentialOptions,
     logger: new ConsoleLogger('@samples/coffee', { level: 'debug' })
 });
 
@@ -117,5 +141,8 @@ const prompt = new ChatPrompt(
     });
 
 (async () => {
-    await app.start(+(process.env.PORT || 3978));
+    await app.start(process.env.PORT || process.env.port || 3978);
+    console.log(`\nAgent started, app listening to`, process.env.PORT || process.env.port || 3978);
 })();
+
+export default app;
