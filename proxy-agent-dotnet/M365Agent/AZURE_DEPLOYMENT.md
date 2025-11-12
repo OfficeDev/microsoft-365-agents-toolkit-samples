@@ -137,6 +137,7 @@ dotnet --version
 |------------|-------|---------|
 | **Contributor** | Subscription or Resource Group | Deploy Azure resources |
 | **Application Administrator** | Entra ID | Create app registrations |
+| **Role Based Access Control Administrator**(optional) | Subscription or Resource Group | Grant Managed Identity "Monitoring Metrics Publisher" role on Application Insights |
 
 **Verify permissions:**
 ```powershell
