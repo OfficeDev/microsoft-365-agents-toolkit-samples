@@ -1,0 +1,124 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch in Teams (Edge)",
+      "type": "msedge",
+      "request": "launch",
+      "url": "https://teams.microsoft.com/l/app/${TEAMS_APP_ID}?installAppPackage=true&webjoin=true&appTenantId=${{TEAMS_APP_TENANT_ID}}&login_hint=${{TEAMSFX_M365_USER_NAME}}",
+      "presentation": {
+        "group": "Teams",
+        "order": 1
+      },
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "Launch in Teams (Chrome)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "https://teams.microsoft.com/l/app/${{TEAMS_APP_ID}}?installAppPackage=true&webjoin=true&appTenantId=${{TEAMS_APP_TENANT_ID}}&login_hint=${{TEAMSFX_M365_USER_NAME}}",
+      "presentation": {
+        "group": "Teams",
+        "order": 2
+      },
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "Launch in Copilot (Edge)",
+      "type": "msedge",
+      "request": "launch",
+      "url": "https://m365.cloud.microsoft/chat/entity1-d870f6cd-4aa5-4d42-9626-ab690c041429/${local:agent-hint}?auth=2&$login_hint=${TEAMSFX_M365_USER_NAME}&developerMode=Basic",
+      "presentation": {
+        "group": "Copilot",
+        "order": 3
+      },
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "Launch in Copilot (Chrome)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "https://m365.cloud.microsoft/chat/entity1-d870f6cd-4aa5-4d42-9626-ab690c041429/${{local:agent-hint}}?auth=2&${{TEAMSFX_M365_USER_NAME}}&developerMode=Basic",
+      "presentation": {
+        "group": "Copilot",
+        "order": 4
+      },
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "coreclr",
+      "request": "launch",
+      "name": "Launch AzureAgentToM365ATK",
+      "preLaunchTask": "test build",
+      "program": "${workspaceFolder}/AzureAgentToM365ATK/bin/Debug/net9.0/AzureAgentToM365ATK.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/AzureAgentToM365ATK",
+      "stopAtEntry": false,
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "presentation": {
+        "hidden": true,
+        "group": "all"
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Debug in Teams (Edge)",
+      "configurations": [
+        "Launch in Teams (Edge)",
+        "Launch AzureAgentToM365ATK"
+      ],
+      "preLaunchTask": "PreReq & Start Tunnel",
+      "postDebugTask": "Stop All Services",
+      "presentation": {
+        "group": "all",
+        "order": 1
+      },
+      "stopAll": true
+    },
+    {
+      "name": "Debug in Teams (Chrome)",
+      "configurations": [
+        "Launch in Teams (Chrome)",
+        "Launch AzureAgentToM365ATK"
+      ],
+      "preLaunchTask": "PreReq & Start Tunnel",
+      "postDebugTask": "Stop All Services",
+      "presentation": {
+        "group": "all",
+        "order": 2
+      },
+      "stopAll": true
+    },
+    {
+      "name": "Debug in Copilot (Edge)",
+      "configurations": [
+        "Launch AzureAgentToM365ATK",
+        "Launch in Copilot (Edge)",
+      ],
+      "preLaunchTask": "PreReq & Start Tunnel",
+      "postDebugTask": "Stop All Services",
+      "presentation": {
+        "group": "all",
+        "order": 3
+      },
+      "stopAll": true
+    },
+    {
+      "name": "Debug in Copilot (Chrome)",
+      "configurations": [
+        "Launch AzureAgentToM365ATK",
+        "Launch in Copilot (Chrome)"
+      ],
+      "preLaunchTask": "PreReq & Start Tunnel",
+      "postDebugTask": "Stop All Services",
+      "presentation": {
+        "group": "all",
+        "order": 4
+      },
+      "stopAll": true
+    }
+  ]
+}
