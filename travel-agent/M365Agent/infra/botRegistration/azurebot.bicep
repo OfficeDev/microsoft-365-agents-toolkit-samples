@@ -17,6 +17,7 @@ param deployAppService bool
 param botConnectionClientId string
 @secure()
 param botConnectionClientSecret string
+param botConnectionTenantId string
 
 // Register your web service as a bot with the Bot Framework
 resource botService 'Microsoft.BotService/botServices@2021-03-01' = {
@@ -60,7 +61,7 @@ resource botServiceOAuthConnection 'Microsoft.BotService/botServices/Connections
     parameters: [
       {
         key: 'tenantId'
-        value: identityTenantId
+        value: botConnectionTenantId
       }
     ]
   }
