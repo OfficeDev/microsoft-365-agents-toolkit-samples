@@ -21,6 +21,7 @@ param deployAppService bool = environment != 'local'
 param aadAppClientId string = ''
 @secure()
 param aadAppClientSecret string = ''
+param aadAppTenantId string = ''
 
 param serverfarmsName string = resourceBaseName
 param webAppName string = resourceBaseName
@@ -110,6 +111,7 @@ module azureBotRegistration './botRegistration/azurebot.bicep' = {
     botDisplayName: botDisplayName
     botConnectionClientId: aadAppClientId
     botConnectionClientSecret: aadAppClientSecret
+    botConnectionTenantId: aadAppTenantId
   }
 }
 
