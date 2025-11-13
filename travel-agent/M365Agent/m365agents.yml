@@ -31,6 +31,7 @@ provision:
       clientId: AAD_APP_CLIENT_ID
       clientSecret: SECRET_AAD_APP_CLIENT_SECRET
       objectId: AAD_APP_OBJECT_ID
+      tenantId: AAD_APP_TENANT_ID
 
   # Update AAD app with required API permissions
   - uses: aadApp/update
