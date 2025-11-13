@@ -26,7 +26,6 @@ The Travel Agent leverages Azure OpenAI and the Microsoft 365 Retrieval API to a
   - Upload files to SharePoint or OneDrive for Business
 - **Azure OpenAI resource**: [Access Azure OpenAI](https://aka.ms/oai/access)
 - **Azure subscription**: Active subscription with appropriate permissions
-- **Important**: Use accounts from the same tenant for both your Microsoft 365 account and Azure account in Agents Toolkit
 
 ## Minimal path to awesome
 
