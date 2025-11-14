@@ -1,18 +1,18 @@
-# GitHub Copilot Instructions for Azure AI Foundry Agent for M365
+# GitHub Copilot Instructions for Microsoft Foundry Agent for M365
 
 ## Project Overview
-This is a proxy solution that connects Azure AI Foundry agents to Microsoft 365 Copilot and Teams using the Microsoft 365 Agents Toolkit.
+This is a proxy solution that connects Microsoft Foundry agents to Microsoft 365 Copilot and Teams using the Microsoft 365 Agents Toolkit.
 
 ## Technology Stack
 - **.NET 9** - Bot application runtime
 - **M365 Agent SDK** - Microsoft 365 Agent SDK
 - **Microsoft 365 Agents Toolkit** - Formerly Teams Toolkit
-- **Azure AI Foundry Agent SDK** - For agent integration
+- **Microsoft Foundry Agent SDK** - For agent integration
 - **Bicep** - Infrastructure as Code
 - **Managed Identity** - For production authentication (no secrets)
 
 ## Architecture Patterns
-- Use the proxy pattern to route messages between M365 Copilot and Azure AI Foundry
+- Use the proxy pattern to route messages between M365 Copilot and Microsoft Foundry
 - Bot Service acts as the messaging endpoint
 - Managed Identity for authentication in production
 - Client Secret + Single Tenant for local development

@@ -41,7 +41,7 @@ param botTenantId string
 param oauthConnectionName string
 
 // AI Services Configuration (optional)
-@description('Azure AI Foundry Project Endpoint (optional)')
+@description('Microsoft Foundry Project Endpoint (optional)')
 param azureAIFoundryEndpoint string = ''
 
 @description('Azure AI Agent ID (optional)')

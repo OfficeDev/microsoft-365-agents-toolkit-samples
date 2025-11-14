@@ -44,7 +44,7 @@ var incomingRoute = app.MapPost("/api/messages", async (HttpRequest request, Htt
 // Enabling anonymous access to the root and controller endpoints in development for testing purposes.
 if (app.Environment.IsDevelopment() )
 {
-    app.MapGet("/", () => "Microsoft Agents SDK From Azure AI Foundry Agent Service Sample");
+    app.MapGet("/", () => "Microsoft Agents SDK From Microsoft Foundry Agent Service Sample");
     app.UseDeveloperExceptionPage();
     app.MapControllers().AllowAnonymous();
 }

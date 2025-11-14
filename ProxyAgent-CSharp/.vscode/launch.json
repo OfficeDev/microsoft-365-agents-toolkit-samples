@@ -5,9 +5,10 @@
       "name": "Launch in Teams (Edge)",
       "type": "msedge",
       "request": "launch",
-      "url": "https://teams.microsoft.com/l/app/${TEAMS_APP_ID}?installAppPackage=true&webjoin=true&appTenantId=${{TEAMS_APP_TENANT_ID}}&login_hint=${{TEAMSFX_M365_USER_NAME}}",
+      "url": "https://teams.microsoft.com/l/app/${{local:TEAMS_APP_ID}}?installAppPackage=true&webjoin=true&appTenantId=${{local:TEAMS_APP_TENANT_ID}}&login_hint=${{TEAMSFX_M365_USER_NAME}}",
       "presentation": {
         "group": "Teams",
+        "hidden": true,
         "order": 1
       },
       "internalConsoleOptions": "neverOpen"
@@ -16,9 +17,10 @@
       "name": "Launch in Teams (Chrome)",
       "type": "chrome",
       "request": "launch",
-      "url": "https://teams.microsoft.com/l/app/${{TEAMS_APP_ID}}?installAppPackage=true&webjoin=true&appTenantId=${{TEAMS_APP_TENANT_ID}}&login_hint=${{TEAMSFX_M365_USER_NAME}}",
+      "url": "https://teams.microsoft.com/l/app/${{{local:TEAMS_APP_ID}}}?installAppPackage=true&webjoin=true&appTenantId=${{local:TEAMS_APP_TENANT_ID}}&login_hint=${{TEAMSFX_M365_USER_NAME}}",
       "presentation": {
         "group": "Teams",
+        "hidden": true,
         "order": 2
       },
       "internalConsoleOptions": "neverOpen"
@@ -30,6 +32,7 @@
       "url": "https://m365.cloud.microsoft/chat/entity1-d870f6cd-4aa5-4d42-9626-ab690c041429/${local:agent-hint}?auth=2&$login_hint=${TEAMSFX_M365_USER_NAME}&developerMode=Basic",
       "presentation": {
         "group": "Copilot",
+        "hidden": true,
         "order": 3
       },
       "internalConsoleOptions": "neverOpen"
@@ -41,6 +44,7 @@
       "url": "https://m365.cloud.microsoft/chat/entity1-d870f6cd-4aa5-4d42-9626-ab690c041429/${{local:agent-hint}}?auth=2&${{TEAMSFX_M365_USER_NAME}}&developerMode=Basic",
       "presentation": {
         "group": "Copilot",
+        "hidden": true,
         "order": 4
       },
       "internalConsoleOptions": "neverOpen"

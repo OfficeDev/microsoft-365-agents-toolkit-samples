@@ -22,7 +22,7 @@ param botAppTenantId string
 @description('The bot messaging endpoint (e.g., https://abc123-5000.usw2.devtunnels.ms/api/messages)')
 param botEndpoint string
 
-// Register your web service as a bot with the Bot Framework (Single Tenant mode)
+// Register your web service as a bot with Azure Bot Service (Single Tenant mode)
 resource botService 'Microsoft.BotService/botServices@2021-03-01' = {
   kind: 'azurebot'
   location: 'global'

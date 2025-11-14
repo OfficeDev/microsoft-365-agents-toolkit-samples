@@ -13,7 +13,7 @@ param identityClientId string
 param identityTenantId string
 param botAppDomain string
 
-// Register your web service as a bot with the Bot Framework
+// Register your web service as a bot with Azure Bot Service
 resource botService 'Microsoft.BotService/botServices@2021-03-01' = {
   kind: 'azurebot'
   location: 'global'

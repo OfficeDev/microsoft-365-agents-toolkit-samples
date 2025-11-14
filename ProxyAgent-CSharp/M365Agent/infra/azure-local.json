@@ -365,7 +365,7 @@
                 ],
                 "issuer": "[format('{0}{1}/v2.0', environment().authentication.loginEndpoint, parameters('tenantId'))]",
                 "subject": "[format('/eid1/c/pub/t/{0}/a/9ExAW52n_ky4ZiS_jhpJIQ/{1}', reference('tenantIdEncoder').outputs.encodedGuid.value, guid(resourceGroup().id, parameters('aadAppName'), 'BotServiceOauthConnection'))]",
-                "description": "Federated credential for Bot Framework token exchange"
+                "description": "Federated credential for Azure Bot Service token exchange"
               },
               "dependsOn": [
                 "aadApplication",

@@ -215,7 +215,7 @@ That's it! Everything else happens automatically.
 
 1. **Configure environment** in `.env.local`:
    ```bash
-   # Azure AI Foundry configuration
+   # Microsoft Foundry configuration
    AZURE_AI_FOUNDRY_PROJECT_ENDPOINT=<your-ai-foundry-endpoint>
    AGENT_ID=<your-agent-id>
    ```
@@ -419,7 +419,7 @@ The automated deployment creates **two separate app registrations** for security
 **Authentication:** Client ID + Client Secret
 
 **Used for:**
-- Bot Framework authentication
+- Azure Bot Service authentication
 - Bot Service communication
 - Local development identity (replaces Managed Identity)
 
@@ -444,7 +444,7 @@ Required for: Bot Service to verify bot identity
 **Configuration:**
 ```yaml
 OAuth Scope: access_as_user
-Federated Credentials: Bot Framework token issuer
+Federated Credentials: Azure Bot Service token issuer
 Pre-authorized Clients: Teams, Outlook, M365 apps
 No client secrets: More secure than password-based auth
 ```
@@ -690,7 +690,7 @@ Then press **F5** again - everything will retry automatically.
 # Check if bot is accessible via tunnel
 curl <BOT_ENDPOINT_from_.env.local>
 
-# Should return bot framework response
+# Should return Azure Bot Service response
 ```
 
 ---
@@ -972,9 +972,9 @@ Edit `.vscode/launch.json`:
 
 Press F5 and select the Chrome configuration.
 
-### Azure AI Foundry Integration
+### Microsoft Foundry Integration
 
-**Add your Azure AI Foundry project:**
+**Add your Microsoft Foundry project:**
 
 1. After first F5 run, open `M365Agent/env/.env.local`
 2. Update these values:
@@ -1224,7 +1224,7 @@ Production uses:
 
 **Documentation:**
 - [Microsoft 365 Agents Toolkit](https://aka.ms/teams-toolkit-docs)
-- [Bot Framework SDK for .NET](https://github.com/microsoft/botbuilder-dotnet)
+- [M365 Agent SDK for .NET](https://github.com/microsoft/agents)
 - [Dev Tunnels Documentation](https://learn.microsoft.com/azure/developer/dev-tunnels/)
 - [Teams Platform](https://learn.microsoft.com/microsoftteams/platform/)
 

@@ -134,7 +134,7 @@ resource aadApplication 'Microsoft.Graph/applications@v1.0' = {
     }
         {
       // Azure Machine Learning Services
-      // Required for Azure AI foundry agent SSO
+      // Required for Microsoft Foundry agent SSO
       resourceAppId: '18a66f5f-dbdf-4c17-9dd7-1634712a9cbe'
       resourceAccess: [
         {
@@ -151,7 +151,7 @@ resource aadApplication 'Microsoft.Graph/applications@v1.0' = {
 // appId encode value is the Bot Service one. it is hardcoded on purpose.
 var myfciSubject ='/eid1/c/pub/t/${encodedTenantId}/a/9ExAW52n_ky4ZiS_jhpJIQ/${guid(aadAppName, 'BotServiceOauthConnection')}'
 
-// Federated Identity Credential for Bot Framework token exchange
+// Federated Identity Credential for Bot Service token exchange
 // This must be a separate resource as it's a child resource type
 resource federatedCredential 'Microsoft.Graph/applications/federatedIdentityCredentials@v1.0' = {
   name: '${aadApplication.uniqueName}/${guid(aadAppName, 'BotServiceOauthConnection')}'
@@ -160,7 +160,7 @@ resource federatedCredential 'Microsoft.Graph/applications/federatedIdentityCred
   ]
   issuer: '${environment().authentication.loginEndpoint}${tenantId}/v2.0'
   subject: myfciSubject
-  description: 'Federated credential for Bot Framework token exchange'
+  description: 'Federated credential for Bot Service token exchange'
 }
 
 // Service Principal for the application

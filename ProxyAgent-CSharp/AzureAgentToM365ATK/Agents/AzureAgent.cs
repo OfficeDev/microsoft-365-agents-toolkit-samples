@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 // Use this flag to enable the no SSO mode, which allows the agent to run without user authentication.
-// We will then use DefaultAzureCredential (set via 'az login') to authenticate the agent in the Azure AI Foundry project.
+// We will then use DefaultAzureCredential (set via 'az login') to authenticate the agent in the Microsoft Foundry project.
 // #define DISABLE_SSO
 
 #if DISABLE_SSO
@@ -25,7 +25,7 @@ namespace AzureAgentToM365ATK.Agent;
 
 public class AzureAgent : AgentApplication
 {
-    // This is a cache to store the agent model for the Azure AI Foundry agent as this object uses private serializer and virtual objects and is expensive to create.
+    // This is a cache to store the agent model for the Microsoft Foundry agent as this object uses private serializer and virtual objects and is expensive to create.
     // This cache will store the returned model by agent ID. if you need to change the agent model you would need to clear this cache. 
     private static ConcurrentDictionary<string, Response<PersistentAgent>> _agentModelCache = new();
 
@@ -35,21 +35,21 @@ public class AzureAgent : AgentApplication
     public AzureAgent(AgentApplicationOptions options, IConfiguration configuration) : base(options)
     {
 
-        // TO DO: get the connection string of your Azure AI Foundry project in the portal
+        // TO DO: get the connection string of your Microsoft Foundry project in the portal
         this._connectionStringForAgent = configuration["AIServices:AzureAIFoundryProjectEndpoint"];
         if (string.IsNullOrEmpty(_connectionStringForAgent))
         {
             throw new InvalidOperationException("AzureAIFoundryProjectEndpoint is not configured.");
         }
 
-        // TO DO: Get the assistant ID in the Azure AI Foundry project portal for your agent
+        // TO DO: Get the assistant ID in the Microsoft Foundry project portal for your agent
         this._agentId = configuration["AIServices:AgentID"];
         if (string.IsNullOrEmpty(this._agentId))
         {
             throw new InvalidOperationException("AgentID is not configured.");
         }
 
-        // Setup Agent with Route handlers to manage connecting and responding from the Azure AI Foundry agent
+        // Setup Agent with Route handlers to manage connecting and responding from the Microsoft Foundry agent
 
         // This is handling the sign out event, which will clear the user authorization token.
         OnMessage("--signout", HandleSignOutAsync);
@@ -57,7 +57,7 @@ public class AzureAgent : AgentApplication
         // This is handling the clearing of the agent model cache without needing to restart the agent. 
         OnMessage("--clearcache", HandleClearingModelCacheAsync);
 
-        // This is handling the message activity, which will send the user message to the Azure AI Foundry agent.
+        // This is handling the message activity, which will send the user message to the Microsoft Foundry agent.
         // we are also indicating which auth profile we want to have available for this handler.
 #if DISABLE_SSO
             OnActivity(ActivityTypes.Message, SendMessageToAzureAgent);
@@ -94,7 +94,7 @@ public class AzureAgent : AgentApplication
     }
 
     /// <summary>
-    /// This method sends the user message ( just text in this example ) to the Azure AI Foundry agent and streams the response back to the user.
+    /// This method sends the user message ( just text in this example ) to the Microsoft Foundry agent and streams the response back to the user.
     /// </summary>
     /// <param name="turnContext"></param>
     /// <param name="turnState"></param>
@@ -108,14 +108,14 @@ public class AzureAgent : AgentApplication
             // Start a Streaming Process to let clients that support streaming know that we are processing the request. 
             await turnContext.StreamingResponse.QueueInformativeUpdateAsync("Just a moment please..", cancellationToken).ConfigureAwait(false);
 
-            // Set up the PersistentAgentsClient to communicate with the Azure AI Foundry agent.
+            // Set up the PersistentAgentsClient to communicate with the Microsoft Foundry agent.
 
 #if DISABLE_SSO
                 PersistentAgentsClient _aiProjectClient = new PersistentAgentsClient(this._connectionStringForAgent, new DefaultAzureCredential());
 #else
-            // This is a helper class to generate an OBO User Token for the Azure AI Foundry agent from the current user authorization.
+            // This is a helper class to generate an OBO User Token for the Microsoft Foundry agent from the current user authorization.
             PersistentAgentsClient _aiProjectClient = new PersistentAgentsClient(this._connectionStringForAgent,
-                        // This is a helper class to generate an OBO User Token for the Azure AI Foundry agent from the current user authorization.
+                        // This is a helper class to generate an OBO User Token for the Microsoft Foundry agent from the current user authorization.
                         new UserAuthorizationTokenWrapper(UserAuthorization, turnContext, "SSO"));
 #endif
 
@@ -124,9 +124,9 @@ public class AzureAgent : AgentApplication
             if (agentModel == null)
             {
                 // subtle hint to the client that the agent model is being fetched.
-                await turnContext.StreamingResponse.QueueInformativeUpdateAsync("Connecting to Azure AI Foundry.", cancellationToken).ConfigureAwait(false);
+                await turnContext.StreamingResponse.QueueInformativeUpdateAsync("Connecting to Microsoft Foundry.", cancellationToken).ConfigureAwait(false);
 
-                // If the agent model is not found in the conversation state, fetch it from the Azure AI Foundry project.
+                // If the agent model is not found in the conversation state, fetch it from the Microsoft Foundry project.
                 agentModel = await _aiProjectClient.Administration.GetAgentAsync(this._agentId).ConfigureAwait(false);
                 // Cache the agent model for future use.
                 _agentModelCache.TryAdd(this._agentId, agentModel);

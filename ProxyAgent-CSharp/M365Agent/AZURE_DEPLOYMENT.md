@@ -43,7 +43,7 @@ When you run `atk provision --env dev`, the following Azure resources are create
 | **User Assigned Managed Identity** | Bot identity (no passwords!) | `{resourceBaseName}-identity` |
 | **App Service Plan** | Compute resources (Linux) | `{resourceBaseName}-plan` |
 | **Web App** | Hosts .NET 9 bot application | `{resourceBaseName}-app` |
-| **Azure Bot Service** | Bot Framework registration | `{resourceBaseName}` |
+| **Azure Bot Service** | Azure Bot Service registration | `{resourceBaseName}` |
 | **Entra ID App Registration** | SSO authentication | `{botDisplayName}` |
 | **OAuth Connection** | SSO token exchange | `SsoConnection` |
 
@@ -151,35 +151,20 @@ Edit `M365Agent/env/.env.dev`:
 
 ```bash
 # ============================================================================
-# Azure Configuration (REQUIRED - Set these before provisioning)
+# Microsoft Foundry Configuration (REQUIRED - Set these before provisioning)
 # ============================================================================
-AZURE_SUBSCRIPTION_ID=<your-subscription-id>
-AZURE_RESOURCE_GROUP_NAME=rg-m365agent-prod
-RESOURCE_SUFFIX=prod123
+AZURE_AI_FOUNDRY_PROJECT_ENDPOINT=<URL of your MS Foundry endpoint>
+AGENT_ID=<Agent ID that start by asst_>
 
-# ============================================================================
-# Environment Settings
-# ============================================================================
-TEAMSFX_ENV=dev
-APP_NAME_SUFFIX=dev
-
-# ============================================================================
-# Output Variables (Auto-populated by atk provision)
-# ============================================================================
-# Do not edit these - they are populated automatically during deployment
 ```
-
-**Tips:**
-- Get your subscription ID: `az account show --query id -o tsv`
-- `RESOURCE_SUFFIX` must be globally unique (lowercase, alphanumeric, max 10 chars)
-- Use descriptive names like `prod001`, `dev001`, etc.
 
 ### Step 2: Provision Azure Infrastructure
 
-```powershell
-cd M365Agent
-atk provision --env dev
-```
+**Using Microsoft 365 Agents Toolkit UI (Recommended):**
+1. Open the **Microsoft 365 Agents Toolkit** extension panel in VS Code or Visual Studio
+2. Navigate to the **Lifecycle** section
+3. Select environment: **dev**
+4. Click **Provision** to create Azure resources
 
 **What happens:**
 1. ✅ Creates Teams app registration in Teams Developer Portal
@@ -193,9 +178,9 @@ atk provision --env dev
 ```
 ✓ Teams app created successfully
 ✓ Provisioning Azure resources...
-✓ Managed Identity created: botprod123-identity
-✓ App Service deployed: https://botprod123-app.azurewebsites.net
-✓ Bot Service registered: botprod123
+✓ Managed Identity created: <AppName>-identity
+✓ App Service deployed: https://<AppName>-app.azurewebsites.net
+✓ Bot Service registered: <AppName>
 ✓ SSO App Registration created
 ✓ OAuth Connection configured
 ✓ Teams app package validated
@@ -204,11 +189,19 @@ atk provision --env dev
 
 **Duration:** ~5-8 minutes
 
+**Alternatively, using CLI:**
+```powershell
+cd M365Agent
+atk provision --env dev
+```
+
 ### Step 3: Deploy Application Code
 
-```powershell
-atk deploy --env dev
-```
+**Using Microsoft 365 Agents Toolkit UI (Recommended):**
+1. In the **Microsoft 365 Agents Toolkit** extension panel
+2. Navigate to the **Lifecycle** section
+3. Select environment: **dev**
+4. Click **Deploy** to publish application code
 
 **What happens:**
 1. ✅ Builds .NET application (`dotnet publish -c Release`)
@@ -226,7 +219,15 @@ atk deploy --env dev
 
 **Duration:** ~2-3 minutes
 
-### Step 4: Install in Teams
+**Alternatively, using CLI:**
+```powershell
+cd M365Agent
+atk deploy --env dev
+```
+
+### Step 4: Install in Microsoft 365 Copilot & Microsoft Teams
+
+**Note:** The app is automatically registered in Teams Developer Portal during provisioning. However, you can manually install it if needed:
 
 1. Open **Microsoft Teams**
 2. Go to **Apps** → **Manage your apps**
@@ -261,7 +262,7 @@ Location: Same as resource group
 - ✅ No secrets to manage or rotate
 - ✅ Secure authentication to Azure services
 - ✅ Integrated Azure RBAC support
-- ✅ Used as bot's identity in Bot Framework
+- ✅ Used as bot's identity in Azure Bot Service
 
 ---
 
@@ -315,7 +316,7 @@ Location: Same as resource group
 
 **Module:** `modules/azurebot.bicep`
 
-**Purpose:** Registers your web service as a bot with the Bot Framework and enables Teams channel.
+**Purpose:** Registers your web service as a bot with Azure Bot Service and enables Teams channel.
 
 **Resources Created:**
 
@@ -885,7 +886,7 @@ You've successfully deployed your M365 Agent to Azure! 🎉
 - [Microsoft 365 Agents Toolkit Documentation](https://aka.ms/teams-toolkit-docs)
 - [Azure Bot Service Documentation](https://learn.microsoft.com/azure/bot-service/)
 - [Bicep Documentation](https://learn.microsoft.com/azure/azure-resource-manager/bicep/)
-- [Bot Framework SDK](https://github.com/microsoft/botbuilder-dotnet)
+- [M365 Agent SDK](https://github.com/microsoft/agents)
 
 **Support:**
 - GitHub Issues: [Teams Toolkit Repository](https://github.com/OfficeDev/TeamsFx/issues)

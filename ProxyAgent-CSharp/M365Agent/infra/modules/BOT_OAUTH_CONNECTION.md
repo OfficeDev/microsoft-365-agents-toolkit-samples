@@ -152,7 +152,7 @@ Once deployed, your bot can use this connection for SSO:
 // Reference the connection name in your bot
 var connectionName = "SsoConnection"; // Must match the connectionName parameter
 
-// Use in Teams AI library or Bot Framework
+// Use in M365 Agent SDK
 var tokenResponse = await adapter.GetUserTokenAsync(
     turnContext,
     connectionName,
@@ -232,6 +232,6 @@ After OAuth connection is configured:
 
 ## Resources
 
-- [Bot Framework OAuth Documentation](https://docs.microsoft.com/azure/bot-service/bot-builder-authentication)
+- [Azure Bot Service OAuth Documentation](https://docs.microsoft.com/azure/bot-service/bot-builder-authentication)
 - [Azure AD v2 Token Exchange](https://docs.microsoft.com/azure/bot-service/bot-builder-authentication-sso)
 - [Teams SSO for Bots](https://docs.microsoft.com/microsoftteams/platform/bots/how-to/authentication/auth-aad-sso-bots)

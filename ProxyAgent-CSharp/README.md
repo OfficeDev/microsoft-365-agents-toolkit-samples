@@ -1,8 +1,8 @@
-# Azure AI Foundry Agent for Microsoft 365
+# Microsoft Foundry Agent for Microsoft 365
 
-> **Making Azure AI Foundry Agents available in Microsoft 365 Copilot and Teams using the Microsoft 365 Agents Toolkit.**
+> **Making Microsoft Foundry Agents available in Microsoft 365 Copilot and Teams using the Microsoft 365 Agents Toolkit.**
 
-This solution demonstrates how to integrate an Azure AI Foundry agent with Microsoft Teams and Microsoft 365 Copilot, providing a seamless experience for users to interact with powerful AI capabilities directly within their productivity tools.
+This solution demonstrates how to integrate a Microsoft Foundry agent with Microsoft Teams and Microsoft 365 Copilot, providing a seamless experience for users to interact with powerful AI capabilities directly within their productivity tools.
 
 [![Video Tutorial](https://img.youtube.com/vi/U9Yv2vjKYbI/0.jpg)](https://www.youtube.com/watch?v=U9Yv2vjKYbI)
 
@@ -32,7 +32,7 @@ sequenceDiagram
         participant P as Proxy Agent (Agents SDK)
     end
 
-    box "Azure AI Foundry"
+    box "Microsoft Foundry"
         participant A as AI Agent Backend
     end
 
@@ -49,7 +49,7 @@ sequenceDiagram
 
 This proxy pattern allows you to:
 - ✅ Connect existing AI agents to Microsoft 365 Copilot
-- ✅ Maintain your AI logic in Azure AI Foundry
+- ✅ Maintain your AI logic in Microsoft Foundry
 - ✅ Provide seamless user experience in Teams and Copilot with SSO
 - ✅ Handle authentication and message routing automatically
 
@@ -102,7 +102,7 @@ atk deploy --env dev
 > **Important:** This solution currently supports **VS Code only**. Visual Studio support is planned for future releases.
 
 ### Required Services
-- **Azure AI Foundry Project** with a configured agent
+- **Microsoft Foundry Project** with a configured agent
 - **Microsoft 365 tenant** with Teams or Copilot access
 - **Azure subscription** with appropriate permissions
 
@@ -113,13 +113,13 @@ atk deploy --env dev
 This solution consists of two main components:
 
 ### 1. Bot Application (`AzureAgentToM365ATK/`)
-.NET 9 bot application that serves as a proxy between Microsoft 365 and Azure AI Foundry.
+.NET 9 bot application that serves as a proxy between Microsoft 365 and Microsoft Foundry.
 
 **Key Features:**
-- Connects to Azure AI Foundry Agent Service
+- Connects to Microsoft Foundry Agent Service
 - Handles user authentication and SSO
 - Manages conversation threads and message routing
-- Built on Bot Framework SDK
+- Built on M365 Agent SDK
 
 ### 2. M365 Agents Toolkit Project (`M365Agent/`)
 Infrastructure and configuration for Microsoft 365 integration.
@@ -135,7 +135,7 @@ ProxyAgent/
 ├── AzureAgentToM365ATK/          # C# Bot Application (.NET 9)
 │   ├── Program.cs                 # Bot setup and configuration
 │   ├── Agents/
-│   │   └── AzureAgent.cs          # Azure AI Foundry integration
+│   │   └── AzureAgent.cs          # Microsoft Foundry integration
 │   ├── appsettings.json           # Configuration
 │   └── appsettings.Development.json  # Local dev settings
 │
@@ -181,9 +181,9 @@ ProxyAgent/
 
 ## ⚙️ Configuration
 
-### Azure AI Foundry Setup
+### Microsoft Foundry Setup
 
-1. **Create an Agent in Azure AI Foundry Portal:**
+1. **Create an Agent in Microsoft Foundry Portal:**
    - Configure the model (GPT-4, GPT-4 Turbo, etc.)
    - Set instructions and personality
    - Add tools and capabilities (Code Interpreter, Functions, etc.)
@@ -193,7 +193,7 @@ ProxyAgent/
    - Project Endpoint URL
    - Agent ID
    
-   ![Azure AI Foundry Portal](images/screen000b.jpg)
+   ![Microsoft Foundry Portal](images/screen000b.jpg)
 
 3. **Update Configuration:**
    
@@ -239,7 +239,7 @@ The bot uses **Azure Managed Identity** (production) or **Single Tenant + Client
 1. Install the app in Teams (via app package upload)
 2. Start a chat with the bot
 3. Ask questions or give commands
-4. The bot routes requests to your Azure AI Foundry agent
+4. The bot routes requests to your Microsoft Foundry agent
 5. Get AI-powered responses with context awareness
 
 ### In Microsoft 365 Copilot
@@ -249,7 +249,7 @@ The bot uses **Azure Managed Identity** (production) or **Single Tenant + Client
 1. Access via https://m365copilot.com/
 2. Find your agent in the left sidebar
 3. Click "Open with Copilot"
-4. Use natural language to interact with your Azure AI Foundry agent
+4. Use natural language to interact with your Microsoft Foundry agent
 5. Seamless integration with other M365 services
 
 ---
@@ -357,7 +357,7 @@ The bot uses **Azure Managed Identity** (production) or **Single Tenant + Client
 - ✅ Check dev tunnel is running (local) or App Service is started (Azure)
 - ✅ Verify bot endpoint in Azure Bot Service configuration
 - ✅ Check application logs for errors
-- ✅ Verify Azure AI Foundry agent is accessible
+- ✅ Verify Microsoft Foundry agent is accessible
 
 ### SSO Not Working
 - ✅ Check `webApplicationInfo` in app manifest
@@ -384,10 +384,10 @@ The bot uses **Azure Managed Identity** (production) or **Single Tenant + Client
 - [Microsoft 365 Agents Toolkit GitHub](https://github.com/OfficeDev/TeamsFx)
 - [Teams App Development Guide](https://learn.microsoft.com/microsoftteams/platform/)
 
-### Azure AI Foundry
-- [Announcing Developer Essentials for Agents and Apps in Azure AI Foundry](https://devblogs.microsoft.com/foundry/announcing-developer-essentials-for-agents-and-apps-in-azure-ai-foundry/)
-- [Azure AI Foundry Agent Service (General Availability)](https://techcommunity.microsoft.com/blog/azure-ai-services-blog/announcing-general-availability-of-azure-ai-foundry-agent-service/4414352)
-- [Azure AI Foundry Documentation](https://learn.microsoft.com/azure/ai-services/)
+### Microsoft Foundry
+- [Announcing Developer Essentials for Agents and Apps in Microsoft Foundry](https://devblogs.microsoft.com/foundry/announcing-developer-essentials-for-agents-and-apps-in-azure-ai-foundry/)
+- [Microsoft Foundry Agent Service (General Availability)](https://techcommunity.microsoft.com/blog/azure-ai-services-blog/announcing-general-availability-of-azure-ai-foundry-agent-service/4414352)
+- [Microsoft Foundry Documentation](https://learn.microsoft.com/azure/ai-services/)
 
 ### M365 Agent SDK & Azure Bot Service
 - [M365 Agent SDK](https://github.com/microsoft/agents)
@@ -396,11 +396,11 @@ The bot uses **Azure Managed Identity** (production) or **Single Tenant + Client
 
 ### Tutorials & Labs
 - [Build your own agent with the M365 Agents SDK and Semantic Kernel](https://microsoft.github.io/copilot-camp/pages/custom-engine/agents-sdk/)
-- [Video Tutorial: Azure AI Foundry Agent in M365 Copilot](https://www.youtube.com/watch?v=U9Yv2vjKYbI)
+- [Video Tutorial: Microsoft Foundry Agent in M365 Copilot](https://www.youtube.com/watch?v=U9Yv2vjKYbI)
 
 ---
 
-## 🎓 Tutorial: Creating a Stock Agent in Azure AI Foundry
+## 🎓 Tutorial: Creating a Stock Agent in Microsoft Foundry
 
 This tutorial shows you how to create the same Stock Agent demonstrated in the video and screenshots above.
 
@@ -416,7 +416,7 @@ The Stock Agent retrieves historical stock market data using an external API and
 
 ### Step 1: Create the Main Stocks Agent
 
-Create a new Agent in Azure AI Foundry Portal with the following details:
+Create a new Agent in Microsoft Foundry Portal with the following details:
 
 - **Name:** `Stocks Agent`
 - **Deployment:** GPT-4o, GPT-4.1, or GPT-4 Turbo
@@ -438,7 +438,7 @@ The Stock API requires authentication via API key. We'll create a secure connect
    - Visit [Twelve Data](https://support.twelvedata.com/en/articles/5335783-trial)
    - Register for a free API key **OR** use the demo key `demo` (limited to AAPL stock only)
 
-2. **Create Connection in Azure AI Foundry:**
+2. **Create Connection in Microsoft Foundry:**
    - Go to **Management Center** → **New connection**
    - Choose **Custom keys** at the end of the selection page
    - Create key-value pair:
@@ -452,7 +452,7 @@ The Stock API requires authentication via API key. We'll create a secure connect
 
 ### Step 3: Add OpenAPI Tool to the Agent
 
-Go back to your **Stocks Agent** in the Azure AI Foundry project portal.
+Go back to your **Stocks Agent** in the Microsoft Foundry project portal.
 
 1. Click **Add an Action** → **OpenAPI 3.0 specified tool**
 

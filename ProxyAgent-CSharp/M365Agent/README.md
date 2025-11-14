@@ -23,7 +23,7 @@ An intelligent agent that helps with Azure operations and tasks, built with Micr
 1. Activate the #define DISABLE_SSO flag in AzureAgent.cs file 
 2. Install the Microsoft 365 Agents Playground: https://learn.microsoft.com/en-us/microsoft-365/agents-sdk/test-with-toolkit-project?tabs=windows
 3. In VS, set the debugging target to "AzureAgentToM365ATK"
-4. In a terminal, use 'az login' and use an account that can call the Azure AI Foundry agent. This will be used by the DefaultAzureCredentials call. 
+4. In a terminal, use 'az login' and use an account that can call the Microsoft Foundry agent. This will be used by the DefaultAzureCredentials call. 
 5. Press F5 to start debugging, find the http endpoint in the debug console
 6. Launch in a terminal: 'agentsplayground -e "http://localhost:<your-agent-port>/api/messages"
 
