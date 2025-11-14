@@ -1224,7 +1224,7 @@ Production uses:
 
 **Documentation:**
 - [Microsoft 365 Agents Toolkit](https://aka.ms/teams-toolkit-docs)
-- [M365 Agent SDK for .NET](https://github.com/microsoft/agents)
+- [Microsoft 365 Agents SDK for .NET](https://github.com/microsoft/agents)
 - [Dev Tunnels Documentation](https://learn.microsoft.com/azure/developer/dev-tunnels/)
 - [Teams Platform](https://learn.microsoft.com/microsoftteams/platform/)
 

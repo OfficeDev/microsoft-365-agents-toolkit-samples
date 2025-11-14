@@ -886,7 +886,7 @@ You've successfully deployed your M365 Agent to Azure! 🎉
 - [Microsoft 365 Agents Toolkit Documentation](https://aka.ms/teams-toolkit-docs)
 - [Azure Bot Service Documentation](https://learn.microsoft.com/azure/bot-service/)
 - [Bicep Documentation](https://learn.microsoft.com/azure/azure-resource-manager/bicep/)
-- [M365 Agent SDK](https://github.com/microsoft/agents)
+- [Microsoft 365 Agents SDK](https://github.com/microsoft/agents)
 
 **Support:**
 - GitHub Issues: [Teams Toolkit Repository](https://github.com/OfficeDev/TeamsFx/issues)

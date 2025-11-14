@@ -119,7 +119,7 @@ This solution consists of two main components:
 - Connects to Microsoft Foundry Agent Service
 - Handles user authentication and SSO
 - Manages conversation threads and message routing
-- Built on M365 Agent SDK
+- Built on Microsoft 365 Agents SDK
 
 ### 2. M365 Agents Toolkit Project (`M365Agent/`)
 Infrastructure and configuration for Microsoft 365 integration.
@@ -389,8 +389,8 @@ The bot uses **Azure Managed Identity** (production) or **Single Tenant + Client
 - [Microsoft Foundry Agent Service (General Availability)](https://techcommunity.microsoft.com/blog/azure-ai-services-blog/announcing-general-availability-of-azure-ai-foundry-agent-service/4414352)
 - [Microsoft Foundry Documentation](https://learn.microsoft.com/azure/ai-services/)
 
-### M365 Agent SDK & Azure Bot Service
-- [M365 Agent SDK](https://github.com/microsoft/agents)
+### Microsoft 365 Agents SDK & Azure Bot Service
+- [Microsoft 365 Agents SDK](https://github.com/microsoft/agents)
 - [Azure Bot Service Documentation](https://learn.microsoft.com/azure/bot-service/)
 
 

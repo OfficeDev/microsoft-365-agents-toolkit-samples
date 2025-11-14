@@ -152,7 +152,7 @@ Once deployed, your bot can use this connection for SSO:
 // Reference the connection name in your bot
 var connectionName = "SsoConnection"; // Must match the connectionName parameter
 
-// Use in M365 Agent SDK
+// Use in Microsoft 365 Agents SDK
 var tokenResponse = await adapter.GetUserTokenAsync(
     turnContext,
     connectionName,
