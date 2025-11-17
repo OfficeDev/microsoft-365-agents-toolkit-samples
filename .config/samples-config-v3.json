@@ -917,8 +917,8 @@
             "suggested": true
         },
         {
-            "id": "proxy-agent-dotnet",
-            "shortId": "proxy-agent-dotnet",
+            "id": "ProxyAgent-CSharp",
+            "shortId": "ProxyAgent-CSharp",
             "onboardDate": "2025-11-14",
             "title": "AI Foundry Agent to M365 Copilot With SSO",
             "shortDescription": "Sample to connect an AI Foundry Agent to M365 Copilot using M365 Agent SDK. Leverage SSO to pass user token to AI Foundry.",
