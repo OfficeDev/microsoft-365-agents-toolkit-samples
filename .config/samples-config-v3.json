@@ -1,6 +1,7 @@
 {
     "filterOptions": {
         "capabilities": [
+            "Agent365",
             "Declarative Agent",
             "Custom Engine Agent",
             "Tab",
@@ -24,7 +25,106 @@
             "Dev Proxy"
         ]
     },
-    "samples": [
+    "samples": [        {
+            "id": "agent365-langchain-nodejs",
+            "shortId": "agent365-langchain-nodejs",
+            "onboardDate": "2025-11-17",
+            "title": "Langchain Agent with Agent365 SDK in NodeJS",
+            "shortDescription": "Langchain Agent with Agent365 SDK in NodeJS",
+            "fullDescription": "This project integrates a Langchain agent built with Agent365 functionalities. The focus is on hands-on development and testing in LangChain and Agent365.",
+            "types": [
+                "Agent365"
+            ],
+            "tags": [
+                "Agent365",
+                "TS"
+            ],
+            "time": "5min to run",
+            "configuration": "Ready for debug",
+            "thumbnailPath": "images/langchain-thumbnail.png",
+            "suggested": false,
+            "downloadUrlInfo": {
+                "owner": "microsoft",
+                "repository": "Agent365-Samples",
+                "ref": "main",
+                "dir": "nodejs/langchain/sample-agent"
+            }
+        },
+        {
+            "id": "agent365-agentframework-python",
+            "shortId": "agent365-agentframework-python",
+            "onboardDate": "2025-11-17",
+            "title": "Agent Framework Agent with Agent365 SDK in Python",
+            "shortDescription": "Agent Framework Agent with Agent365 SDK in Python",
+            "fullDescription": "This project integrates an agent built on Agent Framework SDK (Python) with A365 functionalities. The focus is on hands-on development and testing.",
+            "types": [
+                "Agent365"
+            ],
+            "tags": [
+                "Agent365",
+                "Python"
+            ],
+            "time": "5min to run",
+            "configuration": "Ready for debug",
+            "thumbnailPath": "images/agentframework-thumbnail.png",
+            "suggested": false,
+            "downloadUrlInfo": {
+                "owner": "microsoft",
+                "repository": "Agent365-Samples",
+                "ref": "main",
+                "dir": "python/agent-framework/sample-agent"
+            }
+        },
+        {
+            "id": "agent365-openai-python",
+            "shortId": "agent365-openai-python",
+            "onboardDate": "2025-11-17",
+            "title": "OpenAI Agent with Agent365 SDK in Python",
+            "shortDescription": "OpenAI Agent with Agent365 SDK in Python",
+            "fullDescription": "This project integrates a Python agent built on Open AI Agents SDK with A365 functionalities. The focus is on hands-on development and testing.",
+            "types": [
+                "Agent365"
+            ],
+            "tags": [
+                "Agent365",
+                "Python"
+            ],
+            "time": "5min to run",
+            "configuration": "Ready for debug",
+            "thumbnailPath": "images/openai-thumbnail.png",
+            "suggested": false,
+            "downloadUrlInfo": {
+                "owner": "microsoft",
+                "repository": "Agent365-Samples",
+                "ref": "main",
+                "dir": "python/openai/sample-agent"
+            }
+        },
+        {
+            "id": "agent365-claude-nodejs",
+            "shortId": "agent365-claude-nodejs",
+            "onboardDate": "2025-11-17",
+            "title": "Claude Agent with Agent365 SDK in NodeJS",
+            "shortDescription": "Claude Agent with Agent365 SDK in NodeJS",
+            "fullDescription": "This project integrates a NodeJS agent built on Claude Agents SDK with A365 functionalities. The focus is on hands-on development and testing.",
+            "types": [
+                "Agent365"
+            ],
+            "tags": [
+                "Agent365",
+                "TS"
+            ],
+            "time": "5min to run",
+            "configuration": "Ready for debug",
+            "thumbnailPath": "images/claude-thumbnail.png",
+            "suggested": false,
+            "downloadUrlInfo": {
+                "owner": "microsoft",
+                "repository": "Agent365-Samples",
+                "ref": "main",
+                "dir": "nodejs/claude/sample-agent"
+            }
+        },
         {
             "id": "hello-world-tab-with-backend",
             "onboardDate": "2021-11-30",
