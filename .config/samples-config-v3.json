@@ -45,7 +45,7 @@
             "configuration": "Ready for debug",
             "thumbnailPath": "assets/thumbnail.png",
             "gifPath": "assets/sampleDemo.gif",
-            "suggested": true
+            "suggested": false
         },
         {
             "id": "graph-toolkit-contact-exporter",
@@ -568,7 +568,7 @@
             "configuration": "Manual configurations required",
             "gifPath": "assets/thumbnail.png",
             "thumbnailPath": "assets/thumbnail.png",
-            "suggested": true
+            "suggested": false
         },
         {
             "id": "bot-conversation-python",
