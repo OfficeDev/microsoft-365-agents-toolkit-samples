@@ -4,7 +4,7 @@
 
 This solution demonstrates how to integrate a Microsoft Foundry agent with Microsoft Teams and Microsoft 365 Copilot, providing a seamless experience for users to interact with powerful AI capabilities directly within their productivity tools.
 
-[![Video Tutorial](https://img.youtube.com/vi/nRuY_YI-Efk/0.jpg)](https://www.youtube.com/watch?v=nRuY_YI-Efk)
+[![Video Tutorial](https://img.youtube.com/vi/U9Yv2vjKYbI/0.jpg)](https://www.youtube.com/watch?v=U9Yv2vjKYbI)
 
 ## This sample illustrates
 - How to connect an AI Foundry Agent to M365 Copilot
@@ -39,12 +39,11 @@ sequenceDiagram
     %% Flow
     U->>M: User prompt (e.g., "Create a report")
     M->>B: Activity (Message)
-    B->>P: POST /api/messages (Message)
-    P->>B: 202 Accepted
-    P-->>M: Start Streaming Session with information
+    B->>P: POST /api/messages (JWT)
     P->>A: POST /process { prompt }
     A-->>P: { content }
-    P-->>M: Stream(content)
+    P-->>B: sendActivity(content)
+    B-->>M: Response
     M-->>U: Display result
 ```
 
@@ -726,10 +725,9 @@ Now that you have a working Stock Agent, you can:
 This project was built with contributions from:
 
 - **[@ericsche](https://github.com/ericsche)** - Project Lead & Development
-- **[@davrous](https://github.com/davrous)** - Co-Author & Technical Contributions
+- **[@DavidRoussel](https://github.com/DavidRoussel)** - Co-Author & Technical Contributions
 - **[@MattB-msft](https://github.com/MattB-msft)** - Co-Author & Guidance
 - **[@garrytrinder](https://github.com/garrytrinder)** - ATK Guidance & Review
-- **[@andikrueger](https://github.com/andikrueger)** - Code Review & Testing
 
 Special thanks to everyone who contributed to making this solution possible!
 
