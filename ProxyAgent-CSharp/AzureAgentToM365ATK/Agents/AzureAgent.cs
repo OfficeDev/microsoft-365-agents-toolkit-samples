@@ -17,6 +17,7 @@ using Microsoft.Agents.Builder.State;
 using Microsoft.Agents.Core.Models;
 using System.Collections.Concurrent;
 using Microsoft.Agents.AI;
+using Microsoft.Agents.AI.AzureAI;
 using System.Text.Json;
 using Microsoft.Agents.Core.Serialization;
 using Microsoft.Extensions.AI;
@@ -132,8 +133,9 @@ public class AzureAgent : AgentApplication
                 _agentModelCache.TryAdd(this._agentId, agentModel);
             }
 
-            // Create an instance of the AzureAIAgent with the agent model and client.
-            AIAgent _existingAgent = _aiProjectClient.GetAIAgent(agentModel);
+            // Create an instance of the AIAgent using the new GetAIAgentAsync extension method
+            // The new API accepts agentId (string) instead of the Response<PersistentAgent> object
+            AIAgent _existingAgent = await _aiProjectClient.GetAIAgentAsync(this._agentId, cancellationToken: cancellationToken).ConfigureAwait(false);
 
             // Get or create thread: 
             AgentThread _agentThread = GetConversationThread(_existingAgent, turnState);
