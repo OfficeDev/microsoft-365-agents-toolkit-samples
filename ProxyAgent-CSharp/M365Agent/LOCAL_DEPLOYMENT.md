@@ -1223,7 +1223,7 @@ Production uses:
 ### Resources
 
 **Documentation:**
-- [Microsoft 365 Agents Toolkit](https://aka.ms/teams-toolkit-docs)
+- [Microsoft 365 Agents Toolkit](https://learn.microsoft.com/en-us/microsoft-365/developer/overview-m365-agents-toolkit)
 - [Microsoft 365 Agents SDK for .NET](https://github.com/microsoft/agents)
 - [Dev Tunnels Documentation](https://learn.microsoft.com/azure/developer/dev-tunnels/)
 - [Teams Platform](https://learn.microsoft.com/microsoftteams/platform/)
