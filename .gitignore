@@ -348,3 +348,9 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+ProxyAgent-NodeJS/.localConfigs
+ProxyAgent-NodeJS/appPackage/build/appPackage.dev.zip
+ProxyAgent-NodeJS/appPackage/build/appPackage.local.zip
+ProxyAgent-NodeJS/appPackage/build/manifest.dev.json
+ProxyAgent-NodeJS/appPackage/build/manifest.local.json
+ProxyAgent-NodeJS/env/.env.local
