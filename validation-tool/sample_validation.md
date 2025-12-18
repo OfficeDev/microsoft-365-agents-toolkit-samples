@@ -171,8 +171,10 @@ Validates images in `assets/`:
 
 | File | Requirement | Severity |
 |------|-------------|----------|
-| `thumbnail.png` or `thumbnail.jpg` | Aspect ratio **40:23** (e.g., 1600×920 or 800×460) | Warning |
-| `sampleDemo.gif` | Aspect ratio **40:23** (e.g., 1600×920 or 800×460) | Warning |
+| `thumbnail.png` or `thumbnail.jpg` existence | File should exist | Warning |
+| `thumbnail.png` or `thumbnail.jpg` aspect ratio | Aspect ratio **40:23** (e.g., 1600×920 or 800×460) | **Error** |
+| `sampleDemo.gif` existence | File should exist | Warning |
+| `sampleDemo.gif` aspect ratio | Aspect ratio **40:23** (e.g., 1600×920 or 800×460) | **Error** |
 
 ### 6. Package.json Validation
 
