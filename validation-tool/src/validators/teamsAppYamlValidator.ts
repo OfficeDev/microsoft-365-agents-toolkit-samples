@@ -6,16 +6,24 @@ import path from "path";
 import YAML from "yaml";
 
 import { Result } from "../resultType";
+import { detectProjectType } from "../projectDetector";
 
-const lifecycleActions = [
+// Required lifecycle stages
+const requiredLifecycleActions = [
   {
     name: "provision",
     actions: ["teamsApp/create"],
+    required: true,
   },
   {
     name: "deploy",
     actions: [],
+    required: true,
   },
+];
+
+// Optional lifecycle stages (will generate warning if missing)
+const optionalLifecycleActions = [
   {
     name: "publish",
     actions: ["teamsApp/publishAppPackage"],
@@ -26,7 +34,7 @@ const lifecycleActions = [
  * Rule 1: no projectId
  * Rule 2: has provision lifecycle actions
  * Rule 3: has deploy lifecycle actions
- * Rule 4: has publish lifecycle actions
+ * Rule 4: has publish lifecycle actions (warning if missing)
  * Rule 5: provision has 'teamsApp/create' action which has TEAMS_APP_ID env variable
  * Rule 6: has sampleTag with format 'repo:name'
  *
@@ -43,9 +51,12 @@ export default async function validateTeamsAppYaml(
     warning: [],
   };
 
-  const yamlFile = path.join(projectDir, "m365agents.yml");
+  const projectPaths = await detectProjectType(projectDir);
+  const { agentDir, displayPrefix } = projectPaths;
+
+  const yamlFile = path.join(agentDir, "m365agents.yml");
   if (!(await fs.exists(yamlFile))) {
-    result.failed = [`m365agents.yml does not exist.`];
+    result.failed = [`${displayPrefix}m365agents.yml does not exist.`];
     return result;
   }
   const fileContent = await fs.readFile(yamlFile, "utf8");
@@ -59,8 +70,8 @@ export default async function validateTeamsAppYaml(
     result.passed.push(`Project has no projectId in m365agents.yml.`);
   }
 
-  // Rule 2: lifecycle check
-  for (const lifecycle of lifecycleActions) {
+  // Rule 2: required lifecycle check
+  for (const lifecycle of requiredLifecycleActions) {
     const actions = yamlData[lifecycle.name] as any[];
     const failures: string[] = [];
     if (!actions) {
@@ -80,14 +91,14 @@ export default async function validateTeamsAppYaml(
           `Project should have '${actionName}' action in ${lifecycle.name} stage.`
         );
       }
-      // Rule 3: special checks for 'teamsApp/create' action
+      // Rule 5: special checks for 'teamsApp/create' action
       if (lifecycle.name === "provision" && actionName === "teamsApp/create") {
         const actionIndex = actions.findIndex(
           (action: { uses: string }) => action.uses === actionName
         );
         if (actionIndex >= 0) {
           const action = actions[actionIndex];
-          if (action.writeToEnvironmentFile.teamsAppId === "TEAMS_APP_ID") {
+          if (action.writeToEnvironmentFile?.teamsAppId === "TEAMS_APP_ID") {
             result.passed.push(
               `Project has 'teamsApp/create' action which has TEAMS_APP_ID env variable.`
             );
@@ -107,7 +118,37 @@ export default async function validateTeamsAppYaml(
       result.failed.push(...failures);
     }
   }
-  // Rule 4: sampleTag check
+
+  // Rule 4: optional lifecycle check (warning if missing)
+  for (const lifecycle of optionalLifecycleActions) {
+    const actions = yamlData[lifecycle.name] as any[];
+    if (!actions) {
+      result.warning.push(
+        `Project does not have '${lifecycle.name}' stage in m365agents.yml.`
+      );
+      continue;
+    }
+    let hasAllActions = true;
+    for (const actionName of lifecycle.actions) {
+      if (
+        actions.findIndex(
+          (action: { uses: string }) => action.uses === actionName
+        ) < 0
+      ) {
+        result.warning.push(
+          `Project does not have '${actionName}' action in ${lifecycle.name} stage.`
+        );
+        hasAllActions = false;
+      }
+    }
+    if (hasAllActions) {
+      result.passed.push(
+        `Project has all actions in ${lifecycle.name} stage.`
+      );
+    }
+  }
+
+  // Rule 6: sampleTag check
   const sampleTagRegex = /^([\w-]+):([\w-]+)$/g;
   const sampleTag = (
     yamlData?.additionalMetadata as { sampleTag: string } | undefined

@@ -6,9 +6,11 @@ import fs from "fs-extra";
 import path from "path";
 
 import { Result } from "../resultType";
+import { detectProjectType } from "../projectDetector";
 
 /**
  * Rule 1: 'engines.node' field should be compatible with 22.
+ * Note: C# projects don't have package.json, so this validation is skipped for them.
  *
  * @param projectDir root directory of the project
  * @returns validation result
@@ -22,8 +24,17 @@ export default async function validatePackageJson(
     failed: [],
     warning: [],
   };
+
+  const projectPaths = await detectProjectType(projectDir);
+  const { projectType } = projectPaths;
+
   const filePath = path.join(projectDir, "package.json");
   if (!(await fs.exists(filePath))) {
+    // C# projects don't have package.json
+    if (projectType === "csharp") {
+      result.passed = [`C# project does not require package.json.`];
+      return result;
+    }
     result.failed = [`package.json does not exist.`];
     return result;
   }

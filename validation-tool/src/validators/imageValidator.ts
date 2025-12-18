@@ -19,20 +19,39 @@ export default async function validateImage(projectDir: string): Promise<Result>
     failed: [],
     warning: [],
   };
-  const defaultImages = ["thumbnail.png", "sampleDemo.gif"];
-  for (const image of defaultImages) {
-    const imageDefaultPath = path.join(projectDir, "assets", image);
-    const imageName = path.join("assets", image);
-    if (!await fs.exists(imageDefaultPath)) {
-      result.warning.push(`${imageName} does not exist.`);
-      continue;
-    }
-    const dimensions = sizeOf(imageDefaultPath);
-    if (dimensions.width && dimensions.height && dimensions.width / dimensions.height === 40/23) {
-      result.passed.push(`${imageName} has 1600*920/800*460 resolution or same ratio.`);
-    } else {
-      result.failed.push(`${imageName} should have 1600*920/800*460 resolution or same ratio.`);
+  
+  // Check for thumbnail with different extensions
+  const thumbnailExtensions = ["png", "jpg", "jpeg"];
+  let thumbnailFound = false;
+  for (const ext of thumbnailExtensions) {
+    const thumbnailPath = path.join(projectDir, "assets", `thumbnail.${ext}`);
+    if (await fs.exists(thumbnailPath)) {
+      thumbnailFound = true;
+      const dimensions = sizeOf(thumbnailPath);
+      if (dimensions.width && dimensions.height && dimensions.width / dimensions.height === 40/23) {
+        result.passed.push(`assets/thumbnail.${ext} has 1600*920/800*460 resolution or same ratio.`);
+      } else {
+        result.warning.push(`assets/thumbnail.${ext} should have 1600*920/800*460 resolution or same ratio.`);
+      }
+      break;
     }
   }
+  if (!thumbnailFound) {
+    result.warning.push(`assets/thumbnail.png (or .jpg) does not exist.`);
+  }
+
+  // Check for sampleDemo.gif
+  const sampleDemoPath = path.join(projectDir, "assets", "sampleDemo.gif");
+  if (await fs.exists(sampleDemoPath)) {
+    const dimensions = sizeOf(sampleDemoPath);
+    if (dimensions.width && dimensions.height && dimensions.width / dimensions.height === 40/23) {
+      result.passed.push(`assets/sampleDemo.gif has 1600*920/800*460 resolution or same ratio.`);
+    } else {
+      result.warning.push(`assets/sampleDemo.gif should have 1600*920/800*460 resolution or same ratio.`);
+    }
+  } else {
+    result.warning.push(`assets/sampleDemo.gif does not exist.`);
+  }
+
   return result;
 }

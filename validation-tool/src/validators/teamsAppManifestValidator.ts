@@ -5,6 +5,7 @@ import fs from "fs-extra";
 import path from "path";
 import semver from "semver";
 import { Result } from "../resultType";
+import { detectProjectType } from "../projectDetector";
 
 const LATEST_MANIFEST_VERSION = "1.22.0";
 const MANIFEST_PREVIEW_VERSION = "devPreview";
@@ -26,9 +27,12 @@ export default async function validateTeamsAppManifest(
     warning: [],
   };
 
-  const manifestFile = path.join(projectDir, "appPackage", "manifest.json");
+  const projectPaths = await detectProjectType(projectDir);
+  const { agentDir, displayPrefix } = projectPaths;
+
+  const manifestFile = path.join(agentDir, "appPackage", "manifest.json");
   if (!(await fs.exists(manifestFile))) {
-    result.failed = [`appPackage/manifest.json does not exist.`];
+    result.failed = [`${displayPrefix}appPackage/manifest.json does not exist.`];
     return result;
   }
   const fileContent = await fs.readFile(manifestFile, "utf8");
