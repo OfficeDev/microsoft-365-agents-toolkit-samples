@@ -38,9 +38,12 @@ jobs:
           # The 'none' mode creates a CodeQL database directly from source without requiring a build.
           - language: csharp
             build-mode: none
-          # JavaScript doesn't require a build
+          # JavaScript/TypeScript only supports 'none' build mode (interpreted language)
           - language: javascript
-            build-mode: autobuild
+            build-mode: none
+          # Python only supports 'none' build mode (interpreted language)
+          - language: python
+            build-mode: none
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
         # Learn more about CodeQL language support at https://git.io/codeql-language-support
 
