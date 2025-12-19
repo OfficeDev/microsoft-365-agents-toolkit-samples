@@ -49,15 +49,21 @@ jobs:
           exceptions=("incoming-webhook-notification" "hello-world-office-addin")
           samples=`jq -r ".samples | .[] | select(has(\"downloadUrlInfo\") | not) | .id" .config/samples-config-v3.json`
           validationFailed="validation failed"
+          validationWarning="warning"
           validationResult=true
           while IFS= read -r line; do
             if [[ ! ${exceptions[@]} =~ $line ]]
             then
               result=`node ./validation-tool/validator.cjs -p $line`
               if grep -q "$validationFailed" <<< "$result"; then
-                printf "\nSample '$line' validation failed.\n"
+                printf "\n❌ Sample '$line' validation failed.\n"
                 echo "$result"
                 validationResult=false
+              elif grep -q "$validationWarning" <<< "$result"; then
+                printf "\n⚠️ Sample '$line' validation passed with warnings.\n"
+                echo "$result"
+              else
+                printf "\n✅ Sample '$line' validation passed.\n"
               fi
             fi
           done <<< "$samples"
@@ -80,6 +86,7 @@ jobs:
         run: |
           # This script runs the validation tool against changed samples in the pull request.
           # External samples are excluded from the validation.
+          # Deleted folders are skipped (they no longer exist).
           exceptions=(".config" ".devcontainer" "assets" "templates" "validation-tool" "basic-blazor-tab-app" "incoming-webhook-notification" "stocks-update-notification-bot-dotnet" "whos-next-meeting-app")
           samples=`jq -r ".[]" <<< '${{ steps.get_changed_folders.outputs.changed }}'`
           validationFailed="validation failed"
@@ -87,6 +94,11 @@ jobs:
           while IFS= read -r line; do
             if [[ ! ${exceptions[@]} =~ $line ]]
             then
+              # Skip deleted folders - they no longer exist so cannot be validated
+              if [ ! -d "$line" ]; then
+                printf "\nSkipping deleted folder: '$line'\n"
+                continue
+              fi
               result=`node ./validation-tool/validator.cjs -p $line`
               if grep -q "$validationFailed" <<< "$result"; then
                 printf "\nSample '$line' validation failed.\n"

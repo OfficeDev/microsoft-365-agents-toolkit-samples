@@ -7,6 +7,9 @@
 
 version: v1.8
 
+additionalMetadata:
+  sampleTag: TeamsFx-Samples:ProxyAgent-CSharp
+
 environmentFolderPath: ./env
 
 # Triggered when 'atk provision' is executed
@@ -96,4 +99,3 @@ deploy:
       # or add it to your environment variable file.
       resourceId: ${{WEBAPPID}}
       workingDirectory: ../AzureAgentToM365ATK
-projectId: a5ce45d0-c7f9-4964-828d-957cfa33b952

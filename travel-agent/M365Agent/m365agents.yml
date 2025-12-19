@@ -119,4 +119,3 @@ deploy:
       # or add it to your environment variable file.
       resourceId: ${{BOT_AZURE_APP_SERVICE_RESOURCE_ID}}
       workingDirectory: ../TravelAgent
-projectId: 429ee1b6-2cef-4594-9f47-943f32cb4a8c

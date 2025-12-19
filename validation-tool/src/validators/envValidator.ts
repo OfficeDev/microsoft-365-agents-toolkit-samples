@@ -5,9 +5,10 @@ import dotenv from "dotenv";
 import fs from "fs-extra";
 import path from "path";
 import { Result } from "../resultType";
+import { detectProjectType } from "../projectDetector";
 
 /**
- * Rule 1: env files shouldn’t contain actual value for the environment variables except for TEAMSFX_ENV and TEAMS_APP_NAME
+ * Rule 1: env files shouldn't contain actual value for the environment variables except for TEAMSFX_ENV and TEAMS_APP_NAME
  *
  * @param projectDir root directory of the project
  * @returns validation result
@@ -21,13 +22,24 @@ export default async function validateEnvFiles(
     failed: [],
     warning: [],
   };
+
+  const projectPaths = await detectProjectType(projectDir);
+  const { agentDir, displayPrefix, projectType } = projectPaths;
+
   const files = [".env.dev", ".env.local"];
+  let foundAnyEnvFile = false;
+
   for (const envFile of files) {
-    const filePath = path.join(projectDir, "env", envFile);
+    const filePath = path.join(agentDir, "env", envFile);
     if (!(await fs.exists(filePath))) {
-      result.warning = [`${path.join("env", envFile)} does not exist.`];
+      // For C# projects, env files are optional
+      if (projectType === "csharp") {
+        continue;
+      }
+      result.warning.push(`${displayPrefix}${path.join("env", envFile)} does not exist.`);
       continue;
     }
+    foundAnyEnvFile = true;
     const fileContent = await fs.readFile(filePath, "utf8");
     const envData = dotenv.parse(fileContent);
     const mappings = Object.entries(envData).map(([key, value]) => ({
@@ -43,13 +55,19 @@ export default async function validateEnvFiles(
       ) {
         continue;
       } else if (kv.value !== "") {
-        result.failed.push(`${envFile}: ${kv.name} should NOT have value.`);
+        result.failed.push(`${displayPrefix}${envFile}: ${kv.name} should NOT have value.`);
         validEnv = false;
       }
     }
     if (validEnv) {
-      result.passed.push(`${envFile}: All environment variables are valid.`);
+      result.passed.push(`${displayPrefix}${envFile}: All environment variables are valid.`);
     }
   }
+
+  // For C# projects without env files, that's okay
+  if (projectType === "csharp" && !foundAnyEnvFile) {
+    result.passed.push(`C# project does not require env files.`);
+  }
+
   return result;
 }
