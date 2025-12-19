@@ -883,7 +883,7 @@ You've successfully deployed your M365 Agent to Azure! 🎉
 5. ✅ Implement CI/CD for automated deployments
 
 **Resources:**
-- [Microsoft 365 Agents Toolkit Documentation](https://aka.ms/teams-toolkit-docs)
+- [Microsoft 365 Agents Toolkit Documentation](https://learn.microsoft.com/en-us/microsoft-365/developer/overview-m365-agents-toolkit)
 - [Azure Bot Service Documentation](https://learn.microsoft.com/azure/bot-service/)
 - [Bicep Documentation](https://learn.microsoft.com/azure/azure-resource-manager/bicep/)
 - [Microsoft 365 Agents SDK](https://github.com/microsoft/agents)
