@@ -167,14 +167,16 @@ Validates `env/.env.dev` and `env/.env.local`:
 
 **Validator**: `imageValidator.ts`
 
-Validates images in `assets/`:
+Validates images based on paths specified in `samples-config-v3.json` (`thumbnailPath` and `gifPath`):
 
 | File | Requirement | Severity |
 |------|-------------|----------|
-| `thumbnail.png` or `thumbnail.jpg` existence | File should exist | Warning |
-| `thumbnail.png` or `thumbnail.jpg` aspect ratio | Aspect ratio **40:23** (e.g., 1600×920 or 800×460) | **Error** |
-| `sampleDemo.gif` existence | File should exist | Warning |
-| `sampleDemo.gif` aspect ratio | Aspect ratio **40:23** (e.g., 1600×920 or 800×460) | **Error** |
+| Thumbnail (from `thumbnailPath`) | File is required to display in sample gallery | **Error** |
+| Thumbnail aspect ratio | Aspect ratio **40:23** (e.g., 1600×920 or 800×460) | **Error** |
+| GIF (from `gifPath`) | File should exist (optional) | Warning |
+| GIF aspect ratio | Aspect ratio **40:23** (optional) | Warning |
+
+**Note**: If `thumbnailPath` or `gifPath` is not specified in `samples-config-v3.json`, the validator falls back to checking `assets/thumbnail.png` and `assets/sampleDemo.gif`.
 
 ### 6. Package.json Validation
 
@@ -274,7 +276,7 @@ Before submitting a PR, ensure your sample meets the following requirements:
 - [ ] `m365agents.yml` has no `projectId` and has correct `sampleTag`
 - [ ] `manifest.json` has `id` set to `${{TEAMS_APP_ID}}`
 - [ ] Environment files contain no sensitive information or actual values
-- [ ] `assets/thumbnail.png` and `sampleDemo.gif` have correct aspect ratio (40:23)
+- [ ] `assets/thumbnail.png` has correct aspect ratio (40:23), `sampleDemo.gif` is optional
 - [ ] `package.json` has `engines.node` compatible with Node.js 22
 - [ ] Added/updated configuration in `samples-config-v3.json`
 

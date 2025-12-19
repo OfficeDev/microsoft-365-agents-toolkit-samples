@@ -18,10 +18,49 @@ export interface ProjectPaths {
 interface SampleConfig {
   id: string;
   tags: string[];
+  thumbnailPath?: string;
+  gifPath?: string;
 }
 
 interface SamplesConfig {
   samples: SampleConfig[];
+}
+
+export interface SampleImagePaths {
+  thumbnailPath?: string;
+  gifPath?: string;
+}
+
+/**
+ * Get image paths (thumbnailPath and gifPath) from samples-config-v3.json
+ */
+export async function getSampleImagePaths(projectDir: string): Promise<SampleImagePaths> {
+  const sampleId = path.basename(projectDir);
+  
+  // Try to find samples-config-v3.json relative to the project
+  const configPaths = [
+    path.join(projectDir, "..", ".config", "samples-config-v3.json"),
+    path.join(projectDir, ".config", "samples-config-v3.json"),
+  ];
+  
+  for (const configPath of configPaths) {
+    if (await fs.exists(configPath)) {
+      try {
+        const config: SamplesConfig = await fs.readJson(configPath);
+        const sample = config.samples.find(s => s.id === sampleId);
+        if (sample) {
+          return {
+            thumbnailPath: sample.thumbnailPath,
+            gifPath: sample.gifPath,
+          };
+        }
+      } catch {
+        // Ignore parse errors
+      }
+    }
+  }
+  
+  return {};
 }
 
 /**
