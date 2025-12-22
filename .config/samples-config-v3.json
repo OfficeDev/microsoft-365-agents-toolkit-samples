@@ -1112,6 +1112,31 @@
                 "ref": "main",
                 "dir": "nodejs/openai/sample-agent"
             }
+        },
+        {
+            "id": "agent365-perplexity-nodejs",
+            "shortId": "agent365-perplexity-nodejs",
+            "onboardDate": "2025-11-17",
+            "title": "Perplexity Agent with Agent365 SDK in NodeJS",
+            "shortDescription": "Perplexity Agent with Agent365 SDK in NodeJS",
+            "fullDescription": "This sample demonstrates how to build an agent using Perplexity in Node.js with the Microsoft Agent 365 SDK.",
+            "types": [
+                "Agent365"
+            ],
+            "tags": [
+                "Agent365",
+                "TS"
+            ],
+            "time": "5min to run",
+            "configuration": "Manual configurations required",
+            "thumbnailPath": "images/thumbnail.png",
+            "suggested": false,
+            "downloadUrlInfo": {
+                "owner": "microsoft",
+                "repository": "Agent365-Samples",
+                "ref": "main",
+                "dir": "nodejs/perplexity/sample-agent"
+            }
         }
     ]
 }
