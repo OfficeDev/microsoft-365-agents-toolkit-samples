@@ -420,11 +420,54 @@ Required for: Bot Service to verify bot identity
 - Accessing user resources on behalf of user
 
 **Configuration:**
-```yaml
-OAuth Scope: access_as_user
-Federated Credentials: Azure Bot Service token issuer
-Pre-authorized Clients: Teams, Outlook, M365 apps
-No client secrets: More secure than password-based auth
+
+**OAuth 2.0 Scopes:**
+
+| Scope | Type | Purpose | Consent Required |
+|-------|------|---------|------------------|
+| `access_as_user` | User | Default scope for Agent SSO access | User consent |
+
+**Pre-Authorized Applications:**
+
+Applications that can access the `access_as_user` scope without requiring user consent:
+
+| Application | App ID | Purpose |
+|-------------|--------|---------|
+| Teams web client | `1fec8e78-bce4-4aaf-ab1b-5451cc387264` | Teams in browser |
+| Teams desktop client | `5e3ce6c0-2b1f-4285-8d4b-75ee78787346` | Teams desktop app |
+| Microsoft 365 web application | `4765445b-32c6-49b0-83e6-1d93765276ca` | Office.com portal |
+| Microsoft 365 desktop application | `0ec893e0-5785-4de6-99da-4ed124e5296c` | Office desktop apps |
+| Microsoft 365 mobile/Outlook desktop | `d3590ed6-52b3-4102-aeff-aad2292ab01c` | M365 mobile & Outlook desktop |
+| Outlook web application | `bc59ab01-8403-45c6-8796-ac3ef710b3e3` | Outlook in browser |
+| Outlook mobile application | `27922004-5251-4030-b22d-91ecd9a37ea4` | Outlook mobile app |
+
+**Required API Permissions:**
+
+| API | Permission | Type | Purpose |
+|-----|------------|------|---------|
+| Microsoft Graph | `openid` | Delegated | OpenID Connect sign-in |
+| Microsoft Graph | `profile` | Delegated | User profile information |
+| Microsoft Graph | `email` | Delegated | User email address |
+| Microsoft Graph | `offline_access` | Delegated | Refresh token for long-lived sessions |
+| Azure Machine Learning | `user_impersonation` | Delegated | Required for Azure AI Foundry Agent SSO |
+
+**Federated Identity Credential:**
+
+| Property | Value |
+|----------|-------|
+| Audience | `api://AzureADTokenExchange` |
+| Issuer | `https://login.microsoftonline.com/{tenantId}/v2.0` |
+| Subject | `/eid1/c/pub/t/{encodedTenantId}/a/9ExAW52n_ky4ZiS_jhpJIQ/{guid}` |
+| Description | Federated credential for Bot Framework token exchange |
+
+**App ID URI:**
+```
+api://botid-{BOT_ID}
+```
+
+**Redirect URIs:**
+```
+https://token.botframework.com/.auth/web/redirect
 ```
 
 **Why Two Apps?**

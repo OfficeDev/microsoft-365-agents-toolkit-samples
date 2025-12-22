@@ -14,6 +14,7 @@
 import { TokenCredential, AccessToken, GetTokenOptions } from '@azure/core-auth';
 import { TurnContext } from '@microsoft/agents-hosting';
 import jwt from 'jsonwebtoken';
+import { logger } from './logger';
 
 /**
  * Interface for Authorization service from @microsoft/agents-hosting.
@@ -81,46 +82,36 @@ export class UserAuthorizationTokenWrapper implements TokenCredential {
     _scopes: string | string[],
     _options?: GetTokenOptions
   ): Promise<AccessToken | null> {
-    console.log('[UserAuthTokenWrapper] getToken() called');
-    console.log(`[UserAuthTokenWrapper] Requested scopes:`, Array.isArray(_scopes) ? _scopes.join(', ') : _scopes);
-    console.log(`[UserAuthTokenWrapper] Turn context activity type: ${this._turnContext.activity.type}`);
-    console.log(`[UserAuthTokenWrapper] Turn context activity from: ${JSON.stringify(this._turnContext.activity.from)}`);
+    logger.debug(`UserAuthTokenWrapper.getToken() called with scopes: ${Array.isArray(_scopes) ? _scopes.join(', ') : _scopes}`);
  
     // Get the JWT token for SSO using the Authorization service.
     // The OAuth connection handles token exchange with the specified scope 
     // (e.g., https://ai.azure.com/user_impersonation for AI Foundry)
-    console.log(`[UserAuthTokenWrapper] Calling authorization.getToken() with connection: ${this._connectionName}`);
     const tokenResponse = await this._userIdentity.getToken(this._turnContext, this._connectionName);
 
-    console.log(`[UserAuthTokenWrapper] Token response status: ${tokenResponse.status || 'N/A'}`);
-    console.log(`[UserAuthTokenWrapper] Token exists: ${!!tokenResponse.token}`);
+    logger.debug(`Token response received - status: ${tokenResponse.status || 'N/A'}`);
 
     if (!tokenResponse.token) {
-      console.error(`[UserAuthTokenWrapper] ❌ Token request failed with status: ${tokenResponse.status || 'N/A'}`);
-      console.error(`[UserAuthTokenWrapper] This usually means:`);
-      console.error(`  1. User is not signed in via SSO`);
-      console.error(`  2. OAuth connection '${this._connectionName}' is not configured in Azure`);
-      console.error(`  3. The app doesn't have the required permissions/scopes`);
+      logger.error(`Token request failed with status: ${tokenResponse.status || 'N/A'}`);
+      logger.error(`Possible causes: User not signed in, OAuth connection '${this._connectionName}' not configured, or missing permissions`);
       return null;
     }
 
     const jwtToken = tokenResponse.token;
-    console.log(`[UserAuthTokenWrapper] ✓ Received JWT token (length: ${jwtToken.length})`);
+    logger.debug(`JWT token received (length: ${jwtToken.length})`);
 
     // Decode the JWT token to extract expiration (equivalent to JwtSecurityTokenHandler in C#)
     const decoded = jwt.decode(jwtToken, { complete: true });
     if (!decoded || typeof decoded === 'string') {
-      console.error('[UserAuthTokenWrapper] ❌ Invalid JWT token format');
+      logger.error('Invalid JWT token format');
       throw new Error('Invalid JWT token format');
     }
 
     const payload = decoded.payload as jwt.JwtPayload;
-    console.log(`[UserAuthTokenWrapper] JWT payload - aud: ${payload.aud}, iss: ${payload.iss}`);
-    console.log(`[UserAuthTokenWrapper] JWT payload - sub: ${payload.sub}`);
-    console.log(`[UserAuthTokenWrapper] JWT payload - scopes/roles: ${JSON.stringify(payload.scp || payload.roles)}`);
+    logger.debug(`JWT payload - aud: ${payload.aud}, sub: ${payload.sub}`);
 
     if (!payload.exp) {
-      console.error('[UserAuthTokenWrapper] ❌ JWT does not contain an exp claim');
+      logger.error('JWT does not contain an exp claim');
       throw new Error("JWT does not contain an 'exp' claim.");
     }
 
@@ -128,7 +119,7 @@ export class UserAuthorizationTokenWrapper implements TokenCredential {
     // C# uses DateTimeOffset.FromUnixTimeSeconds
     const expiresOnTimestamp = payload.exp * 1000;
     const expiresOn = new Date(expiresOnTimestamp);
-    console.log(`[UserAuthTokenWrapper] ✓ Token expires at: ${expiresOn.toISOString()}`);
+    logger.debug(`Token expires at: ${expiresOn.toISOString()}`);
 
     // Return AccessToken (equivalent to C# AccessToken with token and expiresOn)
     return {

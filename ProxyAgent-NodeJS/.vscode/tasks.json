@@ -240,16 +240,18 @@
         ],
         "background": {
           "activeOnStart": true,
-          "beginsPattern": "No TUNNEL_ID found. Creating tunnel...|Connecting to host tunnel relay",
-          "endsPattern": "Ready to accept connections for tunnel"
+          "beginsPattern": "Checking Dev Tunnels login status...|No TUNNEL_ID found. Creating tunnel...|Found existing TUNNEL_ID",
+          "endsPattern": "Ready to accept connections for tunnel|Failed to (login to Dev Tunnels|create tunnel|create port|create access|host tunnel)|Dev Tunnels CLI not found"
         }
       },
       "options": {
         "cwd": "${workspaceFolder}"
       },
       "presentation": {
-        "reveal": "silent",
-        "panel": "dedicated"
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": false,
+        "clear": true
       },
       "dependsOn": [
         "Ensure env files"

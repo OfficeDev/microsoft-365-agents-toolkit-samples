@@ -11,6 +11,7 @@ import {
 
 import config from "./config";
 import { UserAuthorizationTokenWrapper } from "./userAuthTokenWrapper";
+import { logger } from "./logger";
 
 
 // Define custom conversation state to store thread info
@@ -47,7 +48,7 @@ class ProxyAgent extends AgentApplication<AppTurnState> {
       }
     });
 
-    console.log(`[ProxyAgent Init] SSO Connection Name: ${config.ssoConnectionName}`);
+    logger.info(`ProxyAgent initialized with SSO Connection: ${config.ssoConnectionName}`);
 
     this.onMessage("--signout", this._handleSignOut);
     this.onMessage("--clearcache", this._handleClearCache);
@@ -59,7 +60,7 @@ class ProxyAgent extends AgentApplication<AppTurnState> {
     try {
       return JSON.parse(threadData);
     } catch (error) {
-      console.warn("Failed to deserialize thread, creating new one");
+      logger.debug("Failed to deserialize thread, creating new one");
       return null;
     }
   };
@@ -69,48 +70,38 @@ class ProxyAgent extends AgentApplication<AppTurnState> {
   };
 
   private _createAgentsClient = async (context: TurnContext): Promise<AgentsClient> => {
-    console.log('[createAgentsClient] Starting client creation...');
-    console.log(`[createAgentsClient] Project endpoint: ${config.azureAIFoundryProjectEndpoint}`);
+    logger.debug('Creating AgentsClient with SSO authentication');
 
     let credential: TokenCredential;
-
-    console.log("[createAgentsClient] ✓ Using SSO authentication for Azure AI Foundry");
-    console.log(`[createAgentsClient] Activity ID: ${context.activity.id}`);
-
 
     credential = new UserAuthorizationTokenWrapper(
       this.authorization as any,
       context,
       "SSO"
     );
-    console.log('[createAgentsClient] ✓ UserAuthorizationTokenWrapper created with SSO token');
 
-
-    console.log('[createAgentsClient] Creating AgentsClient...');
     const client = new AgentsClient(config.azureAIFoundryProjectEndpoint!, credential);
-    console.log('[createAgentsClient] ✓ AgentsClient created successfully');
+    logger.debug('AgentsClient created successfully');
     return client;
   };
 
   private _getConversationThread = async (client: AgentsClient, turnState: AppTurnState): Promise<AgentThread> => {
-    console.log('[getConversationThread] Getting conversation thread...');
     const agentThreadInfo = turnState?.conversation?.threadInfo;
 
     if (!agentThreadInfo) {
-      console.log('[getConversationThread] No existing thread found. Creating new thread...');
+      logger.debug('Creating new conversation thread');
       const newThread = await client.threads.create();
-      console.log(`[getConversationThread] ✓ New thread created: ${newThread.id}`);
+      logger.debug(`New thread created: ${newThread.id}`);
       return newThread;
     } else {
-      console.log('[getConversationThread] Existing thread info found. Deserializing...');
       const deserializedThread = this._deserializeThread(agentThreadInfo);
       if (deserializedThread) {
-        console.log(`[getConversationThread] ✓ Thread deserialized: ${deserializedThread.id}`);
+        logger.debug(`Using existing thread: ${deserializedThread.id}`);
         return deserializedThread;
       } else {
-        console.log('[getConversationThread] Failed to deserialize. Creating new thread...');
+        logger.debug('Failed to deserialize thread, creating new one');
         const newThread = await client.threads.create();
-        console.log(`[getConversationThread] ✓ New thread created: ${newThread.id}`);
+        logger.debug(`New thread created: ${newThread.id}`);
         return newThread;
       }
     }
@@ -119,10 +110,10 @@ class ProxyAgent extends AgentApplication<AppTurnState> {
   private _handleSignOut = async (context: TurnContext, turnState: AppTurnState): Promise<void> => {
     try {
       await this.authorization.signOut(context, turnState, 'SSO');
-      console.log("[handleSignOut] ✓ User signed out successfully from aifoundryaccess");
+      logger.info("User signed out successfully");
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
-      console.error(`[handleSignOut] Error signing out: ${errorMessage}`);
+      logger.error(`Error signing out: ${errorMessage}`);
     }
     await context.sendActivity("You have signed out");
   };
@@ -130,55 +121,48 @@ class ProxyAgent extends AgentApplication<AppTurnState> {
   private _handleClearCache = async (context: TurnContext, _turnState: AppTurnState): Promise<void> => {
     this.agentModelCache.clear();
     await context.sendActivity("The agent model cache has been cleared.");
-    console.log("The agent model cache has been cleared.");
+    logger.info("Agent model cache cleared");
   };
 
   private _handleMessage = async (context: TurnContext, turnState: AppTurnState): Promise<void> => {
     const userMessage = context.activity.text || "";
-    console.log(`\n[handleMessage] ===== NEW MESSAGE =====`);
-    console.log(`[handleMessage] User message: ${userMessage}`);
-    console.log(`[handleMessage] Activity ID: ${context.activity.id}`);
+    logger.info(`Processing message from user (Activity ID: ${context.activity.id})`);
+    logger.debug(`User message: ${userMessage}`);
 
     try {
       context.streamingResponse.queueInformativeUpdate("Just a moment please...");
-      console.log("[handleMessage] Queued initial informative update");
 
-      console.log("[handleMessage] Creating AgentsClient...");
       const client = await this._createAgentsClient(context);
-      console.log("[handleMessage] ✓ AgentsClient created");
 
       let agentModel = this.agentModelCache.get(config.agentId!);
       if (!agentModel) {
-        console.log(`[handleMessage] Agent not in cache. Fetching agent ID: ${config.agentId}`);
+        logger.debug(`Fetching agent from Microsoft Foundry: ${config.agentId}`);
         context.streamingResponse.queueInformativeUpdate("Connecting to Microsoft Foundry...");
 
         agentModel = await client.getAgent(config.agentId!);
-        console.log(`[handleMessage] ✓ Agent retrieved: ${agentModel.name || agentModel.id}`);
+        logger.info(`Connected to agent: ${agentModel.name || agentModel.id}`);
         
         this.agentModelCache.set(config.agentId!, agentModel);
-        console.log("[handleMessage] ✓ Agent cached");
       } else {
-        console.log(`[handleMessage] ✓ Using cached agent: ${agentModel.name || agentModel.id}`);
+        logger.debug(`Using cached agent: ${agentModel.name || agentModel.id}`);
       }
 
       const agentThread = await this._getConversationThread(client, turnState);
-      console.log(`[handleMessage] ✓ Using thread: ${agentThread.id}`);
 
       context.streamingResponse.queueInformativeUpdate("Sending request to Microsoft Foundry Agent...");
 
       await client.messages.create(agentThread.id, "user", userMessage);
-      console.log("[handleMessage] ✓ Message added to thread");
+      logger.debug("Message added to thread");
 
-      console.log("[handleMessage] Starting streaming run...");
       const runResponse = client.runs.create(agentThread.id, agentModel.id);
       const stream = await runResponse.stream();
-      console.log("[handleMessage] ✓ Streaming started");
+      logger.debug("Streaming started");
 
       let chunkCount = 0;
 
       try {
         for await (const event of stream) {
-          console.log(`[handleMessage] Stream event: ${event.event}`);
+          logger.debug(`Stream event: ${event.event}`);
 
           if (event.event === "thread.message.delta" && event.data) {
             const deltaChunk = event.data as MessageDeltaChunk;
@@ -190,8 +174,6 @@ class ProxyAgent extends AgentApplication<AppTurnState> {
                   if (textContent.text?.value) {
                     const chunkText = textContent.text.value;
                     chunkCount++;
-                    
-                    console.log(`[handleMessage] Chunk #${chunkCount}: "${chunkText}"`);
                     context.streamingResponse.queueTextChunk(chunkText);
                   }
                 }
@@ -200,40 +182,39 @@ class ProxyAgent extends AgentApplication<AppTurnState> {
           }
 
           if (event.event === "thread.run.completed") {
-            console.log("[handleMessage] ✓ Run completed successfully");
+            logger.info("Agent response completed successfully");
           }
 
           if (event.event === "thread.run.failed") {
-            console.error("[handleMessage] ❌ Run failed:", event.data);
+            logger.error("Agent run failed:", event.data);
           }
         }
 
-        console.log(`[handleMessage] Streaming complete. Total chunks: ${chunkCount}`);
+        logger.debug(`Streaming complete. Total chunks: ${chunkCount}`);
       } catch (streamError) {
         const errorMessage = streamError instanceof Error ? streamError.message : String(streamError);
-        console.error(`[handleMessage] ❌ Streaming error: ${errorMessage}`);
+        logger.error(`Streaming error: ${errorMessage}`);
         context.streamingResponse.queueTextChunk(`\n\nAn error occurred during streaming: ${errorMessage}`);
       } finally {
         await context.streamingResponse.endStream();
-        console.log("[handleMessage] ✓ Stream ended");
       }
 
       if (turnState?.conversation) {
         turnState.conversation.threadInfo = this._serializeThread(agentThread);
-        console.log("[handleMessage] ✓ Thread saved to conversation state");
+        logger.debug("Thread saved to conversation state");
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
       const errorStack = error instanceof Error ? error.stack : undefined;
-      console.error(`[handleMessage] ❌ Error: ${errorMessage}`);
+      logger.error(`Error processing message: ${errorMessage}`);
       if (errorStack) {
-        console.error(`[handleMessage] Stack trace:\n${errorStack}`);
+        logger.debug(`Stack trace:\n${errorStack}`);
       }
       try {
         context.streamingResponse.queueTextChunk(`An error occurred while processing your request. ${errorMessage}`);
         await context.streamingResponse.endStream();
       } catch (streamEndError) {
-        console.error("[handleMessage] Error ending stream after error:", streamEndError);
+        logger.error("Error ending stream after error:", streamEndError);
       }
     }
   };
