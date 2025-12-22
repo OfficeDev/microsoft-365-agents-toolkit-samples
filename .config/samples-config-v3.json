@@ -1062,6 +1062,31 @@
                 "ref": "main",
                 "dir": "nodejs/devin/sample-agent"
             }
+        },
+        {
+            "id": "agent365-n8n-nodejs",
+            "shortId": "agent365-n8n-nodejs",
+            "onboardDate": "2025-11-17",
+            "title": "N8n Agent with Agent365 SDK in NodeJS",
+            "shortDescription": "N8n Agent with Agent365 SDK in NodeJS",
+            "fullDescription": "This sample demonstrates how to build an agent using n8n in Node.js with the Microsoft Agent 365 SDK.",
+            "types": [
+                "Agent365"
+            ],
+            "tags": [
+                "Agent365",
+                "TS"
+            ],
+            "time": "5min to run",
+            "configuration": "Manual configurations required",
+            "thumbnailPath": "images/thumbnail.png",
+            "suggested": false,
+            "downloadUrlInfo": {
+                "owner": "microsoft",
+                "repository": "Agent365-Samples",
+                "ref": "main",
+                "dir": "nodejs/n8n/sample-agent"
+            }
         }
     ]
 }
