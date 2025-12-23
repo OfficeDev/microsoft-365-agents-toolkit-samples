@@ -82,12 +82,31 @@ The submitted answer may either be correct or incorrect. Determine which case ap
             } else if (res.content) {
                 // Try to parse JSON from content
                 try {
-                    const jsonMatch = res.content.match(/\{[\s\S]*"result"\s*:\s*(true|false)[\s\S]*"reasoning"\s*:\s*"([^"]+(?:\\.[^"]*)*)"[\s\S]*\}/);
-                    if (jsonMatch) {
-                        functionCallArgs = {
-                            result: jsonMatch[1] === 'true',
-                            reasoning: jsonMatch[2].replace(/\\"/g, '"').replace(/\\n/g, '\n')
-                        };
+                    const content = res.content;
+
+                    // First, try to extract a JSON object and parse it directly
+                    const objectMatch = content.match(/\{[\s\S]*\}/);
+                    if (objectMatch) {
+                        const parsed = JSON.parse(objectMatch[0]);
+                        if (typeof parsed.result === 'boolean' && typeof parsed.reasoning === 'string') {
+                            functionCallArgs = {
+                                result: parsed.result,
+                                reasoning: parsed.reasoning
+                            };
+                        }
+                    }
+
+                    // Fallback: use a simpler regex extraction if JSON.parse did not yield result
+                    if (!functionCallArgs) {
+                        const fallbackMatch = content.match(
+                            /"result"\s*:\s*(true|false)[\s\S]*?"reasoning"\s*:\s*"([^"\\]*(?:\\.[^"\\]*)*)"/
+                        );
+                        if (fallbackMatch) {
+                            functionCallArgs = {
+                                result: fallbackMatch[1] === 'true',
+                                reasoning: fallbackMatch[2].replace(/\\"/g, '"').replace(/\\n/g, '\n')
+                            };
+                        }
                     }
                 } catch (e) {
                     // Parsing failed, will use fallback
