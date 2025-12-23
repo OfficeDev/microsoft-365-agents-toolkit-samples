@@ -11,7 +11,7 @@ new AgentEvaluator({
         // When autoFunctionCalling is false, the model returns function call as JSON in content
         const content = response.content || '';
         // Try to extract JSON from content
-        const jsonMatch = content.match(/\{"name":\s*"functions\.execute_sql".*?"query"\s*:\s*"([^"]+(?:\\.[^"]*)*)".*?\}/s);
+        const jsonMatch = content.match(/\{"name":\s*"functions\.execute_sql".*?"query"\s*:\s*"((?:[^"\\]|\\.)*)".*?\}/s);
         if (jsonMatch) {
             // Unescape the query string
             return jsonMatch[1].replace(/\\n/g, '\n').replace(/\\"/g, '"');

@@ -97,13 +97,18 @@ consider the submission correct even if titles, labels, colors, or other propert
             if (res.function_calls?.[0]?.arguments) {
                 functionCallArgs = res.function_calls[0].arguments;
             } else if (res.content) {
-                // Try to parse JSON from content
+                // Try to parse JSON-like content without using a complex, backtracking-prone regex
                 try {
-                    const jsonMatch = res.content.match(/\{[\s\S]*"result"\s*:\s*(true|false)[\s\S]*"reasoning"\s*:\s*"([^"]+(?:\\.[^"]*)*)"[\s\S]*\}/);
-                    if (jsonMatch) {
+                    const resultMatch = res.content.match(/"result"\s*:\s*(true|false)/);
+                    const reasoningMatch = res.content.match(/"reasoning"\s*:\s*"((?:[^"\\]|\\.)*)"/);
+
+                    if (resultMatch && reasoningMatch) {
+                        const rawReasoning = reasoningMatch[1];
                         functionCallArgs = {
-                            result: jsonMatch[1] === 'true',
-                            reasoning: jsonMatch[2].replace(/\\"/g, '"').replace(/\\n/g, '\n')
+                            result: resultMatch[1] === 'true',
+                            reasoning: rawReasoning
+                                .replace(/\\"/g, '"')
+                                .replace(/\\n/g, '\n')
                         };
                     }
                 } catch (e) {
