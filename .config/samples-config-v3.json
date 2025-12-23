@@ -941,7 +941,7 @@
         {
             "id": "data-analyst-agent-v2",
             "shortId": "data-analyst-v2",
-            "onboardDate": "2025-10-31",
+            "onboardDate": "2025-12-23",
             "title": "Data Analyst Agent v2",
             "shortDescription": "Natural language interface for data exploration and visualization.",
             "fullDescription": "This sample demonstrates how to build an AI-powered data analyst agent using Microsoft Teams SDK that can be integrated into Microsoft Teams. It helps users explore and visualize data through natural language conversations and Adaptive Cards charts.",
