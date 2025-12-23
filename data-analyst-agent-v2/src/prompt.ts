@@ -4,7 +4,7 @@ import { ConsoleLogger } from '@microsoft/teams.common';
 import fs from 'fs';
 import { pathToSrc } from './utils';
 import { chartCreationSchema, executeSqlSchema } from './schema';
-import Database from 'better-sqlite3';
+import initSqlJs, { Database } from 'sql.js';
 import { generateChartCard } from './cards';
 import { Message } from '@microsoft/teams.ai';
 import { Attachment } from '@microsoft/teams.api';
@@ -13,6 +13,17 @@ const logger = new ConsoleLogger('data-analyst', { level: 'info' });
 
 const schemaPath = pathToSrc('data/schema.sql');
 const dbSchema = fs.readFileSync(schemaPath, 'utf-8');
+
+// Initialize sql.js and database
+let db: Database | null = null;
+const initDb = async () => {
+  if (db) return db;
+  const SQL = await initSqlJs();
+  const dbPath = pathToSrc('data/adventureworks.db');
+  const dbBuffer = fs.readFileSync(dbPath);
+  db = new SQL.Database(dbBuffer);
+  return db;
+};
 
 const systemMessage = `You are an expert data analyst that helps users understand data from the AdventureWorks database.
 Your goal is to provide clear, visual insights by querying data and creating appropriate visualizations.
@@ -70,16 +81,24 @@ export const createDataAnalystPrompt = (conversationHistory: Message[] = []) => 
       }
 
       try {
-        const dbPath = pathToSrc('data/adventureworks.db');
-        const db = new Database(dbPath, { readonly: true });
-        const rows = db.prepare(query).all();
-        db.close();
+        const database = await initDb();
+        const result = database.exec(query);
         
-        if (!rows.length) {
+        if (!result.length || !result[0].values.length) {
           return 'No results found for your query.';
         }
 
-        logger.info('execute_sql returned' + rows.length + 'rows');
+        // Convert sql.js result format to rows with column names
+        const columns = result[0].columns;
+        const rows = result[0].values.map(row => {
+          const obj: Record<string, any> = {};
+          columns.forEach((col, i) => {
+            obj[col] = row[i];
+          });
+          return obj;
+        });
+
+        logger.info('execute_sql returned ' + rows.length + ' rows');
         return { rows };
       } catch (err) {
         logger.error('execute_sql error:', err);
