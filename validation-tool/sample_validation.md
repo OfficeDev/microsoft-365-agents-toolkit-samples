@@ -230,6 +230,40 @@ node validate-all.js --errors-only
 node validate-all.js ../.config/samples-config-v3.json
 ```
 
+### Validate External Samples
+
+External samples are those hosted in 3rd party repositories (with `downloadUrlInfo` in config).
+
+**Script**: `validate-external.js`
+
+```bash
+# Usage: node validate-external.js <sample-id> <local-repo-path>
+
+# Example 1: Validate a sample from Microsoft-Teams-Samples repo
+git clone --filter=blob:none --sparse https://github.com/OfficeDev/Microsoft-Teams-Samples.git
+cd Microsoft-Teams-Samples
+git sparse-checkout set samples/msgext-link-unfurling-reddit/nodejs
+cd ..
+node validate-external.js reddit-link-unfurling ./Microsoft-Teams-Samples
+
+# Example 2: Validate a sample from pnp/graph-connectors-samples repo
+git clone --filter=blob:none --sparse https://github.com/pnp/graph-connectors-samples.git
+cd graph-connectors-samples
+git sparse-checkout set samples/nodejs-typescript-food-catalog
+cd ..
+node validate-external.js gc-nodejs-typescript-food-catalog ./graph-connectors-samples
+```
+
+**How it works**:
+1. Looks up the sample in `samples-config-v3.json` to find its `downloadUrlInfo`
+2. Calculates the sample path based on `downloadUrlInfo.dir` within the local repo
+3. Runs validation with the correct config reference
+4. Shows failed validations clearly and provides fix suggestions at the end
+
+**Output**: The script shows a summary with:
+- ✅ `ALL CRITICAL VALIDATIONS PASSED!` - Ready for PR
+- ❌ `FAILED VALIDATIONS` - Lists issues with required fixes
+
 ### Command Options
 
 ```

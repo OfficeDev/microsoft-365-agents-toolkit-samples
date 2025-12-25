@@ -6,7 +6,7 @@ import path from "path";
 import YAML from "yaml";
 
 import { Result } from "../resultType";
-import { detectProjectType } from "../projectDetector";
+import { detectProjectType, getExpectedSampleId } from "../projectDetector";
 
 /**
  * Historical exceptions where sampleTag name differs from config id.
@@ -34,22 +34,40 @@ interface SamplesConfig {
 }
 
 /**
- * Get sample ID from samples-config-v3.json based on folder name
- * Returns the id from config, or folder name as fallback
+ * Get config paths to try for finding samples-config-v3.json.
+ * Supports external config path via environment variable SAMPLE_VALIDATOR_CONFIG_PATH.
  */
-async function getSampleIdFromConfig(projectDir: string): Promise<string | null> {
-  const folderName = path.basename(projectDir);
+function getConfigPaths(projectDir: string): string[] {
+  const paths: string[] = [];
   
-  const configPaths = [
+  // Check for external config path from environment variable (for validating external samples)
+  const externalConfigPath = process.env.SAMPLE_VALIDATOR_CONFIG_PATH;
+  if (externalConfigPath && fs.existsSync(externalConfigPath)) {
+    paths.push(externalConfigPath);
+  }
+  
+  // Default paths relative to project
+  paths.push(
     path.join(projectDir, "..", ".config", "samples-config-v3.json"),
     path.join(projectDir, ".config", "samples-config-v3.json"),
-  ];
+  );
+  
+  return paths;
+}
+
+/**
+ * Get sample ID from samples-config-v3.json based on expected sample ID
+ * Returns the id from config if found, or null
+ */
+async function getSampleIdFromConfig(projectDir: string): Promise<string | null> {
+  const expectedId = getExpectedSampleId(projectDir);
+  const configPaths = getConfigPaths(projectDir);
   
   for (const configPath of configPaths) {
     if (await fs.exists(configPath)) {
       try {
         const config: SamplesConfig = await fs.readJson(configPath);
-        const sample = config.samples.find(s => s.id === folderName);
+        const sample = config.samples.find(s => s.id === expectedId);
         if (sample) {
           return sample.id;
         }
