@@ -140,6 +140,7 @@ Validates `m365agents.yml` file:
 | Rule 4 | Should have `publish` stage with `teamsApp/publishAppPackage` action | Warning |
 | Rule 5 | `teamsApp/create` must write `TEAMS_APP_ID` environment variable | Error |
 | Rule 6 | Must have `sampleTag` in format `repo:name` (e.g., `TeamsFx-Samples:sample-name`) | Error |
+| Rule 7 | `sampleTag` name must match the `id` field in `samples-config-v3.json` | Error |
 
 ### 3. App Manifest Validation
 
@@ -214,6 +215,19 @@ node validator.cjs -p ../coffee-agent
 # Or validate from the sample directory
 cd ../coffee-agent
 node ../validation-tool/validator.cjs
+```
+
+### Validate All Samples
+
+```bash
+# Validate all samples in config (same as CI pipeline)
+node validate-all.js
+
+# Only show samples with errors (hide warnings and passed)
+node validate-all.js --errors-only
+
+# Use a custom config path
+node validate-all.js ../.config/samples-config-v3.json
 ```
 
 ### Command Options

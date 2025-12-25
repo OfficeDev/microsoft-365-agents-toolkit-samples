@@ -8,6 +8,60 @@ import YAML from "yaml";
 import { Result } from "../resultType";
 import { detectProjectType } from "../projectDetector";
 
+/**
+ * Historical exceptions where sampleTag name differs from config id.
+ * Key: sample id in samples-config-v3.json
+ * Value: allowed sampleTag name in m365agents.yml
+ */
+const SAMPLE_ID_ADHOC_FIXES: Record<string, string> = {
+  // First Party (TeamsFx-Samples) - sampleTag differs from config id
+  "bot-sso-docker": "sso-bot-docker",
+  "NPM-search-connector-M365": "npm-search-connector-M365", // case difference
+  "sso-enabled-tab-via-apim-proxy": "sso-tab-via-apim-proxy",
+  "hello-world-tab-docker": "hello-world-tab-with-backend", // completely different
+  "copilot-connector-app": "graph-connector-app",
+  // 3rd Party - sampleTag differs from config id
+  "graph-rsc-helper": "graph-rsc-nodeJs",
+};
+
+interface SampleConfig {
+  id: string;
+  tags?: string[];
+}
+
+interface SamplesConfig {
+  samples: SampleConfig[];
+}
+
+/**
+ * Get sample ID from samples-config-v3.json based on folder name
+ * Returns the id from config, or folder name as fallback
+ */
+async function getSampleIdFromConfig(projectDir: string): Promise<string | null> {
+  const folderName = path.basename(projectDir);
+  
+  const configPaths = [
+    path.join(projectDir, "..", ".config", "samples-config-v3.json"),
+    path.join(projectDir, ".config", "samples-config-v3.json"),
+  ];
+  
+  for (const configPath of configPaths) {
+    if (await fs.exists(configPath)) {
+      try {
+        const config: SamplesConfig = await fs.readJson(configPath);
+        const sample = config.samples.find(s => s.id === folderName);
+        if (sample) {
+          return sample.id;
+        }
+      } catch {
+        // Ignore parse errors
+      }
+    }
+  }
+  
+  return null;
+}
+
 // Required lifecycle stages
 const requiredLifecycleActions = [
   {
@@ -37,6 +91,7 @@ const optionalLifecycleActions = [
  * Rule 4: has publish lifecycle actions (warning if missing)
  * Rule 5: provision has 'teamsApp/create' action which has TEAMS_APP_ID env variable
  * Rule 6: has sampleTag with format 'repo:name'
+ * Rule 7: sampleTag name must match sample id (folder name)
  *
  * @param projectDir root directory of the project
  * @returns validation result
@@ -148,19 +203,47 @@ export default async function validateTeamsAppYaml(
     }
   }
 
-  // Rule 6: sampleTag check
+  // Rule 6 & 7: sampleTag check
   const sampleTagRegex = /^([\w-]+):([\w-]+)$/g;
   const sampleTag = (
     yamlData?.additionalMetadata as { sampleTag: string } | undefined
   )?.sampleTag;
+  const expectedSampleId = await getSampleIdFromConfig(projectDir);
   let validSampleTag = false;
   if (sampleTag && sampleTag !== "") {
     const match = sampleTagRegex.exec(sampleTag);
     if (match) {
+      const repoName = match[1];
+      const sampleName = match[2];
+      
       result.passed.push(`Project has sampleTag with format 'repo:name'.`);
       validSampleTag = true;
-      if (match[1] !== "TeamsFx-Samples") {
+      
+      if (repoName !== "TeamsFx-Samples") {
         result.warning.push(`Project is an external sample.`);
+      }
+      
+      // Rule 7: Check if sampleTag name matches sample id from config
+      if (expectedSampleId !== null) {
+        // Check for historical exceptions
+        const allowedSampleTagName = SAMPLE_ID_ADHOC_FIXES[expectedSampleId];
+        const isMatch = sampleName === expectedSampleId || sampleName === allowedSampleTagName;
+        
+        if (!isMatch) {
+          result.failed.push(
+            `sampleTag name '${sampleName}' does not match sample id '${expectedSampleId}' in samples-config-v3.json.`
+          );
+        } else {
+          if (sampleName === allowedSampleTagName) {
+            result.passed.push(
+              `sampleTag name '${sampleName}' matches allowed exception for sample id '${expectedSampleId}'.`
+            );
+          } else {
+            result.passed.push(
+              `sampleTag name '${sampleName}' matches sample id in config.`
+            );
+          }
+        }
       }
     }
   }
