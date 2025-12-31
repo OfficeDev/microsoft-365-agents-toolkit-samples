@@ -64,7 +64,10 @@ export function useData<T>(
       .catch((error) => dispatch({ type: "error", error }));
   }
   useEffect(() => {
+    // Intentionally run only once on mount to auto-fetch initial data.
+    // We don't want to re-fetch when `auto` or `reload` changes.
     if (auto) reload();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return { data, loading, error, reload };
 }

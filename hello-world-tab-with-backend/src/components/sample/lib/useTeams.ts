@@ -68,7 +68,11 @@ export function useTeams(options?: {
     ? options.setThemeHandler
     : themeChangeHandler;
   useEffect(() => {
-    // set initial theme based on options or query string
+    // Intentionally run only once on mount to initialize Teams SDK and register event handlers.
+    // Teams SDK initialization and event registration should not be repeated on re-renders.
+    // The initial theme is captured once via useState, so it won't cause stale closure issues.
+
+    // Set initial theme based on options or query string
     if (initialTheme) {
       overrideThemeHandler(initialTheme);
     }
@@ -100,6 +104,7 @@ export function useTeams(options?: {
         setLoading(false);
         setInTeams(false);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return [
