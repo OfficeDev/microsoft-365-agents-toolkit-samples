@@ -112,34 +112,25 @@ Example:
 
     console.log("=".repeat(60));
     
-    // Parse output to find failures
+    // Parse output to find all failures (lines containing ❌)
     const failures = [];
+    const warnings = [];
     const lines = output.split("\n");
     
-    // Check for specific failures
-    const hasProjectId = output.includes("should NOT have projectId");
-    const missingSampleTag = output.includes("should have sampleTag with format");
-    const sampleTagMismatch = output.includes("does not match sample id");
-    
-    if (hasProjectId) {
-      failures.push({
-        issue: "projectId exists in m365agents.yml",
-        fix: "Remove the 'projectId' line from m365agents.yml"
-      });
-    }
-    
-    if (missingSampleTag) {
-      failures.push({
-        issue: "Missing sampleTag in m365agents.yml",
-        fix: `Add 'additionalMetadata.sampleTag: ${repository}:${sampleId}'`
-      });
-    }
-    
-    if (sampleTagMismatch) {
-      failures.push({
-        issue: "sampleTag name doesn't match sample id",
-        fix: `Update sampleTag to '${repository}:${sampleId}'`
-      });
+    for (const line of lines) {
+      const trimmedLine = line.trim();
+      if (trimmedLine.startsWith("❌")) {
+        // Extract the error message after ❌
+        const errorMsg = trimmedLine.replace(/^❌\s*/, "").trim();
+        if (errorMsg) {
+          failures.push(errorMsg);
+        }
+      } else if (trimmedLine.startsWith("⚠️")) {
+        const warnMsg = trimmedLine.replace(/^⚠️\s*/, "").trim();
+        if (warnMsg) {
+          warnings.push(warnMsg);
+        }
+      }
     }
 
     // Summary section
@@ -150,27 +141,26 @@ Example:
     if (failures.length > 0) {
       console.log(`\n❌ FAILED VALIDATIONS (${failures.length}):\n`);
       failures.forEach((f, i) => {
-        console.log(`   ${i + 1}. ${f.issue}`);
+        console.log(`   ${i + 1}. ${f}`);
       });
       
-      console.log(`\n📝 REQUIRED FIXES:\n`);
-      console.log(`   File: ${path.join(samplePath, "m365agents.yml")}`);
-      console.log(`   (or teamsapp.yml if that's the config file name)\n`);
-      
-      failures.forEach((f, i) => {
-        console.log(`   ${i + 1}. ${f.fix}`);
-      });
-      
-      // Show example fix
-      console.log(`\n📋 EXAMPLE FIX FOR sampleTag:\n`);
-      console.log(`   Add the following at the end of m365agents.yml:\n`);
-      console.log(`   additionalMetadata:`);
-      console.log(`     sampleTag: ${repository}:${sampleId}`);
+      if (warnings.length > 0) {
+        console.log(`\n⚠️  WARNINGS (${warnings.length}):\n`);
+        warnings.forEach((w, i) => {
+          console.log(`   ${i + 1}. ${w}`);
+        });
+      }
       
       console.log(`\n⚠️  Please fix these issues before submitting a PR.`);
       process.exit(1);
     } else {
       console.log(`\n✅ ALL CRITICAL VALIDATIONS PASSED!`);
+      if (warnings.length > 0) {
+        console.log(`\n⚠️  WARNINGS (${warnings.length}):\n`);
+        warnings.forEach((w, i) => {
+          console.log(`   ${i + 1}. ${w}`);
+        });
+      }
       console.log(`\n   The sample is ready for PR submission.`);
       console.log(`   Note: Warnings can be addressed in follow-up PRs.`);
     }
