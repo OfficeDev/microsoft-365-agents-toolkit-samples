@@ -4,6 +4,7 @@
 import fs from "fs-extra";
 import path from "path";
 import YAML from "yaml";
+import semver from "semver";
 
 import { Result } from "../resultType";
 import { detectProjectType, getExpectedSampleId } from "../projectDetector";
@@ -102,6 +103,9 @@ const optionalLifecycleActions = [
   },
 ];
 
+// Minimum version required for sampleTag support
+const MIN_VERSION_FOR_SAMPLE_TAG = "1.2.0";
+
 /**
  * Rule 1: no projectId
  * Rule 2: has provision lifecycle actions
@@ -110,6 +114,7 @@ const optionalLifecycleActions = [
  * Rule 5: provision has 'teamsApp/create' action which has TEAMS_APP_ID env variable
  * Rule 6: has sampleTag with format 'repo:name'
  * Rule 7: sampleTag name must match sample id (folder name)
+ * Rule 8: version must be >= v1.2 to support sampleTag
  *
  * @param projectDir root directory of the project
  * @returns validation result
@@ -141,6 +146,35 @@ export default async function validateTeamsAppYaml(
     result.failed.push(`Project should NOT have projectId in m365agents.yml.`);
   } else {
     result.passed.push(`Project has no projectId in m365agents.yml.`);
+  }
+
+  // Rule 8: version check (must be >= v1.2 for sampleTag support)
+  const version = yamlData?.version as string | undefined;
+  if (version) {
+    // Parse version like "v1.9" or "1.9" to extract the numeric part and convert to semver
+    const versionMatch = version.match(/^v?(\d+)(?:\.(\d+))?/);
+    if (versionMatch) {
+      const major = versionMatch[1];
+      const minor = versionMatch[2] || "0";
+      const semverVersion = `${major}.${minor}.0`;
+      const coercedVersion = semver.coerce(semverVersion);
+      
+      if (coercedVersion && semver.gte(coercedVersion, MIN_VERSION_FOR_SAMPLE_TAG)) {
+        result.passed.push(
+          `Version (${version}) supports sampleTag (>= v1.2).`
+        );
+      } else {
+        result.failed.push(
+          `Version (${version}) must be >= v1.2 to support sampleTag.`
+        );
+      }
+    } else {
+      result.failed.push(
+        `Version (${version}) is not a valid version format.`
+      );
+    }
+  } else {
+    result.failed.push(`Project should have version field in m365agents.yml.`);
   }
 
   // Rule 2: required lifecycle check

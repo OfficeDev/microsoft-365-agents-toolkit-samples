@@ -141,6 +141,7 @@ Validates `m365agents.yml` file:
 | Rule 5 | `teamsApp/create` must write `TEAMS_APP_ID` environment variable | Error |
 | Rule 6 | Must have `sampleTag` in format `repo:name` (e.g., `TeamsFx-Samples:sample-name`) | Error |
 | Rule 7 | `sampleTag` name must match the `id` field in `samples-config-v3.json` | Error |
+| Rule 8 | `version` must be >= `v1.2` to support sampleTag | Error |
 
 ### 3. App Manifest Validation
 
