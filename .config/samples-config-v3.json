@@ -1,6 +1,7 @@
 {
     "filterOptions": {
         "capabilities": [
+            "Agent365",
             "Declarative Agent",
             "Custom Engine Agent",
             "Tab",
@@ -24,7 +25,106 @@
             "Dev Proxy"
         ]
     },
-    "samples": [
+    "samples": [        {
+            "id": "agent365-langchain-nodejs",
+            "shortId": "agent365-langchain-nodejs",
+            "onboardDate": "2025-11-17",
+            "title": "Langchain Agent with Agent365 SDK in NodeJS",
+            "shortDescription": "Langchain Agent with Agent365 SDK in NodeJS",
+            "fullDescription": "This project integrates a Langchain agent built with Agent365 functionalities. The focus is on hands-on development and testing in LangChain and Agent365.",
+            "types": [
+                "Agent365"
+            ],
+            "tags": [
+                "Agent365",
+                "TS"
+            ],
+            "time": "5min to run",
+            "configuration": "Ready for debug",
+            "thumbnailPath": "images/langchain-thumbnail.png",
+            "suggested": false,
+            "downloadUrlInfo": {
+                "owner": "microsoft",
+                "repository": "Agent365-Samples",
+                "ref": "main",
+                "dir": "nodejs/langchain/sample-agent"
+            }
+        },
+        {
+            "id": "agent365-agentframework-python",
+            "shortId": "agent365-agentframework-python",
+            "onboardDate": "2025-11-17",
+            "title": "Agent Framework Agent with Agent365 SDK in Python",
+            "shortDescription": "Agent Framework Agent with Agent365 SDK in Python",
+            "fullDescription": "This project integrates an agent built on Agent Framework SDK (Python) with A365 functionalities. The focus is on hands-on development and testing.",
+            "types": [
+                "Agent365"
+            ],
+            "tags": [
+                "Agent365",
+                "Python"
+            ],
+            "time": "5min to run",
+            "configuration": "Ready for debug",
+            "thumbnailPath": "images/agentframework-thumbnail.png",
+            "suggested": false,
+            "downloadUrlInfo": {
+                "owner": "microsoft",
+                "repository": "Agent365-Samples",
+                "ref": "main",
+                "dir": "python/agent-framework/sample-agent"
+            }
+        },
+        {
+            "id": "agent365-openai-python",
+            "shortId": "agent365-openai-python",
+            "onboardDate": "2025-11-17",
+            "title": "OpenAI Agent with Agent365 SDK in Python",
+            "shortDescription": "OpenAI Agent with Agent365 SDK in Python",
+            "fullDescription": "This project integrates a Python agent built on Open AI Agents SDK with A365 functionalities. The focus is on hands-on development and testing.",
+            "types": [
+                "Agent365"
+            ],
+            "tags": [
+                "Agent365",
+                "Python"
+            ],
+            "time": "5min to run",
+            "configuration": "Ready for debug",
+            "thumbnailPath": "images/openai-thumbnail.png",
+            "suggested": false,
+            "downloadUrlInfo": {
+                "owner": "microsoft",
+                "repository": "Agent365-Samples",
+                "ref": "main",
+                "dir": "python/openai/sample-agent"
+            }
+        },
+        {
+            "id": "agent365-claude-nodejs",
+            "shortId": "agent365-claude-nodejs",
+            "onboardDate": "2025-11-17",
+            "title": "Claude Agent with Agent365 SDK in NodeJS",
+            "shortDescription": "Claude Agent with Agent365 SDK in NodeJS",
+            "fullDescription": "This project integrates a NodeJS agent built on Claude Agents SDK with A365 functionalities. The focus is on hands-on development and testing.",
+            "types": [
+                "Agent365"
+            ],
+            "tags": [
+                "Agent365",
+                "TS"
+            ],
+            "time": "5min to run",
+            "configuration": "Ready for debug",
+            "thumbnailPath": "images/claude-thumbnail.png",
+            "suggested": false,
+            "downloadUrlInfo": {
+                "owner": "microsoft",
+                "repository": "Agent365-Samples",
+                "ref": "main",
+                "dir": "nodejs/claude/sample-agent"
+            }
+        },
         {
             "id": "hello-world-tab-with-backend",
             "onboardDate": "2021-11-30",
@@ -961,6 +1061,131 @@
             "thumbnailPath": "assets/demo.gif",
             "gifPath": "assets/demo.gif",
             "suggested": false
+        },
+        {
+            "id": "agent365-devin-nodejs",
+            "shortId": "agent365-devin-nodejs",
+            "onboardDate": "2026-1-4",
+            "title": "Devin Agent with Agent365 SDK in NodeJS",
+            "shortDescription": "Devin Agent with Agent365 SDK in NodeJS",
+            "fullDescription": "This sample demonstrates how to build an agent using Devin in Node.js with the Microsoft Agent 365 SDK.",
+            "types": [
+                "Agent365"
+            ],
+            "tags": [
+                "Agent365",
+                "TS"
+            ],
+            "time": "5min to run",
+            "configuration": "Manual configurations required",
+            "thumbnailPath": "images/thumbnail.png",
+            "suggested": false,
+            "downloadUrlInfo": {
+                "owner": "microsoft",
+                "repository": "Agent365-Samples",
+                "ref": "main",
+                "dir": "nodejs/devin/sample-agent"
+            }
+        },
+        {
+            "id": "agent365-n8n-nodejs",
+            "shortId": "agent365-n8n-nodejs",
+            "onboardDate": "2026-1-4",
+            "title": "N8n Agent with Agent365 SDK in NodeJS",
+            "shortDescription": "N8n Agent with Agent365 SDK in NodeJS",
+            "fullDescription": "This sample demonstrates how to build an agent using n8n in Node.js with the Microsoft Agent 365 SDK.",
+            "types": [
+                "Agent365"
+            ],
+            "tags": [
+                "Agent365",
+                "TS"
+            ],
+            "time": "5min to run",
+            "configuration": "Manual configurations required",
+            "thumbnailPath": "images/thumbnail.png",
+            "suggested": false,
+            "downloadUrlInfo": {
+                "owner": "microsoft",
+                "repository": "Agent365-Samples",
+                "ref": "main",
+                "dir": "nodejs/n8n/sample-agent"
+            }
+        },
+        {
+            "id": "agent365-openai-nodejs",
+            "shortId": "agent365-openai-nodejs",
+            "onboardDate": "2026-1-4",
+            "title": "OpenAI Agent with Agent365 SDK in NodeJS",
+            "shortDescription": "OpenAI Agent with Agent365 SDK in NodeJS",
+            "fullDescription": "This sample demonstrates how to build an agent using OpenAI in Node.js with the Microsoft Agent 365 SDK.",
+            "types": [
+                "Agent365"
+            ],
+            "tags": [
+                "Agent365",
+                "TS"
+            ],
+            "time": "5min to run",
+            "configuration": "Manual configurations required",
+            "thumbnailPath": "images/thumbnail.png",
+            "suggested": false,
+            "downloadUrlInfo": {
+                "owner": "microsoft",
+                "repository": "Agent365-Samples",
+                "ref": "main",
+                "dir": "nodejs/openai/sample-agent"
+            }
+        },
+        {
+            "id": "agent365-perplexity-nodejs",
+            "shortId": "agent365-perplexity-nodejs",
+            "onboardDate": "2026-1-4",
+            "title": "Perplexity Agent with Agent365 SDK in NodeJS",
+            "shortDescription": "Perplexity Agent with Agent365 SDK in NodeJS",
+            "fullDescription": "This sample demonstrates how to build an agent using Perplexity in Node.js with the Microsoft Agent 365 SDK.",
+            "types": [
+                "Agent365"
+            ],
+            "tags": [
+                "Agent365",
+                "TS"
+            ],
+            "time": "5min to run",
+            "configuration": "Manual configurations required",
+            "thumbnailPath": "images/thumbnail.png",
+            "suggested": false,
+            "downloadUrlInfo": {
+                "owner": "microsoft",
+                "repository": "Agent365-Samples",
+                "ref": "main",
+                "dir": "nodejs/perplexity/sample-agent"
+            }
+        },
+        {
+            "id": "agent365-vercel-sdk-nodejs",
+            "shortId": "agent365-vercel-sdk-nodejs",
+            "onboardDate": "2026-1-4",
+            "title": "Vercel-sdk Agent with Agent365 SDK in NodeJS",
+            "shortDescription": "Vercel-sdk Agent with Agent365 SDK in NodeJS",
+            "fullDescription": "This sample demonstrates how to build an agent using Vercel-sdk in Node.js with the Microsoft Agent 365 SDK.",
+            "types": [
+                "Agent365"
+            ],
+            "tags": [
+                "Agent365",
+                "TS"
+            ],
+            "time": "5min to run",
+            "configuration": "Manual configurations required",
+            "thumbnailPath": "images/thumbnail.png",
+            "suggested": false,
+            "downloadUrlInfo": {
+                "owner": "microsoft",
+                "repository": "Agent365-Samples",
+                "ref": "main",
+                "dir": "nodejs/vercel-sdk/sample-agent"
+            }
         }
     ]
 }
