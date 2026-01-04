@@ -1041,7 +1041,7 @@
         {
             "id": "agent365-devin-nodejs",
             "shortId": "agent365-devin-nodejs",
-            "onboardDate": "2025-12-25",
+            "onboardDate": "2026-1-4",
             "title": "Devin Agent with Agent365 SDK in NodeJS",
             "shortDescription": "Devin Agent with Agent365 SDK in NodeJS",
             "fullDescription": "This sample demonstrates how to build an agent using Devin in Node.js with the Microsoft Agent 365 SDK.",
@@ -1066,7 +1066,7 @@
         {
             "id": "agent365-n8n-nodejs",
             "shortId": "agent365-n8n-nodejs",
-            "onboardDate": "2025-12-25",
+            "onboardDate": "2026-1-4",
             "title": "N8n Agent with Agent365 SDK in NodeJS",
             "shortDescription": "N8n Agent with Agent365 SDK in NodeJS",
             "fullDescription": "This sample demonstrates how to build an agent using n8n in Node.js with the Microsoft Agent 365 SDK.",
@@ -1091,7 +1091,7 @@
         {
             "id": "agent365-openai-nodejs",
             "shortId": "agent365-openai-nodejs",
-            "onboardDate": "2025-12-25",
+            "onboardDate": "2026-1-4",
             "title": "OpenAI Agent with Agent365 SDK in NodeJS",
             "shortDescription": "OpenAI Agent with Agent365 SDK in NodeJS",
             "fullDescription": "This sample demonstrates how to build an agent using OpenAI in Node.js with the Microsoft Agent 365 SDK.",
@@ -1116,7 +1116,7 @@
         {
             "id": "agent365-perplexity-nodejs",
             "shortId": "agent365-perplexity-nodejs",
-            "onboardDate": "2025-12-25",
+            "onboardDate": "2026-1-4",
             "title": "Perplexity Agent with Agent365 SDK in NodeJS",
             "shortDescription": "Perplexity Agent with Agent365 SDK in NodeJS",
             "fullDescription": "This sample demonstrates how to build an agent using Perplexity in Node.js with the Microsoft Agent 365 SDK.",
@@ -1141,7 +1141,7 @@
         {
             "id": "agent365-vercel-sdk-nodejs",
             "shortId": "agent365-vercel-sdk-nodejs",
-            "onboardDate": "2025-12-25",
+            "onboardDate": "2026-1-4",
             "title": "Vercel-sdk Agent with Agent365 SDK in NodeJS",
             "shortDescription": "Vercel-sdk Agent with Agent365 SDK in NodeJS",
             "fullDescription": "This sample demonstrates how to build an agent using Vercel-sdk in Node.js with the Microsoft Agent 365 SDK.",
