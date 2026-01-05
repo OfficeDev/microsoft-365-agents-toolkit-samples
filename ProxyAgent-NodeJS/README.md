@@ -105,7 +105,7 @@ atk deploy --env dev
 
 ### Required Tools
 
-- **Node.js 18, 20, or 22** - [Download](https://nodejs.org/)
+- **Node.js 22 or 24** - [Download](https://nodejs.org/)
 - **Azure CLI** - [Install Guide](https://learn.microsoft.com/cli/azure/install-azure-cli)
 - **Microsoft 365 Agents Toolkit CLI** - [Install Guide](https://learn.microsoft.com/en-us/microsoftteams/platform/toolkit/microsoft-365-agents-toolkit-cli#get-started)
 - **Visual Studio Code** with recommended extensions (TypeScript, ESLint)
