@@ -1058,7 +1058,7 @@
             ],
             "time": "10 mins to run",
             "configuration": "Manual configurations required",
-            "thumbnailPath": "assets/thumbnail.png",
+            "thumbnailPath": "assets/thumbnails.png",
             "gifPath": "assets/demo.gif",
             "suggested": false
         },
