@@ -48,9 +48,9 @@ consider the submission correct even if titles, labels, colors, or other propert
     const prompt = new ChatPrompt({
         instructions: systemMessage,
         model: new OpenAIChatModel({
-            model: process.env.AOAI_MODEL!,
-            apiKey: process.env.AOAI_API_KEY!,
-            endpoint: process.env.AOAI_ENDPOINT!,
+            model: process.env.AZURE_OPENAI_DEPLOYMENT_NAME!,
+            apiKey: process.env.AZURE_OPENAI_API_KEY!,
+            endpoint: process.env.AZURE_OPENAI_ENDPOINT!,
             apiVersion: '2025-04-01-preview',
         }),
     }).function(
@@ -90,7 +90,31 @@ consider the submission correct even if titles, labels, colors, or other propert
 ************
 [END DATA]`;
             const res = await prompt.send(userPrompt, { autoFunctionCalling: false });
-            const functionCallArgs = res.function_calls?.[0].arguments;
+            
+            // Parse function call from content (model returns JSON in content when autoFunctionCalling is false)
+            let functionCallArgs: { result?: boolean; reasoning?: string } | undefined;
+            
+            if (res.function_calls?.[0]?.arguments) {
+                functionCallArgs = res.function_calls[0].arguments;
+            } else if (res.content) {
+                // Try to parse JSON-like content without using a complex, backtracking-prone regex
+                try {
+                    const resultMatch = res.content.match(/"result"\s*:\s*(true|false)/);
+                    const reasoningMatch = res.content.match(/"reasoning"\s*:\s*"((?:[^"\\]|\\.)*)"/);
+
+                    if (resultMatch && reasoningMatch) {
+                        const rawReasoning = reasoningMatch[1];
+                        functionCallArgs = {
+                            result: resultMatch[1] === 'true',
+                            reasoning: rawReasoning
+                                .replace(/\\"/g, '"')
+                                .replace(/\\n/g, '\n')
+                        };
+                    }
+                } catch (e) {
+                    // Parsing failed, will use fallback
+                }
+            }
 
             return {
                 result: functionCallArgs?.result || false,

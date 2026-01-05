@@ -39,7 +39,7 @@ The Data Analyst Agent v2 transforms how teams interact with data by providing a
 2. Configure environment variables:
     - Open the project in Visual Studio Code
     - The Microsoft 365 Agents Toolkit will automatically generate the required environment files
-    - Update the `.localConfigs` file (or `.localConfigs.playground` if debug with playground) with your Azure OpenAI configuration:
+    - Update the `.env.local.user` file (or `.env.playground.user` if debug with playground) with your Azure OpenAI configuration:
       - `SECRET_AZURE_OPENAI_API_KEY`: Your Azure OpenAI API key
       - `AZURE_OPENAI_ENDPOINT`: Your Azure OpenAI endpoint
       - `AZURE_OPENAI_DEPLOYMENT_NAME`: Your Azure OpenAI deployment name (e.g., gpt-4o)
@@ -152,6 +152,23 @@ Both evaluations will provide detailed feedback including:
 | Date         | Author     | Comments                               |
 | ------------ | ---------- | -------------------------------------- |
 | Oct 31, 2025  | qinzhouxu   | Onboard sample with Microsoft Teams SDK |
+| Dec 16, 2025  | quke      | fix issue and onboard sample           |
+
+## Known Issues
+
+### Service Principal Creation Failure During Local Debug (Admin Accounts Only)
+
+**Impact**: Local debug only. This does not affect debugging in Microsoft 365 Agents Playground or remote deployment to Azure.
+
+**Symptom**: When running local debug with an M365 admin account, you may encounter the following error:
+
+```
+The client application <client-id> is missing service principal in the tenant <tenant-id>.
+```
+
+**Root Cause**: Teams Developer Portal has a known issue where it cannot automatically create a service principal for M365 admin accounts.
+
+**Solution**: Use a non-admin M365 account for local debugging. You can create a regular user account in your M365 tenant and use it for the local debug workflow.
 
 ## Feedback
 We really appreciate your feedback! If you encounter any issue or error, please report issues to us following the [Supporting Guide](https://github.com/OfficeDev/TeamsFx-Samples/blob/dev/SUPPORT.md). Meanwhile you can make [recording](https://aka.ms/teamsfx-record) of your journey with our product, they really make the product better. Thank you!

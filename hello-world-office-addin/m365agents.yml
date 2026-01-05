@@ -3,6 +3,9 @@
 # Visit https://aka.ms/teamsfx-actions for details on actions
 version: v1.9
 
+additionalMetadata:
+  sampleTag: TeamsFx-Samples:hello-world-office-addin
+
 environmentFolderPath: ./env
 
 # Triggered when 'teamsapp provision' is executed
@@ -57,4 +60,3 @@ deploy:
     with:
       args: '@azure/static-web-apps-cli deploy ./dist -d
         ${{SECRET_TAB_SWA_DEPLOYMENT_TOKEN}} --env production'
-projectId: a11edfe8-50fd-4961-b585-63d7fab2532d

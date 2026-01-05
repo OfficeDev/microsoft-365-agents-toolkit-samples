@@ -24,7 +24,7 @@ export function generateChartCard(
   const card = new AdaptiveCard();
   card.version = '1.5';
 
-  console.log('Generating chart card:', chartType, rows, options);
+  // console.log('Generating chart card:', chartType, rows, options);
   const {
     title = 'Chart',
     xAxisTitle = options?.xAxisTitle,
@@ -96,6 +96,6 @@ export function generateChartCard(
 
   card.body.push(new TextBlock(title, { weight: 'Bolder', size: 'Medium' }));
   card.body.push(chart);
-  console.log('Generated card:', card);
+  // console.log('Generated card:', card);
   return cardAttachment('adaptive', card);
 }

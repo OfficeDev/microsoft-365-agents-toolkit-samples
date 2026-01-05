@@ -4,7 +4,7 @@
 version: v1.11
 
 additionalMetadata:
-  sampleTag: TeamsFx-Samples:coffee-agent
+  sampleTag: TeamsFx-Samples:data-analyst-agent-v2
 
 environmentFolderPath: ./env
 

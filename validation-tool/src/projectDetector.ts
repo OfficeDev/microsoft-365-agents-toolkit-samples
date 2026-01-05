@@ -15,6 +15,42 @@ export interface ProjectPaths {
   displayPrefix: string;
 }
 
+/**
+ * Get config paths to try for finding samples-config-v3.json.
+ * Supports external config path via environment variable SAMPLE_VALIDATOR_CONFIG_PATH.
+ */
+function getConfigPaths(projectDir: string): string[] {
+  const paths: string[] = [];
+  
+  // Check for external config path from environment variable (for validating external samples)
+  const externalConfigPath = process.env.SAMPLE_VALIDATOR_CONFIG_PATH;
+  if (externalConfigPath && fs.existsSync(externalConfigPath)) {
+    paths.push(externalConfigPath);
+  }
+  
+  // Default paths relative to project
+  paths.push(
+    path.join(projectDir, "..", ".config", "samples-config-v3.json"),
+    path.join(projectDir, ".config", "samples-config-v3.json"),
+  );
+  
+  return paths;
+}
+
+/**
+ * Get expected sample ID. For external samples, this can be overridden via environment variable.
+ */
+export function getExpectedSampleId(projectDir: string): string {
+  // Check for expected sample ID from environment variable (for validating external samples)
+  const expectedId = process.env.SAMPLE_VALIDATOR_EXPECTED_ID;
+  if (expectedId) {
+    return expectedId;
+  }
+  
+  // Default: use folder name
+  return path.basename(projectDir);
+}
+
 interface SampleConfig {
   id: string;
   tags: string[];
@@ -35,13 +71,10 @@ export interface SampleImagePaths {
  * Get image paths (thumbnailPath and gifPath) from samples-config-v3.json
  */
 export async function getSampleImagePaths(projectDir: string): Promise<SampleImagePaths> {
-  const sampleId = path.basename(projectDir);
+  const sampleId = getExpectedSampleId(projectDir);
   
-  // Try to find samples-config-v3.json relative to the project
-  const configPaths = [
-    path.join(projectDir, "..", ".config", "samples-config-v3.json"),
-    path.join(projectDir, ".config", "samples-config-v3.json"),
-  ];
+  // Try to find samples-config-v3.json
+  const configPaths = getConfigPaths(projectDir);
   
   for (const configPath of configPaths) {
     if (await fs.exists(configPath)) {
@@ -67,13 +100,10 @@ export async function getSampleImagePaths(projectDir: string): Promise<SampleIma
  * Check if a sample is a C# project by reading samples-config-v3.json
  */
 async function isCSharpFromConfig(projectDir: string): Promise<boolean> {
-  const sampleId = path.basename(projectDir);
+  const sampleId = getExpectedSampleId(projectDir);
   
-  // Try to find samples-config-v3.json relative to the project
-  const configPaths = [
-    path.join(projectDir, "..", ".config", "samples-config-v3.json"),
-    path.join(projectDir, ".config", "samples-config-v3.json"),
-  ];
+  // Try to find samples-config-v3.json
+  const configPaths = getConfigPaths(projectDir);
   
   for (const configPath of configPaths) {
     if (await fs.exists(configPath)) {
