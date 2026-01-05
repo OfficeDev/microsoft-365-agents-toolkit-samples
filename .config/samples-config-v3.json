@@ -1043,7 +1043,7 @@
             "shortId": "ProxyAgent-NodeJS",
             "onboardDate": "2025-12-29",
             "title": "Microsoft Foundry Agent to M365 Copilot With SSO in NodeJS",
-            "shortDescription": "Sample to connect an Microsoft Foundry Agent to M365 Copilot using M365 Agent SDK. Leverage SSO to pass user token to Microsoft Foundry.",
+            "shortDescription": "Sample to connect a Microsoft Foundry Agent to M365 Copilot using M365 Agent SDK. Leverage SSO to pass user token to Microsoft Foundry.",
             "fullDescription": "This solution demonstrates how to integrate a Microsoft Foundry agent with Microsoft Teams and Microsoft 365 Copilot, providing a seamless experience for users to interact with powerful AI capabilities directly within their productivity tools. Built with Node.js/TypeScript and the Microsoft 365 Agents SDK.",
             "types": [
                 "Custom Engine Agent"
@@ -1053,7 +1053,7 @@
                 "Azure",
                 "SSO",
                 "Agent",
-                "M365 Agent SDK"
+                "Microsoft Foundry"
             ],
             "time": "5 mins to run",
             "configuration": "Manual configurations required",
