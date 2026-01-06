@@ -1020,9 +1020,9 @@
             "id": "ProxyAgent-CSharp",
             "shortId": "ProxyAgent-CSharp",
             "onboardDate": "2025-11-14",
-            "title": "Microsoft Foundry Agent to M365 Copilot With SSO",
-            "shortDescription": "Sample to connect an AI Foundry Agent to M365 Copilot using M365 Agent SDK. Leverage SSO to pass user token to AI Foundry.",
-            "fullDescription": "This sample shows how to integrate AI Foundry agents—grounded in SharePoint—into Microsoft 365 Copilot and Teams using Agent Framework v2 and the M365 Agents SDK. It turns a complex, multi-day setup into a secure, two-click experience.",
+            "title": "Microsoft Foundry Agent to Microsoft 365 Copilot With SSO",
+            "shortDescription": "Sample to connect an AI Foundry Agent to Microsoft 365 Copilot using Microsoft 365 Agent SDK. Leverage SSO to pass user token to AI Foundry.",
+            "fullDescription": "This sample shows how to integrate AI Foundry agents—grounded in SharePoint—into Microsoft 365 Copilot and Teams using Agent Framework v2 and the Microsoft 365 Agents SDK. It turns a complex, multi-day setup into a secure, two-click experience.",
             "types": [
                 "Custom Engine Agent"
             ],
@@ -1042,8 +1042,8 @@
             "id": "ProxyAgent-NodeJS",
             "shortId": "ProxyAgent-NodeJS",
             "onboardDate": "2025-12-29",
-            "title": "Microsoft Foundry Agent to M365 Copilot With SSO",
-            "shortDescription": "Sample to connect a Microsoft Foundry Agent to M365 Copilot using M365 Agent SDK. Leverage SSO to pass user token to Microsoft Foundry.",
+            "title": "Microsoft Foundry Agent to Microsoft 365 Copilot With SSO",
+            "shortDescription": "Sample to connect a Microsoft Foundry Agent to Microsoft 365 Copilot using Microsoft 365 Agent SDK. Leverage SSO to pass user token to Microsoft Foundry.",
             "fullDescription": "This solution demonstrates how to integrate a Microsoft Foundry agent with Microsoft Teams and Microsoft 365 Copilot, providing a seamless experience for users to interact with powerful AI capabilities directly within their productivity tools. Built with Node.js/TypeScript and the Microsoft 365 Agents SDK.",
             "types": [
                 "Custom Engine Agent"
