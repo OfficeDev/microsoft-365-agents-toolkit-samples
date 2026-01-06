@@ -1,34 +1,26 @@
 import { ResponseType, Client } from "@microsoft/microsoft-graph-client";
-import { TokenCredentialAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials";
 import { CardFactory, TurnContext } from "@microsoft/agents-hosting";
-import { OnBehalfOfCredential } from "@azure/identity";
 import { SSOCommand } from "./SSOCommand";
-import oboAuthConfig from "../authConfig";
 import { Activity } from "@microsoft/agents-activity";
 
 export class ShowUserProfile implements SSOCommand {
   commandMessage = "show";
 
-  async operationWithSSOToken(context: TurnContext, ssoToken: string) {
+  // Note: The token passed here is already the exchanged access token (via OBO in teamsBotSsoPrompt),
+  // NOT the original SSO token. So we can use it directly with Graph API.
+  async operationWithSSOToken(context: TurnContext, accessToken: string) {
     await context.sendActivity(
       "Retrieving user information from Microsoft Graph ..."
     );
 
-    // Call Microsoft Graph half of user
-    const oboCredential = new OnBehalfOfCredential({...oboAuthConfig, userAssertionToken: ssoToken });
-
-    // Create an instance of the TokenCredentialAuthenticationProvider by passing the tokenCredential instance and options to the constructor
-    const authProvider = new TokenCredentialAuthenticationProvider(
-      oboCredential,
-      {
-        scopes: ["User.Read"],
-      }
-    );
-
-    // Initialize Graph client instance with authProvider
-    const graphClient = Client.initWithMiddleware({
-      authProvider: authProvider,
+    // Use the already-exchanged access token directly
+    // No need to do OBO again - it was already done in teamsBotSsoPrompt.ts
+    const graphClient = Client.init({
+      authProvider: (done) => {
+        done(null, accessToken);
+      },
     });
+    
     const me = await graphClient.api("/me").get();
     if (me) {
       await context.sendActivity(
