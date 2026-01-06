@@ -94,15 +94,16 @@ export class SSODialog extends ComponentDialog {
 
   async executeOperationWithSSO(stepContext: any) {
     const tokenResponse = stepContext.result;
-    if (!tokenResponse || !tokenResponse.ssoToken) {
+    if (!tokenResponse || !tokenResponse.token) {
       throw new Error("There is an issue while trying to sign you in and run your command. Please try again.");
     }
-    // Once got ssoToken, run operation that depends on ssoToken
+    // Once got access token (already exchanged via OBO), run operation
     const SSOCommand = SSOCommandMap.get(stepContext.options.commandMessage);
     if (!SSOCommand) {
       throw new Error("Can not get sso operation. Please try again.");
     }
-    await SSOCommand.operationWithSSOToken(stepContext.context, tokenResponse.ssoToken);
+    // Pass the already-exchanged access token, not the ssoToken
+    await SSOCommand.operationWithSSOToken(stepContext.context, tokenResponse.token);
     return await stepContext.endDialog();
   }
 
