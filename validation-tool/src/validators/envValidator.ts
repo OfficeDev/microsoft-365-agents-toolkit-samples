@@ -8,7 +8,7 @@ import { Result } from "../resultType";
 import { detectProjectType } from "../projectDetector";
 
 /**
- * Rule 1: env files shouldn't contain actual value for the environment variables except for TEAMSFX_ENV and TEAMS_APP_NAME
+ * Rule 1: env files shouldn't contain actual value for the environment variables except for TEAMSFX_ENV, TEAMS_APP_NAME and A365 SDK variables
  *
  * @param projectDir root directory of the project
  * @returns validation result
@@ -51,7 +51,9 @@ export default async function validateEnvFiles(
       if (
         kv.name === "TEAMSFX_ENV" ||
         kv.name === "APP_NAME_SUFFIX" ||
-        kv.name === "TEAMS_APP_NAME"
+        kv.name === "TEAMS_APP_NAME" ||
+        kv.name.startsWith("connectionsMap__0") ||
+        kv.name.startsWith("agentic_")
       ) {
         continue;
       } else if (kv.value !== "") {
