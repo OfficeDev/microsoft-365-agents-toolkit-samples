@@ -1059,7 +1059,7 @@
             "configuration": "Manual configurations required",
             "thumbnailPath": "images/screen009.jpg",
             "gifPath": "images/screen009.jpg",
-            "suggested": false
+            "suggested": true
         },
         {
             "id": "data-analyst-agent-v2",
