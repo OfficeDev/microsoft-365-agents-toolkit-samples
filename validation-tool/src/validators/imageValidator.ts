@@ -5,12 +5,23 @@ import fs from "fs-extra";
 import path from "path";
 import sizeOf from "image-size";
 import { Result } from "../resultType";
-import { getSampleImagePaths } from "../projectDetector";
+import { getSampleImagePaths, getExpectedSampleId } from "../projectDetector";
+
+/**
+ * Check if a sample is a codespaces sample (name ends with "-codespaces").
+ * Codespaces samples are not in samples-config-v3.json, so config-dependent
+ * validations (like thumbnail from config) should be skipped.
+ */
+function isCodespacesSample(projectDir: string): boolean {
+  const sampleId = getExpectedSampleId(projectDir);
+  return sampleId.endsWith("-codespaces");
+}
 
 /**
  * Rule 1: Images should have 1600*920/800*460 resolution or same ratio.
  * - Thumbnail is required to display in sample gallery (path from samples-config-v3.json).
  * - GIF is fully optional - both existence and aspect ratio are warnings only.
+ * - Codespaces samples are not in config, so thumbnail validation is skipped for them.
  * 
  * @param projectDir root directory of the project
  * @returns validation result
@@ -23,11 +34,16 @@ export default async function validateImage(projectDir: string): Promise<Result>
     warning: [],
   };
   
+  // Check if this is a codespaces sample (not in samples-config-v3.json)
+  const isCodespaces = isCodespacesSample(projectDir);
+  
   // Get image paths from samples-config-v3.json
   const imagePaths = await getSampleImagePaths(projectDir);
   
-  // Check thumbnail (required for sample gallery)
-  if (imagePaths.thumbnailPath) {
+  // Check thumbnail (required for sample gallery, but skip for codespaces samples)
+  if (isCodespaces) {
+    result.passed.push(`Thumbnail validation skipped for codespaces sample (not in samples-config-v3.json).`);
+  } else if (imagePaths.thumbnailPath) {
     const thumbnailFullPath = path.join(projectDir, imagePaths.thumbnailPath);
     if (await fs.exists(thumbnailFullPath)) {
       const dimensions = sizeOf(thumbnailFullPath);
