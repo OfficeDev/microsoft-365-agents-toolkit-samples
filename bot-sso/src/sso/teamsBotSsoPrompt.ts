@@ -1,10 +1,7 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-// Note: We use @azure/msal-node directly instead of @azure/identity's OnBehalfOfCredential
-// because there can be version conflicts between @azure/identity and @azure/msal-node
-// that cause "network_error: Network request failed" during OBO token exchange.
-import { ConfidentialClientApplication } from "@azure/msal-node";
+import { AccessToken, OnBehalfOfCredential } from "@azure/identity";
 import {
   CardFactory,
   MessageFactory,
@@ -368,29 +365,12 @@ export class TeamsBotSsoPrompt extends Dialog {
         );
       } else {
         const ssoToken = context.activity.value.token;
-        
-        // Use MSAL directly instead of @azure/identity's OnBehalfOfCredential
-        // to avoid version conflicts that cause "network_error: Network request failed"
-        const msalConfig = {
-          auth: {
-            clientId: this.authConfig.clientId,
-            clientSecret: this.authConfig.clientSecret,
-            authority: `https://login.microsoftonline.com/${this.authConfig.tenantId}`,
-          },
-        };
-        const cca = new ConfidentialClientApplication(msalConfig);
-        
+        const credential = new OnBehalfOfCredential({...this.authConfig, userAssertionToken: ssoToken });
+        let exchangedToken: AccessToken | null;
         try {
-          const oboRequest = {
-            oboAssertion: ssoToken,
-            scopes: this.settings.scopes,
-          };
-          
-          console.log("Attempting OBO token exchange with MSAL...");
-          const result = await cca.acquireTokenOnBehalfOf(oboRequest);
+          exchangedToken = await credential.getToken(this.settings.scopes);
 
-          if (result && result.accessToken) {
-            console.log("OBO token exchange succeeded!");
+          if (exchangedToken) {
             await context.sendActivity(
               this.getTokenExchangeInvokeResponse(StatusCodes.OK, "", context.activity.value.id)
             );
@@ -400,12 +380,11 @@ export class TeamsBotSsoPrompt extends Dialog {
               ssoToken: ssoToken,
               ssoTokenExpiration: new Date(ssoTokenExpiration * 1000).toISOString(),
               connectionName: "",
-              token: result.accessToken,
-              expiration: result.expiresOn ? result.expiresOn.getTime().toString() : "",
+              token: exchangedToken.token,
+              expiration: exchangedToken.expiresOnTimestamp.toString(),
             };
           }
-        } catch (error: any) {
-          console.error("OBO token exchange failed:", error.message);
+        } catch (error) {
           const warningMsg = "The bot is unable to exchange token. Ask for user consent.";
           console.info(warningMsg);
           await context.sendActivity(
