@@ -140,7 +140,7 @@ Validates `m365agents.yml` file:
 | Rule 4 | Should have `publish` stage with `teamsApp/publishAppPackage` action | Warning |
 | Rule 5 | `teamsApp/create` must write `TEAMS_APP_ID` environment variable | Error |
 | Rule 6 | Must have `sampleTag` in format `repo:name` (e.g., `TeamsFx-Samples:sample-name`) | Error |
-| Rule 7 | `sampleTag` name must match the `id` field in `samples-config-v3.json` | Error |
+| Rule 7 | `sampleTag` name must match the `id` field in `samples-config-v3.json` (skipped if sample not in config) | Error |
 | Rule 8 | `version` must be >= `v1.2` to support sampleTag | Error |
 
 ### 3. App Manifest Validation
@@ -178,7 +178,9 @@ Validates images based on paths specified in `samples-config-v3.json` (`thumbnai
 | GIF (from `gifPath`) | File should exist (optional) | Warning |
 | GIF aspect ratio | Aspect ratio **40:23** (optional) | Warning |
 
-**Note**: If `thumbnailPath` or `gifPath` is not specified in `samples-config-v3.json`, the validator falls back to checking `assets/thumbnail.png` and `assets/sampleDemo.gif`.
+**Notes**: 
+- If `thumbnailPath` or `gifPath` is not specified in `samples-config-v3.json`, the validator falls back to checking `assets/thumbnail.png` and `assets/sampleDemo.gif`.
+- **Codespaces samples** (sample name ends with `-codespaces`) are not in `samples-config-v3.json`, so thumbnail validation is automatically skipped for them.
 
 ### 6. Package.json Validation
 
