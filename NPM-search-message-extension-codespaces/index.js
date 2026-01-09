@@ -32,14 +32,6 @@ adapter.onTurnError = async (context, error) => {
   //       application insights. See https://aka.ms/bottelemetry for telemetry
   //       configuration instructions.
   console.error(`\n [onTurnError] unhandled error: ${error}`);
-
-  // Send a message to the user
-  await context.sendActivity(
-    `The bot encountered an unhandled error:\n ${error.message}`
-  );
-  await context.sendActivity(
-    "To continue to run this bot, please fix the bot source code."
-  );
 };
 
 // Create the bot that will handle incoming messages.
