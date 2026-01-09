@@ -31,7 +31,23 @@
                 "groupChat"
             ],
             "supportsFiles": false,
-            "isNotificationOnly": false
+            "isNotificationOnly": false,
+            "commandLists": [
+                {
+                    "scopes": [
+                        "personal",
+                        "team",
+                        "groupChat"
+                    ],
+                    "commands": [
+                        {
+                            "title": "Help",
+                            "description": "Get help from the bot"
+                        }
+                    ]
+                }
+            ],
+            "endpoint": "https://symmetrical-space-spork-jjppqqp6rg5f4px-3978.app.github.dev/api/messages"
         }
     ],
     "composeExtensions": [],
