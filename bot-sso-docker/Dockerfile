@@ -1,4 +1,4 @@
-FROM node:18.18.0 as development
+FROM node:20.19.6 as development
 ENV PORT=80
 EXPOSE 80
 WORKDIR /usr/src/app
@@ -14,7 +14,7 @@ CMD ["npm", "run", "dev"]
 FROM development as build
 RUN npm run build
 
-FROM node:18.18.0-alpine as production
+FROM node:20.19.6-alpine as production
 ENV PORT=80
 EXPOSE 80
 WORKDIR /usr/src/app

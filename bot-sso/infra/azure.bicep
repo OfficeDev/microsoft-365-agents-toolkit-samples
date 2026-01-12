@@ -46,7 +46,7 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' = {
       appSettings: [
         {
           name: 'WEBSITE_NODE_DEFAULT_VERSION'
-          value: '~18' // Set NodeJS version to 18.x for your site
+          value: '~20' // Set NodeJS version to 18.x for your site
         }
         {
           name: 'WEBSITE_RUN_FROM_PACKAGE'
