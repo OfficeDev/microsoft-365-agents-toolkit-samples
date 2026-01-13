@@ -71,7 +71,7 @@ resource webApp 'Microsoft.Web/sites@2021-02-01' = {
 resource webAppSettings 'Microsoft.Web/sites/config@2021-02-01' = {
   name: '${webAppName}/appsettings'
   properties: {
-    WEBSITE_NODE_DEFAULT_VERSION: '~18'
+    WEBSITE_NODE_DEFAULT_VERSION: '~20'
     WEBSITE_RUN_FROM_PACKAGE: '1'
     clientId: identity.properties.clientId
     tenantId: identity.properties.tenantId
