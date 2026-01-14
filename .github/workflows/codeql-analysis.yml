@@ -32,7 +32,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ["csharp", "javascript"]
+        include:
+          # C# uses 'none' build mode to skip building .atkproj files (Teams Toolkit projects)
+          # which require the Teams Toolkit extension that isn't available in CI environments.
+          # The 'none' mode creates a CodeQL database directly from source without requiring a build.
+          - language: csharp
+            build-mode: none
+          # JavaScript/TypeScript only supports 'none' build mode (interpreted language)
+          - language: javascript
+            build-mode: none
+          # Python only supports 'none' build mode (interpreted language)
+          - language: python
+            build-mode: none
         # CodeQL supports [ 'cpp', 'csharp', 'go', 'java', 'javascript', 'python', 'ruby' ]
         # Learn more about CodeQL language support at https://git.io/codeql-language-support
 
@@ -45,27 +56,16 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
           config-file: .github/codeql/codeql-config.yml
           # If you wish to specify custom queries, you can do so here or in a config file.
           # By default, queries listed here will override any specified in a config file.
           # Prefix the list here with "+" to use these queries and those in the config file.
           # queries: ./path/to/local/query, your-org/your-repo/queries@main
 
-      # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
-      # If this step fails, then you should remove it and run the build manually (see below)
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
-
-      # ℹ️ Command-line programs to run using the OS shell.
-      # 📚 https://git.io/JvXDl
-
-      # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
-      #    and modify them (or add more) to build your code if your project
-      #    uses a compiled language
-
-      #- run: |
-      #   make bootstrap
-      #   make release
+      # No autobuild needed when using 'none' build mode
+      # The 'none' mode analyzes source code directly without compilation,
+      # which avoids issues with .atkproj files that require Teams Toolkit SDK
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3

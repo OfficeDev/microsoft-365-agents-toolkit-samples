@@ -1,115 +1,58 @@
 import { ChatPrompt } from '@microsoft/teams.ai';
 import { OpenAIChatModel } from '@microsoft/teams.openai';
+import { ConsoleLogger } from '@microsoft/teams.common';
 import fs from 'fs';
 import { pathToSrc } from './utils';
 import { chartCreationSchema, executeSqlSchema } from './schema';
-import Database from 'better-sqlite3';
+import initSqlJs, { Database } from 'sql.js';
 import { generateChartCard } from './cards';
 import { Message } from '@microsoft/teams.ai';
 import { Attachment } from '@microsoft/teams.api';
 
+const logger = new ConsoleLogger('data-analyst', { level: 'info' });
+
 const schemaPath = pathToSrc('data/schema.sql');
 const dbSchema = fs.readFileSync(schemaPath, 'utf-8');
 
-const examplesPath = pathToSrc('data/data-analyst-examples.jsonl');
-const examples = JSON.parse(fs.readFileSync(examplesPath, 'utf-8'));
+// Initialize sql.js and database
+let db: Database | null = null;
+const initDb = async () => {
+  if (db) return db;
+  const SQL = await initSqlJs();
+  const dbPath = pathToSrc('data/adventureworks.db');
+  const dbBuffer = fs.readFileSync(dbPath);
+  db = new SQL.Database(dbBuffer);
+  return db;
+};
 
 const systemMessage = `You are an expert data analyst that helps users understand data from the AdventureWorks database.
 Your goal is to provide clear, visual insights by querying data and creating appropriate visualizations.
 
-You are only capable of producing horizontal bar charts, vertical bar charts, line charts, and pie charts.
+You are only capable of producing horizontal bar charts, vertical bar charts, line charts, pie charts, and tables.
 
-For any SQL queries you need to perform, call on the sqlPrompt to generate and execute a SQL query using the execute_sql function.
-Every single time the user wants a graph or chart or table, you MUST call on the cardPrompt to generate the card using the generate_card function.
-Never return a raw JSON response to the user. Always return an Adaptive Card with a chart or table if you are prompted for a graph.
-Look at the examples below to see how to format your input for the cardPrompt.
+IMPORTANT RULES:
+1. You MUST use the provided tools to respond. Never output raw JSON.
+2. When you need data from the database, call the execute_sql tool first.
+3. When you need to display a chart or table, call the generate_card tool.
+4. After using the tools, provide a brief text summary.
 
 Database Schema:
 \`\`\`sql
 ${dbSchema}
 \`\`\`
 
-Examples:
-${examples.map((ex: any) =>
-  `---
-User: ${ex.user_message}
-Assistant: ${JSON.stringify(ex.data_analyst_response, null, 2)}`
-).join('\n')}
+Chart types available for generate_card:
+- verticalBar: For comparing categories
+- horizontalBar: For comparing categories with long labels
+- line: For trends over time
+- pie: For showing proportions
+- table: For detailed data display
 
-For your final response to the user, return a single Adaptive Card with a chart or table, or multiple cards if needed. If you need to return multiple cards, ensure they are all wrapped in a single Adaptive Card response.
-Also provide a text response that summarizes the insights or findings from the data. Keep it brief and do not repeat the chart data.
-You can also return a simple text response chart is needed.`;
+When calling generate_card, format the data as rows like: [["Label1", value1], ["Label2", value2], ...]
+Include options like title, xAxisTitle, yAxisTitle as needed.`;
 
 export const createDataAnalystPrompt = (conversationHistory: Message[] = []) => {
   const conversationAttachments: Attachment[] = [];
-
-  const sqlPromptInstance = new ChatPrompt({
-    instructions: `You are an expert SQL executor. When called on, generate a SQL query given the context that is given by the main prompt and then execute the query using execute_sql function.
-To query the database, use the execute_sql function with a SELECT query.
-Only SELECT queries are allowed. No mutations.
-Database Schema:
-\`\`\`sql
-${dbSchema}
-\`\`\`
-
-Examples:
-${examples.map((ex: any) =>
-      `---
-User: ${ex.user_message}
-Assistant: ${JSON.stringify(ex.data_analyst_response, null, 2)}`
-    ).join('\n')}`,
-    model: new OpenAIChatModel({
-      model: process.env.AZURE_OPENAI_DEPLOYMENT_NAME!,
-      apiKey: process.env.SECRET_AZURE_OPENAI_API_KEY!,
-      endpoint: process.env.AZURE_OPENAI_ENDPOINT!,
-      apiVersion: '2025-04-01-preview'
-    })
-  }).function(
-    'execute_sql',
-    'Executes a SQL SELECT query and returns results',
-    executeSqlSchema,
-    async ({ query }) => {
-      if (!query.trim().toLowerCase().startsWith('select')) {
-        return 'Error: Only SELECT queries are allowed';
-      }
-
-      const forbidden = ['insert', 'update', 'delete', 'drop', 'alter', 'create'];
-      if (forbidden.some(word => query.toLowerCase().includes(word))) {
-        return 'Error: Query contains forbidden operations';
-      }
-
-      try {
-        const dbPath = pathToSrc('data/adventureworks.db');
-        const db = new Database(dbPath, { readonly: true });
-        const rows = db.prepare(query).all();
-        db.close();
-        if (!rows.length) {
-          return 'No results found for your query.';
-        }
-
-        return { rows };
-      } catch (err) {
-        return `Error executing query: ${err instanceof Error ? err.message : 'Unknown error'}`;
-      }
-    }
-  );
-
-  const cardPromptInstance = new ChatPrompt({
-    instructions: 'You generate adaptive cards and charts from provided data. Use the generate_card function to create visualizations.',
-    model: new OpenAIChatModel({
-      model: process.env.AZURE_OPENAI_DEPLOYMENT_NAME!,
-      apiKey: process.env.SECRET_AZURE_OPENAI_API_KEY!,
-      endpoint: process.env.AZURE_OPENAI_ENDPOINT!,
-      apiVersion: '2025-04-01-preview'
-    })
-  }).function(
-    'generate_card',
-    'Generates a card or chart from data',
-    chartCreationSchema,
-    async ({ chartType, rows, options }) => {
-      conversationAttachments.push(generateChartCard(chartType, rows, options));
-    }
-  );
 
   const mainPrompt = new ChatPrompt({
     instructions: systemMessage,
@@ -120,8 +63,59 @@ Assistant: ${JSON.stringify(ex.data_analyst_response, null, 2)}`
       apiVersion: '2025-04-01-preview'
     }),
     messages: conversationHistory
-  }).use('execute_sql', sqlPromptInstance)
-    .use('generate_card', cardPromptInstance);
+  })
+  .function(
+    'execute_sql',
+    'Executes a SQL SELECT query against the AdventureWorks database and returns the results.',
+    executeSqlSchema,
+    async ({ query }) => {
+      logger.info('execute_sql called');
+      
+      if (!query.trim().toLowerCase().startsWith('select')) {
+        return 'Error: Only SELECT queries are allowed';
+      }
+
+      const forbidden = ['insert', 'update', 'delete', 'drop', 'alter', 'create'];
+      if (forbidden.some(word => query.toLowerCase().includes(word))) {
+        return 'Error: Query contains forbidden operations';
+      }
+
+      try {
+        const database = await initDb();
+        const result = database.exec(query);
+        
+        if (!result.length || !result[0].values.length) {
+          return 'No results found for your query.';
+        }
+
+        // Convert sql.js result format to rows with column names
+        const columns = result[0].columns;
+        const rows = result[0].values.map(row => {
+          const obj: Record<string, any> = {};
+          columns.forEach((col, i) => {
+            obj[col] = row[i];
+          });
+          return obj;
+        });
+
+        logger.info('execute_sql returned ' + rows.length + ' rows');
+        return { rows };
+      } catch (err) {
+        logger.error('execute_sql error:', err);
+        return `Error executing query: ${err instanceof Error ? err.message : 'Unknown error'}`;
+      }
+    }
+  )
+  .function(
+    'generate_card',
+    'Generates an Adaptive Card with a chart or table visualization from the provided data.',
+    chartCreationSchema,
+    async ({ chartType, rows, options }) => {
+      logger.info('generate_card called with chartType:' + chartType);
+      conversationAttachments.push(generateChartCard(chartType, rows, options));
+      return 'Card generated successfully';
+    }
+  );
 
   return {
     prompt: mainPrompt,

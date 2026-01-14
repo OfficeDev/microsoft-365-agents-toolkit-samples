@@ -254,27 +254,6 @@
             "suggested": false
         },
         {
-            "id": "NPM-search-connector-M365",
-            "shortId": "npm-search-m365",
-            "onboardDate": "2021-11-09",
-            "title": "NPM Search Connector",
-            "shortDescription": "Search and Share an NPM Package in Teams and Outlook (Web)",
-            "fullDescription": "This is a Microsoft Teams application named \"NPM Search Connector\". It serves as a Message Extension that allows users to perform a quick search to the NPM Registry for a package and insert package details into conversations for sharing with co-workers. The application uses Adaptive Cards to render NPM package details and Azure Bot Service for handling search queries and communication between the server workload and the clients, including Teams and Outlook (Web Client). It relies on external dependencies such as the botbuilder and express libraries. The application is built using the TeamsFx SDK and leverages cloud services like Azure Active Directory and Azure Bot Service. While it doesn't directly involve Tabs, JS, SSO, or the Graph Toolkit, these could potentially be integrated for enhanced functionality.",
-            "types": [
-                "Message Extension"
-            ],
-            "tags": [
-                "Message Extension",
-                "JS",
-                "Outlook"
-            ],
-            "time": "45min to run",
-            "configuration": "Manual configurations required",
-            "thumbnailPath": "assets/thumbnail.png",
-            "gifPath": "assets/sampleDemo.gif",
-            "suggested": false
-        },
-        {
             "id": "bot-proactive-messaging-teamsfx",
             "shortId": "proactive-messaging",
             "onboardDate": "2022-08-01",
@@ -580,28 +559,6 @@
             "configuration": "Manual configurations required",
             "thumbnailPath": "assets/thumbnail.png",
             "gifPath": "assets/sampleDemo.gif",
-            "suggested": false
-        },
-        {
-            "id": "spfx-productivity-dashboard",
-            "shortId": "spfx-dashboard",
-            "onboardDate": "2023-08-09",
-            "title": "One Productivity Hub using Graph Toolkit with SPFx",
-            "shortDescription": "Microsoft Teams tab powered by SharePoint Framework to view calendar events, to-do tasks and file folders.",
-            "fullDescription": "One Productivity Hub sample shows you how to build a tab for viewing your calendar events, to-do tasks and files by using Microsoft Graph Toolkit components and SharePoint provider. You can run this app locally or deploy it to SharePoint.",
-            "types": [
-                "Tab"
-            ],
-            "tags": [
-                "Tab",
-                "TS",
-                "SPFx",
-                "Graph Toolkit"
-            ],
-            "time": "5min to run",
-            "configuration": "Ready for debug",
-            "thumbnailPath": "src/assets/screenshot.png",
-            "gifPath": "src/assets/screenshot.png",
             "suggested": false
         },
         {
@@ -1020,9 +977,9 @@
             "id": "ProxyAgent-CSharp",
             "shortId": "ProxyAgent-CSharp",
             "onboardDate": "2025-11-14",
-            "title": "AI Foundry Agent to M365 Copilot With SSO",
-            "shortDescription": "Sample to connect an AI Foundry Agent to M365 Copilot using M365 Agent SDK. Leverage SSO to pass user token to AI Foundry.",
-            "fullDescription": "This sample shows how to integrate AI Foundry agents—grounded in SharePoint—into Microsoft 365 Copilot and Teams using Agent Framework v2 and the M365 Agents SDK. It turns a complex, multi-day setup into a secure, two-click experience.",
+            "title": "Microsoft Foundry Agent to Microsoft 365 Copilot With SSO",
+            "shortDescription": "Sample to connect an AI Foundry Agent to Microsoft 365 Copilot using Microsoft 365 Agent SDK. Leverage SSO to pass user token to AI Foundry.",
+            "fullDescription": "This sample shows how to integrate AI Foundry agents—grounded in SharePoint—into Microsoft 365 Copilot and Teams using Agent Framework v2 and the Microsoft 365 Agents SDK. It turns a complex, multi-day setup into a secure, two-click experience.",
             "types": [
                 "Custom Engine Agent"
             ],
@@ -1030,13 +987,60 @@
                 "C#",
                 "Azure",
                 "Agent",
-                "AI Foundry"
+                "Microsoft Foundry"
             ],
             "time": "5 mins to run",
             "configuration": "Manual configurations required",
             "thumbnailPath": "images/screen009.jpg",
             "gifPath": "images/screen009.jpg",
             "suggested": true
+        },
+        {
+            "id": "ProxyAgent-NodeJS",
+            "shortId": "ProxyAgent-NodeJS",
+            "onboardDate": "2025-12-29",
+            "title": "Microsoft Foundry Agent to Microsoft 365 Copilot With SSO",
+            "shortDescription": "Sample to connect a Microsoft Foundry Agent to Microsoft 365 Copilot using Microsoft 365 Agent SDK. Leverage SSO to pass user token to Microsoft Foundry.",
+            "fullDescription": "This solution demonstrates how to integrate a Microsoft Foundry agent with Microsoft Teams and Microsoft 365 Copilot, providing a seamless experience for users to interact with powerful AI capabilities directly within their productivity tools. Built with Node.js/TypeScript and the Microsoft 365 Agents SDK.",
+            "types": [
+                "Custom Engine Agent"
+            ],
+            "tags": [
+                "TS",
+                "Azure",
+                "SSO",
+                "Agent",
+                "Microsoft Foundry"
+            ],
+            "time": "5 mins to run",
+            "configuration": "Manual configurations required",
+            "thumbnailPath": "images/screen009.jpg",
+            "gifPath": "images/screen009.jpg",
+            "suggested": true
+        },
+        {
+            "id": "data-analyst-agent-v2",
+            "shortId": "data-analyst-v2",
+            "onboardDate": "2025-12-23",
+            "title": "Data Analyst Agent v2",
+            "shortDescription": "Natural language interface for data exploration and visualization.",
+            "fullDescription": "This sample demonstrates how to build an AI-powered data analyst agent using Microsoft Teams SDK that can be integrated into Microsoft Teams. It helps users explore and visualize data through natural language conversations and Adaptive Cards charts.",
+            "types": [
+                "Custom Engine Agent"
+            ],
+            "tags": [
+                "TS",
+                "Custom Engine Agent",
+                "Data Visualization",
+                "Adaptive Cards",
+                "LLM SQL",
+                "Microsoft Teams SDK"
+            ],
+            "time": "10 mins to run",
+            "configuration": "Manual configurations required",
+            "thumbnailPath": "assets/thumbnails.png",
+            "gifPath": "assets/demo.gif",
+            "suggested": false
         },
         {
             "id": "agent365-devin-nodejs",
