@@ -21,7 +21,7 @@ async function start() {
     // Check for page to display
     let view = searchParams.get("view") || "stage";
 
-    // Check if we are running on stage.
+    // Check if we are running in Teams - initialize SDK first for all views
     if (searchParams.get("inTeams")) {
         // Initialize teams app
         await app.initialize();
@@ -46,6 +46,10 @@ async function start() {
             renderSideBar(root);
             break;
         case "config":
+            // Ensure Teams SDK is initialized before rendering config
+            if (!searchParams.get("inTeams")) {
+                await app.initialize();
+            }
             renderSettings(root);
             break;
         case "stage":
@@ -156,6 +160,7 @@ function shareToStage() {
 const settingsTemplate = document.createElement("template");
 
 function renderSettings(elem) {
+    console.log("renderSettings called");
     settingsTemplate["innerHTML"] = `
     <style>
         .wrapper { text-align: center; color: ${color} }
@@ -169,8 +174,13 @@ function renderSettings(elem) {
     `;
     elem.appendChild(settingsTemplate.content.cloneNode(true));
 
+    // Enable the Save button in config dialog FIRST
+    console.log("Setting validity state to true");
+    pages.config.setValidityState(true);
+
     // Save the configurable tab
     pages.config.registerOnSaveHandler((saveEvent) => {
+        console.log("Save handler triggered");
         pages.config.setConfig({
             websiteUrl: window.location.origin,
             contentUrl: window.location.origin + "?inTeams=1&view=content",
@@ -179,9 +189,6 @@ function renderSettings(elem) {
         });
         saveEvent.notifySuccess();
     });
-
-    // Enable the Save button in config dialog
-    pages.config.setValidityState(true);
 }
 
 // Error view
