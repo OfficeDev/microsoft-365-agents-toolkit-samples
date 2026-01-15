@@ -40,13 +40,10 @@ const onTurnErrorHandler = async (context: TurnContext, error: Error) => {
     "TurnError"
   );
 
-  // Send a message to the user
-  await context.sendActivity(
-    `The bot encountered unhandled error:\n ${error.message}`
-  );
-  await context.sendActivity(
-    "To continue to run this bot, please fix the bot source code."
-  );
+  if (context.activity.type == 'message') {
+    // Send a message to the user
+    await context.sendActivity('The bot encountered an error or bug.');
+  }
 };
 
 // Set the onTurnError for the singleton BotFrameworkAdapter.
