@@ -212,7 +212,7 @@ __azurite_db*__.json
 # Azure Toolkit for IntelliJ plugin
 .idea/
 
-# Teams Toolkit
+# Microsoft 365 Agent toolkit
 .deployment
 .fx/
 
