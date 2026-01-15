@@ -5,6 +5,10 @@ export default defineConfig({
     build: {
         outDir: "../dist",
     },
+    define: {
+        // Fix for @microsoft/teams-js which references Node.js global
+        global: "globalThis",
+    },
     resolve: {
         preserveSymlinks: true,
     },
