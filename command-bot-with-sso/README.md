@@ -79,8 +79,8 @@ This is a simple command bot with single sign-on feature to retrieve profile and
 
 | Date         | Author | Comments                               |
 | ------------ | ------ | -------------------------------------- |
-| Sep 20, 2022 | rentu  | update to support Teams Toolkit v4.0.0 |
-| Mar 17, 2023 | rentu  | update to support Teams Toolkit v5.0.0 |
+| Sep 20, 2022 | rentu  | update to support Microsoft 365 Agent Toolkit v4.0.0 |
+| Mar 17, 2023 | rentu  | update to support Microsoft 365 Agent Toolkit v5.0.0 |
 | Jun 23, 2025 | nliu   | update to Teams AI library             |
 
 ## Feedback

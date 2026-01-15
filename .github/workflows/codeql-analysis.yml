@@ -33,8 +33,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # C# uses 'none' build mode to skip building .atkproj files (Teams Toolkit projects)
-          # which require the Teams Toolkit extension that isn't available in CI environments.
+          # C# uses 'none' build mode to skip building .atkproj files (Microsoft 365 Agent toolkit projects)
+          # which require the Microsoft 365 Agent toolkit extension that isn't available in CI environments.
           # The 'none' mode creates a CodeQL database directly from source without requiring a build.
           - language: csharp
             build-mode: none
@@ -65,7 +65,7 @@ jobs:
 
       # No autobuild needed when using 'none' build mode
       # The 'none' mode analyzes source code directly without compilation,
-      # which avoids issues with .atkproj files that require Teams Toolkit SDK
+      # which avoids issues with .atkproj files that require Microsoft 365 Agent toolkit SDK
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
