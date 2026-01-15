@@ -160,7 +160,6 @@ function shareToStage() {
 const settingsTemplate = document.createElement("template");
 
 function renderSettings(elem) {
-    console.log("renderSettings called");
     settingsTemplate["innerHTML"] = `
     <style>
         .wrapper { text-align: center; color: ${color} }
@@ -175,12 +174,10 @@ function renderSettings(elem) {
     elem.appendChild(settingsTemplate.content.cloneNode(true));
 
     // Enable the Save button in config dialog FIRST
-    console.log("Setting validity state to true");
     pages.config.setValidityState(true);
 
     // Save the configurable tab
     pages.config.registerOnSaveHandler((saveEvent) => {
-        console.log("Save handler triggered");
         pages.config.setConfig({
             websiteUrl: window.location.origin,
             contentUrl: window.location.origin + "?inTeams=1&view=content",
