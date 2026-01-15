@@ -889,5 +889,5 @@ You've successfully deployed your M365 Agent to Azure! 🎉
 - [Microsoft 365 Agents SDK](https://github.com/microsoft/agents)
 
 **Support:**
-- GitHub Issues: [Teams Toolkit Repository](https://github.com/OfficeDev/TeamsFx/issues)
+- GitHub Issues: [Microsoft 365 Agent Toolkit Repository](https://github.com/OfficeDev/TeamsFx/issues)
 - Microsoft Q&A: [Teams Development](https://learn.microsoft.com/answers/topics/microsoft-teams.html)

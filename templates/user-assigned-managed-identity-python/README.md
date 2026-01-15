@@ -1,6 +1,6 @@
 # Overview of the EchoBot User Assigned Managed Identity in Python
 
-Bot Framework v4 echo bot sample user assigned managed identity in Python, deployed with Teams Toolkit.
+Bot Framework v4 echo bot sample user assigned managed identity in Python, deployed with Microsoft 365 Agent toolkit.
 
 This bot has been created using [Bot Framework](https://dev.botframework.com), it shows how to create a simple bot that accepts input from the user and echoes it back. Follow this link for [User Assigned Managed Identity](https://learn.microsoft.com/en-us/azure/bot-service/provision-and-publish-a-bot?view=azure-bot-service-4.0&tabs=userassigned%2Cpython)
 
@@ -11,7 +11,7 @@ This bot has been created using [Bot Framework](https://dev.botframework.com), i
 | MicrosoftAppPassword	| Not applicable. Leave this blank for a user-assigned managed identity bot. |
 | MicrosoftAppTenantId	| The tenant ID of the user-assigned managed identity. |
 
-> NOTE: User Assigned Managed Identity's eliminate the possibility of testing locally with Teams Toolkit
+> NOTE: User Assigned Managed Identity's eliminate the possibility of testing locally with Microsoft 365 Agent toolkit
 
 ## Get started with the EchoBot User Assigned Managed Identity template
 
@@ -21,9 +21,9 @@ This bot has been created using [Bot Framework](https://dev.botframework.com), i
 >
 > - [Python](https://www.python.org/), version 3.8 to 3.11.
 > - [Python extension](https://code.visualstudio.com/docs/languages/python), version v2024.0.1 or higher.
-> - [Teams Toolkit Visual Studio Code Extension](https://aka.ms/teams-toolkit) latest version or [Teams Toolkit CLI](https://aka.ms/teams-toolkit-cli).
+> - [Microsoft 365 Agent toolkit Visual Studio Code Extension](https://aka.ms/teams-toolkit) latest version or [Microsoft 365 Agent toolkit CLI](https://aka.ms/teams-toolkit-cli).
 
-1. First, select the Teams Toolkit icon on the left in the VS Code toolbar.
+1. First, select the Microsoft 365 Agent toolkit icon on the left in the VS Code toolbar.
 2. Click Provision under Lifecycle
 3. Click Deploy under Lifecycle
 4. In the environment, tab select dev and click to add to Teams
@@ -51,11 +51,11 @@ The following files can be customized and demonstrate an example implementation 
 |`config.py`| Defines the environment variables.|
 |`requirements.txt`| Defines the packages to install.|
 
-The following are Teams Toolkit specific project files. You can [visit a complete guide on Github](https://github.com/OfficeDev/TeamsFx/wiki/Teams-Toolkit-Visual-Studio-Code-v5-Guide#overview) to understand how Teams Toolkit works.
+The following are Microsoft 365 Agent toolkit specific project files. You can [visit a complete guide on Github](https://github.com/OfficeDev/TeamsFx/wiki/Teams-Toolkit-Visual-Studio-Code-v5-Guide#overview) to understand how Microsoft 365 Agent toolkit works.
 
 | File                                 | Contents                                           |
 | - | - |
-|`teamsapp.yml`|This is the main Teams Toolkit project file. The project file defines two primary things:  Properties and configuration Stage definitions. |
+|`teamsapp.yml`|This is the main Microsoft 365 Agent toolkit project file. The project file defines two primary things:  Properties and configuration Stage definitions. |
 
 ## Extend the Basic Bot template
 
@@ -71,5 +71,5 @@ Following documentation will help you to extend the Basic Bot template.
 - [Collaborate on app development](https://learn.microsoft.com/microsoftteams/platform/toolkit/teamsfx-collaboration)
 - [Set up the CI/CD pipeline](https://learn.microsoft.com/microsoftteams/platform/toolkit/use-cicd-template)
 - [Publish the app to your organization or the Microsoft Teams app store](https://learn.microsoft.com/microsoftteams/platform/toolkit/publish)
-- [Develop with Teams Toolkit CLI](https://aka.ms/teams-toolkit-cli/debug)
+- [Develop with Microsoft 365 Agent toolkit CLI](https://aka.ms/teams-toolkit-cli/debug)
 - [Preview the app on mobile clients](https://aka.ms/teamsfx-mobile)
