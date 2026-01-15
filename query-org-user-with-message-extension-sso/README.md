@@ -84,7 +84,7 @@ This could be an intermittent issue, to mitigate, try to use a different Microso
 |Date| Author| Comments|
 |---|---|---|
 |Sep 20 2022| wenytang-ms | onboard |
-|Apr 3, 2023| wenytang-ms | update to support Teams Toolkit v5.0.0|
+|Apr 3, 2023| wenytang-ms | update to support Microsoft 365 Agent Toolkit v5.0.0|
 |Jun 25, 2025| nliu-ms | update dependency to Teams AI library|
 
 ## Feedback

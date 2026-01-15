@@ -6,7 +6,7 @@ This is a proxy solution that connects Microsoft Foundry agents to Microsoft 365
 ## Technology Stack
 - **.NET 9** - Bot application runtime
 - **Microsoft 365 Agents SDK** - Microsoft 365 Agents SDK
-- **Microsoft 365 Agents Toolkit** - Formerly Teams Toolkit
+- **Microsoft 365 Agents Toolkit** - Formerly Microsoft 365 Agent Toolkit
 - **Microsoft Foundry Agent SDK** - For agent integration
 - **Bicep** - Infrastructure as Code
 - **Managed Identity** - For production authentication (no secrets)
