@@ -5,9 +5,6 @@ version: v1.8
 
 environmentFolderPath: ./env
 
-additionalMetadata:
-  sampleTag: microsoft-365-agents-toolkit-samples:ProxyAgent-NodeJS
-
 # Triggered when 'teamsapp provision' is executed
 provision:
   # Creates an app
@@ -128,3 +125,4 @@ publish:
     # the specified environment variable(s).
     writeToEnvironmentFile:
       publishedAppId: TEAMS_APP_PUBLISHED_APP_ID
+projectId: b9396e96-953a-4ca0-a1cc-2cc63c40736c
