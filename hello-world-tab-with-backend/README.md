@@ -29,7 +29,7 @@ Hello World Tab with Backend shows you how to build a tab app with an Azure Func
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/), supported versions: 18, 20, 22
+- [Node.js](https://nodejs.org/), supported versions: 20, 22
 - A Microsoft 365 account. If you do not have Microsoft 365 account, apply one from [Microsoft 365 developer program](https://developer.microsoft.com/en-us/microsoft-365/dev-program)
 - [Microsoft 365 Agents Toolkit Visual Studio Code Extension](https://aka.ms/teams-toolkit) version 5.0.0 and higher or [Microsoft 365 Agents Toolkit CLI](https://aka.ms/teams-toolkit-cli)
 
