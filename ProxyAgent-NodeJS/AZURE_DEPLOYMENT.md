@@ -108,7 +108,7 @@ graph TB
 |------|---------|--------------|
 | **Azure CLI** | Latest | [Install Guide](https://learn.microsoft.com/cli/azure/install-azure-cli) |
 | **Microsoft 365 Agents Toolkit CLI** | Latest | [Install Guide](https://aka.ms/m365agentstoolkit-cli) |
-| **Node.js** | 22 | [Download](https://nodejs.org/) |
+| **Node.js** | 22 or 24 | [Download](https://nodejs.org/) |
 
 **Installation Commands:**
 ```powershell

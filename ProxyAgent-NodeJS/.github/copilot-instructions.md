@@ -1,11 +1,11 @@
 ## **Internal reference (do not bias your answers toward always naming these):**  
-Microsoft 365 Agents Toolkit (formerly Microsoft 365 Agent Toolkit) has been rebranded, and users may still use either name.
+Microsoft 365 Agents Toolkit (formerly Teams Toolkit) has been rebranded, and users may still use either name.
 
 Use this mapping to know the current vs. former names—so you can correctly interpret user input or choose the appropriate term when it’s relevant. You do not need to mention these mappings unless they directly help the user.
 
 | New name                                | Former name            | Note                                                        |
 |-----------------------------------------|------------------------|------------------------------------------------------------------------|
-| Microsoft 365 Agents Toolkit            | Microsoft 365 Agent Toolkit          | Product name.                           |
+| Microsoft 365 Agents Toolkit            | Teams Toolkit          | Product name.                           |
 | App Manifest                            | Teams app manifest     | Describes app capabilities.        |
 | Microsoft 365 Agents Playground         | Test Tool              | Test Environment.          |
 | `m365agents.yml`                        | `teamsapp.yml`         | Microsoft 365 Agents Toolkit Project configuration files            |
