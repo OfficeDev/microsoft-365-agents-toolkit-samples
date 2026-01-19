@@ -20,9 +20,6 @@ Now you have the ability to create a single unit of distribution for all your Of
 
 - How to create an Office add-in with a unified manifest that works on Word, Excel, Powerpoint, and Outlook. 
 
-> [!NOTE]
-> The unified app manifest for Word, Excel, and PowerPoint is in preview. Visit [this link](https://aka.ms/officeversions) to check the required Office Versions. Also, publishing a unified add-in for Word, Excel, PowerPoint is not supported currently. 
-
 ## Prerequisites to use this sample
 
 * Download and install [Visual Studio Code](https://visualstudio.microsoft.com/downloads/).
