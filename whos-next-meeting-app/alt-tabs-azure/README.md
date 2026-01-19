@@ -16,7 +16,7 @@ This application displays the same list of speakers to all meeting attendees wit
 
 For complete instructions, see [this How to article](https://learn.microsoft.com/azure/azure-fluid-relay/how-tos/provision-fluid-azure-portal).
 
-![Access key screen](/assets/AzureFluidRelayService.png)
+![Access key screen](../assets/AzureFluidRelayService.png)
 
 When you're finished deploying the service, go to the Access Key tab and copy down the tenant ID, primary key, and service endpoint URL and save them for when you configure your application.
 
