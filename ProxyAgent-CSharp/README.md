@@ -56,6 +56,28 @@ This proxy pattern allows you to:
 
 ---
 
+## SDK and Package Versions
+
+This sample uses the **minimum recommended and supported versions** of the Microsoft Agents SDK.
+
+### Stable Packages (Microsoft Agents SDK)
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `Microsoft.Agents.Authentication.Msal` | 1.3.176 | SSO and user authentication |
+| `Microsoft.Agents.Hosting.AspNetCore` | 1.3.176 | ASP.NET Core hosting support |
+| `Microsoft.Extensions.AI` | 10.2.0 | AI abstractions |
+| `Azure.Identity` | 1.17.1 | Azure authentication (only use if SSO is disabled) |
+
+### Preview Packages (Microsoft Foundry Integration)
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `Microsoft.Agents.AI` | 1.0.0-preview.260108.1 | AI agent capabilities |
+| `Microsoft.Agents.AI.AzureAI` | 1.0.0-preview.260108.1 | Azure AI integration |
+| `Microsoft.Agents.AI.AzureAI.Persistent` | 1.0.0-preview.260108.1 | Persistent agent support |
+| `Azure.AI.Agents.Persistent` | 1.2.0-beta.8 | Foundry persistent agents client |
+
+> **Note:** Preview packages are used exclusively for Microsoft Foundry integration and will be updated to v1 stable releases once they are published.
+
 ## 🚀 Quick Start
 
 Choose your deployment approach:
@@ -97,7 +119,7 @@ atk deploy --env dev
 ### Required Tools
 - **.NET SDK 9.0** - [Download](https://dotnet.microsoft.com/download/dotnet/9.0)
 - **Azure CLI** - [Install Guide](https://learn.microsoft.com/cli/azure/install-azure-cli)
-- **Microsoft 365 Agents Toolkit CLI** - [Install Guide](https://learn.microsoft.com/en-us/microsoftteams/platform/toolkit/microsoft-365-agents-toolkit-cli#get-started)
+- **Microsoft 365 Agents Toolkit CLI** - [Install Guide](https://learn.microsoft.com/en-us/microsoftteams/platform/toolkit/microsoft-365-agents-toolkit-cli)
 - **Visual Studio Code** with C# Dev Kit extension
 
 > **Important:** This solution currently supports **VS Code only**. Visual Studio support is planned for future releases.
@@ -381,7 +403,7 @@ The bot uses **Azure Managed Identity** (production) or **Single Tenant + Client
 ## 📖 Additional Resources
 
 ### Microsoft 365 Agents Toolkit
-- [Microsoft 365 Agents Toolkit Documentation](https://aka.ms/teams-toolkit-docs)
+- [Microsoft 365 Agents Toolkit Documentation](https://learn.microsoft.com/en-us/microsoft-365/developer/overview-m365-agents-toolkit)
 - [Microsoft 365 Agents Toolkit GitHub](https://github.com/OfficeDev/TeamsFx)
 - [Teams App Development Guide](https://learn.microsoft.com/microsoftteams/platform/)
 
