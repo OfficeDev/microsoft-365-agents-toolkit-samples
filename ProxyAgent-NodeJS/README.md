@@ -6,7 +6,7 @@ This solution demonstrates how to integrate a Microsoft Foundry agent with Micro
 
 [![Video Tutorial](https://img.youtube.com/vi/U9Yv2vjKYbI/0.jpg)](https://www.youtube.com/watch?v=U9Yv2vjKYbI)
 
-> **Note:** The video demonstrates the C# version of this sample. This repository contains the Node.js/TypeScript implementation.
+> **Note:** The video demonstrates the NodeJS version of this sample. This repository contains the C# implementation.
 
 ## This sample illustrates
 - How to connect a Microsoft Foundry Agent to M365 Copilot

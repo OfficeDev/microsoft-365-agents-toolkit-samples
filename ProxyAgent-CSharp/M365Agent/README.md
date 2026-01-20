@@ -117,4 +117,4 @@ New to Teams app development or Microsoft 365 Agents Toolkit? Explore Teams app 
 
 **Questions:**
 - Microsoft Q&A: [Teams Development](https://learn.microsoft.com/answers/topics/microsoft-teams.html)
-- Documentation: [Microsoft 365 Agents Toolkit](https://aka.ms/teams-toolkit-docs)
+- Documentation: [Microsoft 365 Agents Toolkit](https://github.com/OfficeDev/microsoft-365-agents-toolkit/wiki)
