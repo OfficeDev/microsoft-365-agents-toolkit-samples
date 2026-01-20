@@ -46,13 +46,55 @@ jobs:
           ref: ${{ github.ref_name }}
           repository: ${{ github.repository }}
 
+      - name: Get changed files
+        id: changed-files
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          # Get the list of changed files in this PR
+          git fetch origin ${{ github.base_ref }}
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          echo "All changed files:"
+          echo "$CHANGED_FILES"
+          
+          # Get changed markdown files (README.md and README.md.tpl)
+          CHANGED_MD_FILES=$(echo "$CHANGED_FILES" | grep -E '(README\.md|README\.md\.tpl)$' || true)
+          echo "Changed markdown files:"
+          echo "$CHANGED_MD_FILES"
+          
+          # Get changed directories containing package.json changes
+          CHANGED_PKG_DIRS=$(echo "$CHANGED_FILES" | grep -E 'package\.json(\.tpl)?$' | xargs -I {} dirname {} | sort -u || true)
+          echo "Changed package.json directories:"
+          echo "$CHANGED_PKG_DIRS"
+          
+          # Save to environment
+          echo "CHANGED_MD_FILES<<EOF" >> $GITHUB_ENV
+          echo "$CHANGED_MD_FILES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          
+          echo "CHANGED_PKG_DIRS<<EOF" >> $GITHUB_ENV
+          echo "$CHANGED_PKG_DIRS" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          
+          # Check if there are any relevant files to check
+          if [ -z "$CHANGED_MD_FILES" ]; then
+            echo "has_md_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_md_changes=true" >> $GITHUB_OUTPUT
+          fi
+          
+          if [ -z "$CHANGED_PKG_DIRS" ]; then
+            echo "has_pkg_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_pkg_changes=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Set up Python for README analysis
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
       - name: Install Python dependencies for markdown analysis
-        if: ${{ github.event.inputs.skipmarkdowncheck != 'true' }}
+        if: ${{ github.event.inputs.skipmarkdowncheck != 'true' && (github.event_name != 'pull_request' || steps.changed-files.outputs.has_md_changes == 'true') }}
         run: |
           python -m pip install --upgrade pip
           python -m pip install python-dateutil
@@ -60,10 +102,21 @@ jobs:
 
       - name: 🔍 Check Markdown files image/hyperlink availability
         id: markdown-check
-        if: ${{ github.event.inputs.skipmarkdowncheck != 'true' }}
+        if: ${{ github.event.inputs.skipmarkdowncheck != 'true' && (github.event_name != 'pull_request' || steps.changed-files.outputs.has_md_changes == 'true') }}
         continue-on-error: true
         run: |
-          python -u .github/scripts/analyze_markdown.py --scan-directory "." --file-patterns "**/README.md" "**/README.md.tpl"
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            # Only check changed markdown files
+            echo "Checking only changed markdown files..."
+            if [ -n "$CHANGED_MD_FILES" ]; then
+              python -u .github/scripts/analyze_markdown.py --extra-files $CHANGED_MD_FILES
+            else
+              echo "No markdown files changed in this PR"
+            fi
+          else
+            # For workflow_dispatch, scan everything
+            python -u .github/scripts/analyze_markdown.py --scan-directory "." --file-patterns "**/README.md" "**/README.md.tpl"
+          fi
 
       - uses: actions/setup-node@v3
         with:
@@ -71,10 +124,21 @@ jobs:
 
       - name: 🔍 Check package.json files for security vulnerabilities
         id: security-check
-        if: ${{ github.event.inputs.skipsecuritycheck != 'true' }}
+        if: ${{ github.event.inputs.skipsecuritycheck != 'true' && (github.event_name != 'pull_request' || steps.changed-files.outputs.has_pkg_changes == 'true') }}
         continue-on-error: true
         run: |
-          python -u .github/scripts/check_npm_vulnerabilities.py --scan-directory "."
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            # Only check changed directories
+            echo "Checking only changed package.json directories..."
+            if [ -n "$CHANGED_PKG_DIRS" ]; then
+              python -u .github/scripts/check_npm_vulnerabilities.py --scan-directory $CHANGED_PKG_DIRS
+            else
+              echo "No package.json files changed in this PR"
+            fi
+          else
+            # For workflow_dispatch, scan everything
+            python -u .github/scripts/check_npm_vulnerabilities.py --scan-directory "."
+          fi
 
       - name: 📋 Check Results Summary
         if: always()
