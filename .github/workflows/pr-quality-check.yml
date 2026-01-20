@@ -1,0 +1,201 @@
+name: PR Quality Check
+run-name: PR-Quality-Check-${{ github.run_id }}-${{ github.ref_name }}
+
+on:
+  pull_request:
+    branches:
+      - dev
+      - main
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      skipmarkdowncheck:
+        type: boolean
+        default: false
+        description: "Whether to skip Markdown files check"
+      skipsecuritycheck:
+        type: boolean
+        default: false
+        description: "Whether to skip security vulnerability check"
+
+permissions:
+  actions: read
+  contents: read
+  pull-requests: write
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+    outputs:
+      markdown-check-result: ${{ steps.markdown-check.outcome }}
+      security-check-result: ${{ steps.security-check.outcome }}
+    steps:
+      - name: Checkout Pull Request
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+
+      - name: Checkout Branch
+        if: ${{ github.event_name != 'pull_request' }}
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref_name }}
+          repository: ${{ github.repository }}
+
+      - name: Get changed files
+        id: changed-files
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          # Get the list of changed files in this PR
+          git fetch origin ${{ github.base_ref }}
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          echo "All changed files:"
+          echo "$CHANGED_FILES"
+          
+          # Get changed markdown files (README.md and README.md.tpl)
+          CHANGED_MD_FILES=$(echo "$CHANGED_FILES" | grep -E '(README\.md|README\.md\.tpl)$' || true)
+          echo "Changed markdown files:"
+          echo "$CHANGED_MD_FILES"
+          
+          # Get changed directories containing package.json changes
+          CHANGED_PKG_DIRS=$(echo "$CHANGED_FILES" | grep -E 'package\.json(\.tpl)?$' | xargs -I {} dirname {} | sort -u || true)
+          echo "Changed package.json directories:"
+          echo "$CHANGED_PKG_DIRS"
+          
+          # Save to environment
+          echo "CHANGED_MD_FILES<<EOF" >> $GITHUB_ENV
+          echo "$CHANGED_MD_FILES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          
+          echo "CHANGED_PKG_DIRS<<EOF" >> $GITHUB_ENV
+          echo "$CHANGED_PKG_DIRS" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          
+          # Check if there are any relevant files to check
+          if [ -z "$CHANGED_MD_FILES" ]; then
+            echo "has_md_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_md_changes=true" >> $GITHUB_OUTPUT
+          fi
+          
+          if [ -z "$CHANGED_PKG_DIRS" ]; then
+            echo "has_pkg_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_pkg_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set up Python for README analysis
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies for markdown analysis
+        if: ${{ github.event.inputs.skipmarkdowncheck != 'true' && (github.event_name != 'pull_request' || steps.changed-files.outputs.has_md_changes == 'true') }}
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install python-dateutil
+          python -m pip install requests
+
+      - name: 🔍 Check Markdown files image/hyperlink availability
+        id: markdown-check
+        if: ${{ github.event.inputs.skipmarkdowncheck != 'true' && (github.event_name != 'pull_request' || steps.changed-files.outputs.has_md_changes == 'true') }}
+        continue-on-error: true
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            # Only check changed markdown files
+            echo "Checking only changed markdown files..."
+            if [ -n "$CHANGED_MD_FILES" ]; then
+              python -u .github/scripts/analyze_markdown.py --extra-files $CHANGED_MD_FILES
+            else
+              echo "No markdown files changed in this PR"
+            fi
+          else
+            # For workflow_dispatch, scan everything
+            python -u .github/scripts/analyze_markdown.py --scan-directory "." --file-patterns "**/README.md" "**/README.md.tpl"
+          fi
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: 🔍 Check package.json files for security vulnerabilities
+        id: security-check
+        if: ${{ github.event.inputs.skipsecuritycheck != 'true' && (github.event_name != 'pull_request' || steps.changed-files.outputs.has_pkg_changes == 'true') }}
+        continue-on-error: true
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            # Only check changed directories
+            echo "Checking only changed package.json directories..."
+            if [ -n "$CHANGED_PKG_DIRS" ]; then
+              python -u .github/scripts/check_npm_vulnerabilities.py --scan-directory $CHANGED_PKG_DIRS
+            else
+              echo "No package.json files changed in this PR"
+            fi
+          else
+            # For workflow_dispatch, scan everything
+            python -u .github/scripts/check_npm_vulnerabilities.py --scan-directory "."
+          fi
+
+      - name: 📋 Check Results Summary
+        if: always()
+        run: |
+          echo "## 🔍 PR Quality Check Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Check | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-------|--------|" >> $GITHUB_STEP_SUMMARY
+          
+          # Markdown Check
+          if [ "${{ steps.markdown-check.outcome }}" == "failure" ]; then
+            echo "| Markdown Check (images/hyperlinks) | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ steps.markdown-check.outcome }}" == "success" ]; then
+            echo "| Markdown Check (images/hyperlinks) | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ steps.markdown-check.outcome }}" == "skipped" ]; then
+            echo "| Markdown Check (images/hyperlinks) | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Security Check
+          if [ "${{ steps.security-check.outcome }}" == "failure" ]; then
+            echo "| Security Check (npm vulnerabilities) | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ steps.security-check.outcome }}" == "success" ]; then
+            echo "| Security Check (npm vulnerabilities) | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ steps.security-check.outcome }}" == "skipped" ]; then
+            echo "| Security Check (npm vulnerabilities) | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Show warning/error annotations for failed checks
+          if [ "${{ steps.markdown-check.outcome }}" == "failure" ]; then
+            echo "::warning title=Markdown Check Failed::Some markdown files have broken images or hyperlinks. Please review the logs above."
+          fi
+          if [ "${{ steps.security-check.outcome }}" == "failure" ]; then
+            echo "::warning title=Security Check Failed::npm vulnerabilities found in some package.json files. Please review the logs above."
+          fi
+
+      - name: Check for failures
+        if: always()
+        run: |
+          # Check if any critical checks failed
+          markdown_failed="${{ steps.markdown-check.outcome == 'failure' }}"
+          security_failed="${{ steps.security-check.outcome == 'failure' }}"
+          
+          if [ "$markdown_failed" == "true" ] || [ "$security_failed" == "true" ]; then
+            echo ""
+            echo "⚠️ Quality checks have issues that need attention:"
+            if [ "$markdown_failed" == "true" ]; then
+              echo "  - Markdown check found broken images or links"
+            fi
+            if [ "$security_failed" == "true" ]; then
+              echo "  - Security check found npm vulnerabilities"
+            fi
+            echo ""
+            echo "Note: These checks are currently set to warn only and will not block the PR."
+            # Uncomment the line below to make these checks blocking:
+            # exit 1
+          else
+            echo "✅ All quality checks passed!"
+          fi
