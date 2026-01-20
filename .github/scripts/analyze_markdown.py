@@ -265,7 +265,9 @@ class MarkdownFileAnalyzer:
                         parsed = urlparse(resolved_url)
                         if parsed.hostname and parsed.hostname.lower().endswith("aka.ms"):
                             # If redirected to bing.com, treat as unavailable
-                            if "bing.com" in final_url.lower():
+                            final_parsed = urlparse(final_url)
+                            final_hostname = final_parsed.hostname.lower() if final_parsed.hostname else None
+                            if final_hostname and (final_hostname == "bing.com" or final_hostname.endswith(".bing.com")):
                                 available = False
                                 http_status = 404  # Treat as broken
                                 break
@@ -667,3 +669,4 @@ if __name__ == "__main__":
     import sys
     exit_code = main()
     sys.exit(exit_code)
+
