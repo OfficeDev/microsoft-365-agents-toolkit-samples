@@ -30,7 +30,7 @@ Team Central Dashboard shows you how to build a tab with data chats and content 
 
 ## Prerequisite to use this sample
 
-- [Node.js](https://nodejs.org/), supported versions: 18, 20, 22
+- [Node.js](https://nodejs.org/), supported versions: 20, 22
 - A Microsoft 365 tenant in which you have permission to upload Teams apps. You can get a free Microsoft 365 developer tenant by joining the [M365 developer program](https://developer.microsoft.com/en-us/microsoft-365/dev-program)
 - [Microsoft 365 Agents Toolkit Visual Studio Code Extension](https://aka.ms/teams-toolkit) version 5.0.0 and higher or [Microsoft 365 Agents Toolkit CLI](https://aka.ms/teams-toolkit-cli)
 
@@ -45,7 +45,7 @@ Team Central Dashboard shows you how to build a tab with data chats and content 
 1. Start debugging the project by hitting the `F5` key in Visual Studio Code.
 
 > The first time you run this sample, you need to login to consent some delegated permissions. If you don't see the consent page, please check if your browser blocks the pop-up window.
-> <img src="public\popup-block.png">
+> <img src="public/popup-block.png">
 
 ### Deploy the app to Azure
 
@@ -72,27 +72,27 @@ After you have completed the provision and deploy steps in `Deploy the app to Az
 
 This widget displays a chart and a table with dummy data. You can select a date range to filter the data.
 
-<img src="public\area-chart.png" style="zoom: 50%">
+<img src="public/area-chart.png" style="zoom: 50%">
 
 ### Team Collaboration
 
 This widget displays some collaboration cards with dummy data.
 
-<img src="public\collaborations.png" style="zoom: 30%">
+<img src="public/collaborations.png" style="zoom: 30%">
 
 ### Your upcoming events
 
 This widget displays the upcoming events on your calendar. You can click the `Join` button to join a meeting, and click the `View calendar` button to open your calendar app.
 
-<img src="public\join-meeting.png" style="zoom: 50%">
+<img src="public/join-meeting.png" style="zoom: 50%">
 
 ### Your tasks
 
 This widget displays your to-do tasks. Your can input a task name and click the `Add` button to add a new task. You also can click the `View all` button to open your task app.
 
-<img src="public\add-task.png" style="zoom: 45%">
+<img src="public/add-task.png" style="zoom: 45%">
 
-<img src="public\task-notification.png">
+<img src="public/task-notification.png">
 
 > To receive notifications in Microsoft Teams, you will need to consent certain permissions. Please refer to the following steps after you have run the provision or local debug at least once.
 >
@@ -102,7 +102,7 @@ This widget displays your to-do tasks. Your can input a task name and click the 
 
 This widget displays your content files in OneDrive. You can click one to open it. You can also click the `...` button on the right to choose the way to open the file, download the file or copy the file link.
 
-<img src="public\document.png" style="zoom: 50%">
+<img src="public/document.png" style="zoom: 50%">
 
 ## Known issues
 
