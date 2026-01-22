@@ -201,7 +201,7 @@ az account show --query id -o tsv
 
 ### First Time Setup - VS Code (2 Steps)
 
-1. **Configure Azure credentials** in `.env.local`:
+1. **Open workspace from `ProxyAgent-CSharp.code-workspace` file and configure Azure credentials** in `.env.local`:
    ```bash
    AZURE_SUBSCRIPTION_ID=<your-guid>
    AZURE_RESOURCE_GROUP_NAME=rg-m365agent-local
