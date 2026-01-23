@@ -199,15 +199,18 @@ az account show --query id -o tsv
 
 ## Getting Started
 
-### First Time Setup - VS Code (2 Steps)
+### First Time Setup - VS Code (3 Steps)
 
-1. **Configure Azure credentials** in `.env.local`:
+1. **Open workspace from `ProxyAgent-CSharp.code-workspace` file** 
+
+2. **Configure environment** in `.env.local`:
    ```bash
-   AZURE_SUBSCRIPTION_ID=<your-guid>
-   AZURE_RESOURCE_GROUP_NAME=rg-m365agent-local
+   # Microsoft Foundry configuration
+   AZURE_AI_FOUNDRY_PROJECT_ENDPOINT=<your-ai-foundry-endpoint>
+   AGENT_ID=<your-agent-id>
    ```
 
-2. **Press F5** in VS Code
+3. **Press F5** in VS Code
 
 That's it! Everything else happens automatically.
 
