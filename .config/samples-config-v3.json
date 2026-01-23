@@ -991,8 +991,8 @@
             ],
             "time": "5 mins to run",
             "configuration": "Manual configurations required",
-            "thumbnailPath": "images/screen009.jpg",
-            "gifPath": "images/screen009.jpg",
+            "thumbnailPath": "assets/thumbnail.jpg",
+            "gifPath": "assets/sampleDemo.gif",
             "suggested": true
         },
         {
