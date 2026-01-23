@@ -136,7 +136,7 @@ New to Teams app development or Microsoft 365 Agents Toolkit? Explore Teams app 
 ## Support
 
 **Report an issue:**
-- GitHub: [Teams Toolkit Issues](https://github.com/OfficeDev/TeamsFx/issues)
+- GitHub: [Microsoft 365 Agents Toolkit Issues](https://github.com/OfficeDev/TeamsFx/issues)
 - VS Code: Help → Report Issue
 
 **Questions:**

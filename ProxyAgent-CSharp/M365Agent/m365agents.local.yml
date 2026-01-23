@@ -3,6 +3,8 @@
 # Visit https://aka.ms/teamsfx-actions for details on actions
 version: v1.8
 
+additionalMetadata:
+  sampleTag: TeamsFx-Samples:ProxyAgent-CSharp
 provision:
   # Creates a Teams app
   - uses: teamsApp/create
