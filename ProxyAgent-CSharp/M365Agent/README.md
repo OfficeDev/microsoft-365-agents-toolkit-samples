@@ -62,6 +62,30 @@ This solution deploys a complete M365 Agent infrastructure:
 
 ---
 
+## SDK and Package Versions
+
+This sample uses the **minimum recommended and supported versions** of the Microsoft Agents SDK.
+
+### Stable Packages (Microsoft Agents SDK)
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `Microsoft.Agents.Authentication.Msal` | 1.3.176 | SSO and user authentication |
+| `Microsoft.Agents.Hosting.AspNetCore` | 1.3.176 | ASP.NET Core hosting support |
+| `Microsoft.Extensions.AI` | 10.2.0 | AI abstractions |
+| `Azure.Identity` | 1.17.1 | Azure authentication (only use if SSO is disabled) |
+
+### Preview Packages (Microsoft Foundry Integration)
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `Microsoft.Agents.AI` | 1.0.0-preview.260108.1 | AI agent capabilities |
+| `Microsoft.Agents.AI.AzureAI` | 1.0.0-preview.260108.1 | Azure AI integration |
+| `Microsoft.Agents.AI.AzureAI.Persistent` | 1.0.0-preview.260108.1 | Persistent agent support |
+| `Azure.AI.Agents.Persistent` | 1.2.0-beta.8 | Foundry persistent agents client |
+
+> **Note:** Preview packages are used exclusively for Microsoft Foundry integration and will be updated to v1 stable releases once they are published.
+
+---
+
 ## Project Structure
 
 ```
@@ -112,9 +136,9 @@ New to Teams app development or Microsoft 365 Agents Toolkit? Explore Teams app 
 ## Support
 
 **Report an issue:**
-- GitHub: [Microsoft 365 Agent Toolkit Issues](https://github.com/OfficeDev/TeamsFx/issues)
+- GitHub: [Microsoft 365 Agents Toolkit Issues](https://github.com/OfficeDev/TeamsFx/issues)
 - VS Code: Help → Report Issue
 
 **Questions:**
 - Microsoft Q&A: [Teams Development](https://learn.microsoft.com/answers/topics/microsoft-teams.html)
-- Documentation: [Microsoft 365 Agents Toolkit](https://github.com/OfficeDev/microsoft-365-agents-toolkit/wiki)
+- Documentation: [Microsoft 365 Agents Toolkit](https://learn.microsoft.com/en-us/microsoft-365/developer/overview-m365-agents-toolkit)
