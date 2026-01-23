@@ -29,9 +29,9 @@
         "@azure/ai-agents": "^1.1.0",
         "@azure/core-auth": "^1.10.1",
         "@azure/identity": "^4.13.0",
-        "@microsoft/agents-activity": "^1.1.1",
-        "@microsoft/agents-hosting": "^1.1.1",
-        "@microsoft/agents-hosting-express": "^1.1.1",
+        "@microsoft/agents-activity": "^1.2.0",
+        "@microsoft/agents-hosting": "^1.2.0",
+        "@microsoft/agents-hosting-express": "^1.2.0",
         "jsonwebtoken": "^9.0.2",
         "typescript": "^5.9.3"
     },
