@@ -24,11 +24,11 @@ export default function App() {
   const [{ loading, themeString }] = useTeams();
   
   useEffect(() => {
-    loading &&
-      app.initialize().then(() => {
-        // Hide the loading indicator.
-        app.notifySuccess();
-      });
+    // Notify Teams that the app is ready once loading is complete
+    // app.initialize() is already called in useTeams hook, don't call it again
+    if (loading === false) {
+      app.notifySuccess();
+    }
   }, [loading]);
   return (
     <TeamsFxContext.Provider value={{ themeString }}>
