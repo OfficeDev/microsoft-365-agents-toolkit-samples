@@ -143,7 +143,8 @@ function getExample(exampleData: any[]): Example[] {
  * @returns The response object from the OpenAI API.
  */
 async function callOpenAI(request: any) {
-  const apiClient = axios.create({baseURL: `${config.openAIEndpoint}openai/deployments/${config.openAIDeploymentName}`});
+  const endpoint = config.openAIEndpoint.endsWith("/") ? config.openAIEndpoint : `${config.openAIEndpoint}/`;
+  const apiClient = axios.create({baseURL: `${endpoint}openai/deployments/${config.openAIDeploymentName}`});
   apiClient.interceptors.request.use(async (axiosConfig) => {
     axiosConfig.headers["api-key"] = config.openAIApiKey;
     return axiosConfig;
