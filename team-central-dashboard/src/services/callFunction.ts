@@ -1,7 +1,5 @@
-import * as axios from "axios";
+import axios, { Method, isAxiosError } from "axios";
 import { TeamsUserCredentialContext } from "../internal/singletonContext";
-
-type Method = axios.Method;
 
 /**
  * Calls an Azure Function with the specified HTTP method, function name, parameters, and data.
@@ -22,7 +20,7 @@ export async function callFunction(method: Method, functionName: string, params?
     // Construct the base URL for the Azure Function API
     const apiBaseUrl = import.meta.env.VITE_APP_FUNC_ENDPOINT + "/api/";
 
-    const apiClient = axios.default.create({baseURL: apiBaseUrl});
+    const apiClient = axios.create({baseURL: apiBaseUrl});
     const token = await credential.getToken("");
     apiClient.interceptors.request.use(async (config) => {
       config.headers["Authorization"] = `Bearer ${token?.token}`;
@@ -41,7 +39,7 @@ export async function callFunction(method: Method, functionName: string, params?
     // Return the response data from the Azure Function
     return response.data;
   } catch (err: unknown) {
-    if (axios.default.isAxiosError(err)) {
+    if (isAxiosError(err)) {
       let funcErrorMsg = "";
 
       if (err?.response?.status === 404) {

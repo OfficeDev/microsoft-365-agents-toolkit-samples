@@ -1,8 +1,8 @@
-import { AzureFunction, Context, HttpRequest } from "@azure/functions";
+import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import * as ACData from "adaptivecards-templating";
-import { notificationApp } from "./internal/initialize";
-import notificationTemplate from "./adaptiveCards/notification-list.json";
-import { ListData } from "./cardModels";
+import { notificationApp } from "../internal/initialize";
+import notificationTemplate from "../adaptiveCards/notification-list.json";
+import { ListData } from "../cardModels";
 
 const data: ListData = {
   title: "New Event Occurred!",
@@ -16,11 +16,7 @@ const data: ListData = {
   ]
 };
 
-// HTTP trigger to send notification.
-const httpTrigger: AzureFunction = async function (
-  context: Context,
-  req: HttpRequest
-): Promise<void> {
+async function listNotification(req: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
   const pageSize = 100;
   let continuationToken: string | undefined;
   do {
@@ -34,7 +30,12 @@ const httpTrigger: AzureFunction = async function (
     }
   } while (continuationToken);
 
-  context.res = {};
-};
+  return { status: 200 };
+}
 
-export default httpTrigger;
+app.http("listNotification", {
+  methods: ["POST"],
+  authLevel: "anonymous",
+  route: "api/list-notification",
+  handler: listNotification,
+});

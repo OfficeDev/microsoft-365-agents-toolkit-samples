@@ -28,6 +28,7 @@ _storage_emulator
 
 # production
 /build
+dist
 
 # Dev tool directories
 /devTools/
