@@ -4,10 +4,9 @@
 version: v1.8
 
 environmentFolderPath: ./env
-
 additionalMetadata:
-  sampleTag: microsoft-365-agents-toolkit-samples:ProxyAgent-NodeJS
-
+  sampleTag: TeamsFx-Samples:ProxyAgent-NodeJS
+  
 # Triggered when 'teamsapp provision' is executed
 provision:
   # Creates an app
