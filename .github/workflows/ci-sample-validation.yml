@@ -39,7 +39,7 @@ jobs:
 
       - name: Validate Sample Config
         run: |
-          node validation-tool/validate-config.js .config/samples-config-v3.json
+          node validation-tool/validate-config.cjs .config/samples-config-v3.json
           exit $?
 
       - name: Run Sample Validation Tool Based on Sample Config

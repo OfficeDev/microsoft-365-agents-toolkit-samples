@@ -53,7 +53,7 @@ The following samples are excluded from validation:
 
 ## Sample Config Validation
 
-**Validation script**: `validation-tool/validate-config.js`
+**Validation script**: `validation-tool/validate-config.cjs`
 
 Validates `.config/samples-config-v3.json` to ensure each sample entry contains the following **required fields**:
 
@@ -206,7 +206,7 @@ npm install
 ### Validate Sample Config
 
 ```bash
-node validate-config.js ../.config/samples-config-v3.json
+node validate-config.cjs ../.config/samples-config-v3.json
 ```
 
 ### Validate a Single Sample
@@ -224,37 +224,37 @@ node ../validation-tool/validator.mjs
 
 ```bash
 # Validate all samples in config (same as CI pipeline)
-node validate-all.js
+node validate-all.cjs
 
 # Only show samples with errors (hide warnings and passed)
-node validate-all.js --errors-only
+node validate-all.cjs --errors-only
 
 # Use a custom config path
-node validate-all.js ../.config/samples-config-v3.json
+node validate-all.cjs ../.config/samples-config-v3.json
 ```
 
 ### Validate External Samples
 
 External samples are those hosted in 3rd party repositories (with `downloadUrlInfo` in config).
 
-**Script**: `validate-external.js`
+**Script**: `validate-external.cjs`
 
 ```bash
-# Usage: node validate-external.js <sample-id> <local-repo-path>
+# Usage: node validate-external.cjs <sample-id> <local-repo-path>
 
 # Example 1: Validate a sample from Microsoft-Teams-Samples repo
 git clone --filter=blob:none --sparse https://github.com/OfficeDev/Microsoft-Teams-Samples.git
 cd Microsoft-Teams-Samples
 git sparse-checkout set samples/msgext-link-unfurling-reddit/nodejs
 cd ..
-node validate-external.js reddit-link-unfurling ./Microsoft-Teams-Samples
+node validate-external.cjs reddit-link-unfurling ./Microsoft-Teams-Samples
 
 # Example 2: Validate a sample from pnp/graph-connectors-samples repo
 git clone --filter=blob:none --sparse https://github.com/pnp/graph-connectors-samples.git
 cd graph-connectors-samples
 git sparse-checkout set samples/nodejs-typescript-food-catalog
 cd ..
-node validate-external.js gc-nodejs-typescript-food-catalog ./graph-connectors-samples
+node validate-external.cjs gc-nodejs-typescript-food-catalog ./graph-connectors-samples
 ```
 
 **How it works**:
