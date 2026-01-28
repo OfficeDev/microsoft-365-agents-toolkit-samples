@@ -45,7 +45,7 @@ function main() {
 
   console.log(`\n📋 Validating ${samples.length} samples...\n`);
   
-  const validatorPath = path.join(__dirname, "validator.cjs");
+  const validatorPath = path.join(__dirname, "validator.mjs");
   const repoRoot = path.dirname(path.dirname(configPath));
   
   let failedCount = 0;

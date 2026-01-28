@@ -75,7 +75,7 @@ Validates `.config/samples-config-v3.json` to ensure each sample entry contains 
 
 ## Sample Project Validation
 
-**Validation script**: `validation-tool/validator.cjs`
+**Validation script**: `validation-tool/validator.mjs`
 
 **Source directory**: `validation-tool/src/validators/`
 
@@ -213,11 +213,11 @@ node validate-config.js ../.config/samples-config-v3.json
 
 ```bash
 # Validate a specific sample
-node validator.cjs -p ../coffee-agent
+node validator.mjs -p ../coffee-agent
 
 # Or validate from the sample directory
 cd ../coffee-agent
-node ../validation-tool/validator.cjs
+node ../validation-tool/validator.mjs
 ```
 
 ### Validate All Samples

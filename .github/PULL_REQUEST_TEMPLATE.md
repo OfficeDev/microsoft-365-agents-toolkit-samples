@@ -32,7 +32,7 @@
 ```bash
 cd validation-tool
 npm install
-node validator.cjs -p ../<your-sample-folder>
+node validator.mjs -p ../<your-sample-folder>
 ```
 
 #### For External Samples (source code in another repo)

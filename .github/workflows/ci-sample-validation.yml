@@ -54,7 +54,7 @@ jobs:
           while IFS= read -r line; do
             if [[ ! ${exceptions[@]} =~ $line ]]
             then
-              result=`node ./validation-tool/validator.cjs -p $line`
+              result=`node ./validation-tool/validator.mjs -p $line`
               if grep -q "$validationFailed" <<< "$result"; then
                 printf "\n❌ Sample '$line' validation failed.\n"
                 echo "$result"
@@ -99,7 +99,7 @@ jobs:
                 printf "\nSkipping deleted folder: '$line'\n"
                 continue
               fi
-              result=`node ./validation-tool/validator.cjs -p $line`
+              result=`node ./validation-tool/validator.mjs -p $line`
               if grep -q "$validationFailed" <<< "$result"; then
                 printf "\nSample '$line' validation failed.\n"
                 echo "$result"

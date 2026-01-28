@@ -84,7 +84,7 @@ Example:
 
   console.log(`   Sample Path: ${samplePath}`);
 
-  const validatorPath = path.join(__dirname, "validator.cjs");
+  const validatorPath = path.join(__dirname, "validator.mjs");
   
   console.log(`\n🔍 Running validation...\n`);
   console.log("=".repeat(60));
