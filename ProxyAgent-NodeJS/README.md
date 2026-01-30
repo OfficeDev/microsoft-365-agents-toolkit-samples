@@ -6,7 +6,7 @@ This solution demonstrates how to integrate a Microsoft Foundry agent with Micro
 
 [![Video Tutorial](https://img.youtube.com/vi/U9Yv2vjKYbI/0.jpg)](https://www.youtube.com/watch?v=U9Yv2vjKYbI)
 
-> **Note:** The video demonstrates the NodeJS version of this sample. This repository contains the C# implementation.
+> **Note:** The video demonstrates the C# version of this sample. This repository contains the Node.js/TypeScript implementation.
 
 ## This sample illustrates
 - How to connect a Microsoft Foundry Agent to M365 Copilot
@@ -17,6 +17,8 @@ This solution demonstrates how to integrate a Microsoft Foundry agent with Micro
 ---
 
 ## 🔄 Architecture Flow
+
+This is an high level sequence diagram illustrating the interaction flow between the user, Microsoft 365 Copilot, the Proxy Agent, and the Microsoft Foundry AI agent.
 
 ```mermaid
 sequenceDiagram
@@ -29,7 +31,7 @@ sequenceDiagram
         participant M as Microsoft 365 Copilot
     end
 
-    box "Custom Engine Agent"
+    box "Custom Engine Agent - Azure Resource Group"
         participant B as Azure Bot Service
         participant P as Proxy Agent (Agents SDK)
     end
@@ -38,15 +40,34 @@ sequenceDiagram
         participant A as AI Agent Backend
     end
 
-    %% Flow
-    U->>M: User prompt (e.g., "Create a report")
-    M->>B: Activity (Message)
-    B->>P: POST /api/messages (Message)
-    P->>B: 202 Accepted
-    P-->>M: Start Streaming Session with information
-    P->>A: POST /process { prompt }
-    A-->>P: { content }
-    P-->>M: Stream(content)
+    %% User Prompt Flow
+    U->>M: User prompt<br/>(e.g., "Create a report")
+    M->>P: POST /api/messages<br/>(Message)
+    
+    %% SSO Authentication Flow
+    rect rgb(255, 245, 220)
+        Note over B,P: SSO Authentication
+        P->>B: Check token cache
+        P->>M: Ask for user token<br/>(access_as_user)
+        M->>U: Silent token request<br/>(access_as_user)
+        P->>B: Token exchange to access token<br/>(access_as_user to user_impersonation)
+    end
+    
+    %% Streaming Response Flow
+    rect rgb(220, 240, 255)
+        Note over P,M: Streaming Session
+        P-->>M: Start streaming session with information
+        M-->>U: Display streaming information
+    end
+    
+    %% Backend Processing Flow
+    rect rgb(230, 255, 230)
+        Note over P,A: Backend Processing
+        P->>A: POST /process with access token<br/>{ prompt }
+        A-->>P: { content }
+        P-->>M: Stream(content)
+    end
+    
     M-->>U: Display result
 ```
 
@@ -105,7 +126,7 @@ atk deploy --env dev
 
 ### Required Tools
 
-- **Node.js 18, 20, or 22** - [Download](https://nodejs.org/)
+- **Node.js 22 or 24** - [Download](https://nodejs.org/)
 - **Azure CLI** - [Install Guide](https://learn.microsoft.com/cli/azure/install-azure-cli)
 - **Microsoft 365 Agents Toolkit CLI** - [Install Guide](https://learn.microsoft.com/en-us/microsoftteams/platform/toolkit/microsoft-365-agents-toolkit-cli#get-started)
 - **Visual Studio Code** with recommended extensions (TypeScript, ESLint)

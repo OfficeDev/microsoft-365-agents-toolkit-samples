@@ -16,6 +16,8 @@ This solution demonstrates how to integrate a Microsoft Foundry agent with Micro
 
 ## 🔄 Architecture Flow
 
+This is an high level sequence diagram illustrating the interaction flow between the user, Microsoft 365 Copilot, the Proxy Agent, and the Microsoft Foundry AI agent.
+
 ```mermaid
 sequenceDiagram
     %% Groups
@@ -27,7 +29,7 @@ sequenceDiagram
         participant M as Microsoft 365 Copilot
     end
 
-    box "Custom Engine Agent"
+    box "Custom Engine Agent - Azure Resource Group"
         participant B as Azure Bot Service
         participant P as Proxy Agent (Agents SDK)
     end
@@ -36,15 +38,34 @@ sequenceDiagram
         participant A as AI Agent Backend
     end
 
-    %% Flow
-    U->>M: User prompt (e.g., "Create a report")
-    M->>B: Activity (Message)
-    B->>P: POST /api/messages (Message)
-    P->>B: 202 Accepted
-    P-->>M: Start Streaming Session with information
-    P->>A: POST /process { prompt }
-    A-->>P: { content }
-    P-->>M: Stream(content)
+    %% User Prompt Flow
+    U->>M: User prompt<br/>(e.g., "Create a report")
+    M->>P: POST /api/messages<br/>(Message)
+    
+    %% SSO Authentication Flow
+    rect rgb(255, 245, 220)
+        Note over B,P: SSO Authentication
+        P->>B: Check token cache
+        P->>M: Ask for user token<br/>(access_as_user)
+        M->>U: Silent token request<br/>(access_as_user)
+        P->>B: Token exchange to access token<br/>(access_as_user to user_impersonation)
+    end
+    
+    %% Streaming Response Flow
+    rect rgb(220, 240, 255)
+        Note over P,M: Streaming Session
+        P-->>M: Start streaming session with information
+        M-->>U: Display streaming information
+    end
+    
+    %% Backend Processing Flow
+    rect rgb(230, 255, 230)
+        Note over P,A: Backend Processing
+        P->>A: POST /process with access token<br/>{ prompt }
+        A-->>P: { content }
+        P-->>M: Stream(content)
+    end
+    
     M-->>U: Display result
 ```
 
