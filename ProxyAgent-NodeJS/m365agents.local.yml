@@ -93,9 +93,9 @@ deploy:
     with:
       target: ./.localConfigs
       envs:
-        clientid: ${{BOT_ID}}
-        tenantid: ${{TEAMS_APP_TENANT_ID}}
-        clientsecret: ${{SECRET_BOT_PASSWORD}}
+        clientId: ${{BOT_ID}}
+        tenantId: ${{TEAMS_APP_TENANT_ID}}
+        clientSecret: ${{SECRET_BOT_PASSWORD}}
         AZURE_AI_FOUNDRY_PROJECT_ENDPOINT: ${{AZURE_AI_FOUNDRY_PROJECT_ENDPOINT}}
         AGENT_ID: ${{AGENT_ID}}
         OAUTHCONNECTIONNAME: ${{OAUTHCONNECTIONNAME}}
