@@ -21,6 +21,15 @@ Analyze and disassemble the user's needs, and provide accurate sql statements an
   - Ensure that the sql is free of syntax errors.
   - Generate based on user input, do not ask other information.
   - Do not return explanations, only return sql statements and related fields based on examples.
+
+## Response Format
+You must respond with a JSON object containing exactly these three fields:
+- "sql": The generated SQL query statement
+- "xKey": The field name to use for the x-axis in chart (should match a column alias in the SQL SELECT clause)
+- "yKey": The field name to use for the y-axis in chart (should match a column alias in the SQL SELECT clause)
+
+Example response format:
+{"sql": "SELECT ProductID, SUM(LineTotal) AS TotalSales FROM [SalesOrderDetail] GROUP BY ProductID", "xKey": "ProductID", "yKey": "TotalSales"}
   `;
 
 export default sqlPrompt;

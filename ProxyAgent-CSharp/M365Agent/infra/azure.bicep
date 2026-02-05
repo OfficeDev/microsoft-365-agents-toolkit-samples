@@ -12,6 +12,12 @@ param resourceBaseName string
 @description('Display name for the bot')
 param botDisplayName string
 
+@description('Azure AI Foundry Agent ID')
+param agentId string
+
+@description('Azure AI Foundry Project Endpoint')
+param azureAIFoundryProjectEndpoint string
+
 @description('Location for all resources')
 param location string = resourceGroup().location
 
@@ -99,8 +105,8 @@ module appService 'modules/appservice.bicep' = {
     botTenantId: tenantId
     oauthConnectionName: 'aifoundryaccess'
     // AI Services Configuration (optional - add to parameters if needed)
-    azureAIFoundryEndpoint: ''
-    azureAIAgentId: ''
+    azureAIFoundryEndpoint: azureAIFoundryProjectEndpoint
+    azureAIAgentId: agentId
     additionalAppSettings: additionalAppSettings
   }
 }

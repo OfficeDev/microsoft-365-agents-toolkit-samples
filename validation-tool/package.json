@@ -2,12 +2,13 @@
   "name": "teamsfx-sample-validator",
   "version": "1.0.0",
   "description": "",
-  "main": "validator.cjs",
+  "type": "module",
+  "main": "validator.mjs",
   "bin": {
-    "teamsfx-sample-validator": "validator.cjs"
+    "teamsfx-sample-validator": "validator.mjs"
   },
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --minify --outfile=validator.cjs --platform=node",
+    "build": "esbuild src/index.ts --bundle --minify --outfile=validator.mjs --platform=node --format=esm --banner:js=\"import { createRequire } from 'module'; const require = createRequire(import.meta.url);\"",
     "test": "jest"
   },
   "keywords": [],
@@ -31,7 +32,7 @@
     "@types/node": "^20.4.2",
     "@types/semver": "^7.7.0",
     "dotenv": "^16.3.1",
-    "esbuild": "^0.19.2",
+    "esbuild": "^0.25.12",
     "jest": "^29.6.1",
     "mock-fs": "^5.2.0",
     "ts-jest": "^29.1.1",

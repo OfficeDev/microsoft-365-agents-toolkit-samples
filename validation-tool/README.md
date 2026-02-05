@@ -8,7 +8,7 @@ If you want to contribute to the sample gallery of Microsoft 365 Agents Toolkit,
 
 1. Make sure NodeJS(>=14) has been installed.
 2. Change directory to "validation-tool" using command like `cd validation-tool`.
-3. Run `node .\validator.cjs -p <path to the project folder>` and check output.
+3. Run `node .\validator.mjs -p <path to the project folder>` and check output.
 The output looks like the following screenshot.
 ![validation success output](assets/validation-success.png)
   * Another way to run validator is to install the npm package. You can run `npm install -g .\validation-tool` to install the package. After that, you can run `teamsfx-sample-validator` to validate the project in current folder.

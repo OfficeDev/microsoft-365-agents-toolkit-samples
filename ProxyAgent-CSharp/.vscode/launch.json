@@ -71,10 +71,9 @@
     {
       "name": "Debug in Teams (Edge)",
       "configurations": [
-        "Launch in Teams (Edge)",
         "Launch AzureAgentToM365ATK"
       ],
-      "preLaunchTask": "PreReq & Start Tunnel",
+      "preLaunchTask": "PreReq & Launch Teams",
       "postDebugTask": "Stop All Services",
       "presentation": {
         "group": "all",
@@ -83,44 +82,15 @@
       "stopAll": true
     },
     {
-      "name": "Debug in Teams (Chrome)",
+      "name": "Debug in Copilot (Edge)",
       "configurations": [
-        "Launch in Teams (Chrome)",
         "Launch AzureAgentToM365ATK"
       ],
-      "preLaunchTask": "PreReq & Start Tunnel",
+      "preLaunchTask": "PreReq & Launch Copilot",
       "postDebugTask": "Stop All Services",
       "presentation": {
         "group": "all",
         "order": 2
-      },
-      "stopAll": true
-    },
-    {
-      "name": "Debug in Copilot (Edge)",
-      "configurations": [
-        "Launch AzureAgentToM365ATK",
-        "Launch in Copilot (Edge)",
-      ],
-      "preLaunchTask": "PreReq & Start Tunnel",
-      "postDebugTask": "Stop All Services",
-      "presentation": {
-        "group": "all",
-        "order": 3
-      },
-      "stopAll": true
-    },
-    {
-      "name": "Debug in Copilot (Chrome)",
-      "configurations": [
-        "Launch AzureAgentToM365ATK",
-        "Launch in Copilot (Chrome)"
-      ],
-      "preLaunchTask": "PreReq & Start Tunnel",
-      "postDebugTask": "Stop All Services",
-      "presentation": {
-        "group": "all",
-        "order": 4
       },
       "stopAll": true
     }

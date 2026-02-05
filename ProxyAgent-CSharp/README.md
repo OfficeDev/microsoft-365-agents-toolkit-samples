@@ -16,6 +16,8 @@ This solution demonstrates how to integrate a Microsoft Foundry agent with Micro
 
 ## 🔄 Architecture Flow
 
+This is an high level sequence diagram illustrating the interaction flow between the user, Microsoft 365 Copilot, the Proxy Agent, and the Microsoft Foundry AI agent.
+
 ```mermaid
 sequenceDiagram
     %% Groups
@@ -27,7 +29,7 @@ sequenceDiagram
         participant M as Microsoft 365 Copilot
     end
 
-    box "Custom Engine Agent"
+    box "Custom Engine Agent - Azure Resource Group"
         participant B as Azure Bot Service
         participant P as Proxy Agent (Agents SDK)
     end
@@ -36,15 +38,34 @@ sequenceDiagram
         participant A as AI Agent Backend
     end
 
-    %% Flow
-    U->>M: User prompt (e.g., "Create a report")
-    M->>B: Activity (Message)
-    B->>P: POST /api/messages (Message)
-    P->>B: 202 Accepted
-    P-->>M: Start Streaming Session with information
-    P->>A: POST /process { prompt }
-    A-->>P: { content }
-    P-->>M: Stream(content)
+    %% User Prompt Flow
+    U->>M: User prompt<br/>(e.g., "Create a report")
+    M->>P: POST /api/messages<br/>(Message)
+    
+    %% SSO Authentication Flow
+    rect rgb(255, 245, 220)
+        Note over B,P: SSO Authentication
+        P->>B: Check token cache
+        P->>M: Ask for user token<br/>(access_as_user)
+        M->>U: Silent token request<br/>(access_as_user)
+        P->>B: Token exchange to access token<br/>(access_as_user to user_impersonation)
+    end
+    
+    %% Streaming Response Flow
+    rect rgb(220, 240, 255)
+        Note over P,M: Streaming Session
+        P-->>M: Start streaming session with information
+        M-->>U: Display streaming information
+    end
+    
+    %% Backend Processing Flow
+    rect rgb(230, 255, 230)
+        Note over P,A: Backend Processing
+        P->>A: POST /process with access token<br/>{ prompt }
+        A-->>P: { content }
+        P-->>M: Stream(content)
+    end
+    
     M-->>U: Display result
 ```
 
@@ -56,6 +77,28 @@ This proxy pattern allows you to:
 
 ---
 
+## SDK and Package Versions
+
+This sample uses the **minimum recommended and supported versions** of the Microsoft Agents SDK.
+
+### Stable Packages (Microsoft Agents SDK)
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `Microsoft.Agents.Authentication.Msal` | 1.3.176 | SSO and user authentication |
+| `Microsoft.Agents.Hosting.AspNetCore` | 1.3.176 | ASP.NET Core hosting support |
+| `Microsoft.Extensions.AI` | 10.2.0 | AI abstractions |
+| `Azure.Identity` | 1.17.1 | Azure authentication (only use if SSO is disabled) |
+
+### Preview Packages (Microsoft Foundry Integration)
+| Package | Version | Purpose |
+|---------|---------|---------|
+| `Microsoft.Agents.AI` | 1.0.0-preview.260108.1 | AI agent capabilities |
+| `Microsoft.Agents.AI.AzureAI` | 1.0.0-preview.260108.1 | Azure AI integration |
+| `Microsoft.Agents.AI.AzureAI.Persistent` | 1.0.0-preview.260108.1 | Persistent agent support |
+| `Azure.AI.Agents.Persistent` | 1.2.0-beta.8 | Foundry persistent agents client |
+
+> **Note:** Preview packages are used exclusively for Microsoft Foundry integration and will be updated to v1 stable releases once they are published.
+
 ## 🚀 Quick Start
 
 Choose your deployment approach:
@@ -63,49 +106,139 @@ Choose your deployment approach:
 ### Local Development (Debugging)
 Perfect for development and testing with breakpoints and hot reload.
 
-> **Note:** This solution currently supports **VS Code only**. Visual Studio support is not yet available.
-
 **See:** [M365Agent/LOCAL_DEPLOYMENT.md](M365Agent/LOCAL_DEPLOYMENT.md)
-
-```powershell
-# Press F5 in VS Code
-# Agent is automatically sideloaded in Teams/M365 Copilot for testing
-```
 
 ### Azure Production Deployment
 Deploy your agent to Azure for production or dev environments.
 
 **See:** [M365Agent/AZURE_DEPLOYMENT.md](M365Agent/AZURE_DEPLOYMENT.md)
 
-**Using Microsoft 365 Agents Toolkit in VS Code:**
-1. Open the **Microsoft 365 Agents Toolkit** extension panel
-2. Select **Lifecycle** section
-3. Click **Provision** to create Azure resources
-4. Click **Deploy** to publish your bot application
-
-**Alternatively, using CLI:**
-```powershell
-cd M365Agent
-atk provision --env dev
-atk deploy --env dev
-```
-
 ---
 
 ## 📋 Prerequisites
 
-### Required Tools
-- **.NET SDK 9.0** - [Download](https://dotnet.microsoft.com/download/dotnet/9.0)
-- **Azure CLI** - [Install Guide](https://learn.microsoft.com/cli/azure/install-azure-cli)
-- **Microsoft 365 Agents Toolkit CLI** - [Install Guide](https://learn.microsoft.com/en-us/microsoftteams/platform/toolkit/microsoft-365-agents-toolkit-cli#get-started)
-- **Visual Studio Code** with C# Dev Kit extension
+This section consolidates all prerequisites needed for both **local development** and **Azure production deployment**.
 
-> **Important:** This solution currently supports **VS Code only**. Visual Studio support is planned for future releases.
+### Required Tools
+
+| Tool | Version | Purpose | Installation |
+|------|---------|---------|--------------|
+| **Visual Studio Code** | Latest | IDE (recommended) | [Download](https://code.visualstudio.com/) |
+| **PowerShell Core** | 7.x+ | Scripts and automation | [Download](https://github.com/PowerShell/PowerShell) |
+| **.NET SDK** | 9.0+ | Bot runtime | [Download](https://dotnet.microsoft.com/download/dotnet/9.0) |
+| **Node.js** | 18.x+ | Toolkit scripts | [Download](https://nodejs.org/) |
+| **Azure CLI** | Latest | Azure authentication | [Install Guide](https://learn.microsoft.com/cli/azure/install-azure-cli) |
+| **Microsoft 365 Agents Toolkit CLI** | Latest | Provisioning & deployment | [Install Guide](https://learn.microsoft.com/en-us/microsoftteams/platform/toolkit/microsoft-365-agents-toolkit-cli) |
+| **Dev Tunnels CLI** | Latest | Local endpoint exposure (local dev only) | `winget install Microsoft.devtunnel` |
+
+
+
+**Quick Install (Windows PowerShell):**
+```powershell
+# Install all tools at once
+winget install Microsoft.VisualStudioCode
+winget install Microsoft.PowerShell
+winget install Microsoft.DotNet.SDK.9
+winget install OpenJS.NodeJS.LTS
+winget install Microsoft.AzureCLI
+winget install Microsoft.devtunnel
+
+# Install Microsoft 365 Agents Toolkit CLI
+npm install -g @microsoft/m365agentstoolkit-cli
+
+# Verify installations
+pwsh --version
+dotnet --version
+node --version
+az --version
+atk --version
+devtunnel --version
+```
+
+### Required VS Code Extensions
+
+These extensions are automatically recommended when you open the project:
+
+| Extension | Purpose |
+|-----------|---------|
+| **Microsoft 365 Agents Toolkit** | Handles all automation (provision, deploy, debug) |
+| **C# Dev Kit** | C# development and debugging |
+| **Azure Account** | Azure authentication |
+
+### Required Azure Permissions
+
+| Permission | Scope | Purpose |
+|------------|-------|---------|
+| **Contributor** | Subscription or Resource Group | Deploy Azure resources (Bot Service, App Service) |
+| **Application Administrator** | Entra ID | Create app registrations |
+
+**Verify your permissions:**
+```powershell
+# Check Azure login and subscription
+az login
+az account show
+
+# Check assigned roles
+az role assignment list --assignee $(az account show --query user.name -o tsv)
+```
 
 ### Required Services
-- **Microsoft Foundry Project** with a configured agent
-- **Microsoft 365 tenant** with Teams or Copilot access
-- **Azure subscription** with appropriate permissions
+
+| Service | Purpose | Notes |
+|---------|---------|-------|
+| **Microsoft Foundry Project** | AI Agent backend | Must have a configured agent with Agent ID |
+| **Microsoft 365 tenant** | Teams/Copilot access | Required for testing and deployment |
+| **Azure subscription** | Host Azure resources | Bot Service, App Service (production), etc. |
+
+### Required Configuration
+
+#### For Local Development
+
+Edit `M365Agent/env/.env.local`:
+```bash
+# Your Azure subscription ID (required)
+AZURE_SUBSCRIPTION_ID=<your-subscription-id>
+
+# Resource group name (can be new or existing)
+AZURE_RESOURCE_GROUP_NAME=rg-m365agent-local
+```
+
+**Find your subscription ID:**
+```powershell
+az login
+az account show --query id -o tsv
+```
+
+#### For Azure Production Deployment
+
+Edit `M365Agent/env/.env.dev`:
+```bash
+# Microsoft Foundry Configuration (REQUIRED)
+AZURE_AI_FOUNDRY_PROJECT_ENDPOINT=<URL of your MS Foundry endpoint>
+AGENT_ID=<Agent ID that starts with asst_>
+```
+
+### Microsoft Foundry Agent Setup
+
+Before using this solution, you need a Microsoft Foundry agent:
+
+1. **Create an Agent in Microsoft Foundry Portal:**
+   - Configure the model (GPT-4, GPT-4o, GPT-4 Turbo, etc.)
+   - Set instructions and personality
+   - Add tools and capabilities (Code Interpreter, Functions, etc.)
+   - Note the Agent ID (starts with `asst_...`)
+
+2. **Get Connection Details:**
+   - Project Endpoint URL
+   - Agent ID
+
+3. **Update Configuration** in `AzureAgentToM365ATK/appsettings.json`:
+   ```json
+   {
+     "AzureAIFoundryProjectEndpoint": "https://your-project.cognitiveservices.azure.com/",
+     "AgentID": "asst_..."
+   }
+   ```
 
 ---
 
@@ -381,7 +514,7 @@ The bot uses **Azure Managed Identity** (production) or **Single Tenant + Client
 ## 📖 Additional Resources
 
 ### Microsoft 365 Agents Toolkit
-- [Microsoft 365 Agents Toolkit Documentation](https://aka.ms/teams-toolkit-docs)
+- [Microsoft 365 Agents Toolkit Documentation](https://learn.microsoft.com/en-us/microsoft-365/developer/overview-m365-agents-toolkit)
 - [Microsoft 365 Agents Toolkit GitHub](https://github.com/OfficeDev/TeamsFx)
 - [Teams App Development Guide](https://learn.microsoft.com/microsoftteams/platform/)
 

@@ -3,18 +3,18 @@
 // Licensed under the MIT license.
 
 import { Command } from "commander";
-import * as figlet from "figlet";
+import figlet from "figlet";
 import standard from "figlet/importable-fonts/Standard.js";
 
-import { outputResult } from "./util";
-import validateEnvFiles from "./validators/envValidator";
-import validateFolderStructure from "./validators/folderStructureValidator";
-import validateImage from "./validators/imageValidator";
-import validatePackageJson from "./validators/packageJsonValidator";
-import validateTeamsAppManifest from "./validators/teamsAppManifestValidator";
-import validateTeamsAppYaml from "./validators/teamsAppYamlValidator";
+import { outputResult } from "./util.js";
+import validateEnvFiles from "./validators/envValidator.js";
+import validateFolderStructure from "./validators/folderStructureValidator.js";
+import validateImage from "./validators/imageValidator.js";
+import validatePackageJson from "./validators/packageJsonValidator.js";
+import validateTeamsAppManifest from "./validators/teamsAppManifestValidator.js";
+import validateTeamsAppYaml from "./validators/teamsAppYamlValidator.js";
 
-const packageInfo = require("../package.json");
+const packageVersion = "1.0.0";
 
 const program = new Command();
 const validators = [
@@ -28,7 +28,7 @@ const validators = [
 
 async function main() {
   await program
-    .version(packageInfo.version)
+    .version(packageVersion)
     .description("A tool to validate project content before onboarding to TeamsFx sample gallery.")
     .option("-p, --path <path>", "Path to the project folder to be validated.")
     .parseAsync(process.argv);

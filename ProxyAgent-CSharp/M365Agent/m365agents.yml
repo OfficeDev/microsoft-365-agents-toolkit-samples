@@ -9,7 +9,6 @@ version: v1.8
 
 additionalMetadata:
   sampleTag: TeamsFx-Samples:ProxyAgent-CSharp
-
 environmentFolderPath: ./env
 
 # Triggered when 'atk provision' is executed

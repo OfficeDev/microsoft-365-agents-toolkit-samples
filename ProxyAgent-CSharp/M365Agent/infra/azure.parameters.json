@@ -16,6 +16,12 @@
       },
       "enableAppInsights": {
         "value": true
+      },
+      "agentId": {
+        "value": "${{AGENT_ID}}"
+      },
+      "azureAIFoundryProjectEndpoint": {
+        "value": "${{AZURE_AI_FOUNDRY_PROJECT_ENDPOINT}}"
       }
     }
   }
