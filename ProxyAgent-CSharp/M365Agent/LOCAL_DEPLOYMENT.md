@@ -136,6 +136,7 @@ All tools are automatically detected and validated when you press F5. Install th
 | Tool | Version | Purpose | Installation |
 |------|---------|---------|--------------|
 | **Visual Studio Code** | Latest | IDE | [Download](https://code.visualstudio.com/) |
+| **PowerShell Core** | 7.x+ | Scripts and automation | `winget install Microsoft.PowerShell` |
 | **.NET SDK** | 9.0+ | Bot runtime | [Download](https://dotnet.microsoft.com/download/dotnet/9.0) |
 | **Node.js** | 18.x+ | Toolkit scripts | [Download](https://nodejs.org/) |
 | **Azure CLI** | Latest | Azure authentication | `winget install Microsoft.AzureCLI` |
@@ -145,12 +146,14 @@ All tools are automatically detected and validated when you press F5. Install th
 ```powershell
 # Install all at once
 winget install Microsoft.VisualStudioCode
+winget install Microsoft.PowerShell
 winget install Microsoft.DotNet.SDK.9
 winget install OpenJS.NodeJS.LTS
 winget install Microsoft.AzureCLI
 winget install Microsoft.devtunnel
 
 # Verify installations
+pwsh --version
 dotnet --version
 node --version
 az --version
