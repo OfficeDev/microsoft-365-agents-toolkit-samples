@@ -14,12 +14,12 @@
         "doctor": "eslint src/**/*.{j,t}s{,x} --fix --no-error-on-unmatched-pattern"
     },
     "dependencies": {
-        "@fluidframework/azure-client": "^2.10.0",
+        "@fluidframework/azure-client": "^2.82.0",
         "@microsoft/live-share": "^2.0.0-internal.14",
         "@microsoft/teams-js": "^2.22.0",
         "@typescript-eslint/eslint-plugin": "^5.48.1",
         "@typescript-eslint/parser": "^5.48.1",
-        "fluid-framework": "^2.10.0"
+        "fluid-framework": "^2.82.0"
     },
     "devDependencies": {
         "buffer": "^6.0.3",
