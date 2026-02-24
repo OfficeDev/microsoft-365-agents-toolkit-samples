@@ -8,8 +8,8 @@ import { ActivityHandler } from "durable-functions";
 import { chunk } from "lodash";
 import { DateTime } from "luxon";
 
-import { DefaultAzureCredential } from "@azure/identity";
 import { InvocationContext } from "@azure/functions";
+import { ManagedIdentityCredential } from "@azure/identity";
 import {
   ServiceBusAdministrationClient,
   ServiceBusClient,
@@ -31,14 +31,14 @@ import { extractKeyDataFromConversationReference } from "../util";
 
 const enqueueTasksForInstallationsActivity: ActivityHandler = async (
   triggerInput: any,
-  context: InvocationContext
+  context: InvocationContext,
 ): Promise<{ sendStatus: SendStatus; continuationToken: string }> => {
   const input = triggerInput as {
     continuationToken: string;
     sendStatus: SendStatus;
   };
-  const credential = new DefaultAzureCredential({
-    managedIdentityClientId: managedIdentityId,
+  const credential = new ManagedIdentityCredential({
+    clientId: managedIdentityId,
   });
   let token = input.continuationToken;
   let installations: TeamsBotInstallation[] = [];
@@ -46,14 +46,13 @@ const enqueueTasksForInstallationsActivity: ActivityHandler = async (
   let newStatus = { ...input.sendStatus };
   for (let iter = 0; iter < iterateTime; iter++) {
     context.warn(
-      `${new Date().toISOString()} #${iter} [enqueueTasksForInstallationsActivity] continue ${token}`
+      `${new Date().toISOString()} #${iter} [enqueueTasksForInstallationsActivity] continue ${token}`,
     );
-    const installationResult =
-      await notificationApp.getPagedInstallations(
-        maxPageSize,
-        token,
-        false
-      );
+    const installationResult = await notificationApp.getPagedInstallations(
+      maxPageSize,
+      token,
+      false,
+    );
     installations = installationResult.data;
     token = installationResult.continuationToken;
 
@@ -64,13 +63,13 @@ const enqueueTasksForInstallationsActivity: ActivityHandler = async (
     context.warn(
       `${new Date().toISOString()} #${iter} [enqueueTasksForInstallationsActivity] found ${
         installations.length
-      } installations`
+      } installations`,
     );
     newStatus.totalMessageCount += installations.length;
 
     const sbClient = new ServiceBusClient(
       `${serviceBusNamespace}.servicebus.windows.net`,
-      credential
+      credential,
     );
     const sender = sbClient.createSender(serviceBusMessageQueueName);
     const chunks = chunk(installations, RPS * batchSendingInterval);
@@ -79,8 +78,8 @@ const enqueueTasksForInstallationsActivity: ActivityHandler = async (
       for (const conversation of chunk) {
         const messageBody = JSON.stringify(
           extractKeyDataFromConversationReference(
-            conversation.conversationReference
-          )
+            conversation.conversationReference,
+          ),
         );
         if (!batch.tryAddMessage({ body: messageBody })) {
           // if it can't be added to the batch, the message is probably too big to fit in a batch
@@ -95,12 +94,12 @@ const enqueueTasksForInstallationsActivity: ActivityHandler = async (
           .plus({ second: batchSendingInterval })
           .toJSDate();
         context.warn(
-          `[enqueueTasksForInstallationsActivity] ${new Date().toISOString()} next enqueue time ${nextEnqueueTime.toISOString()}`
+          `[enqueueTasksForInstallationsActivity] ${new Date().toISOString()} next enqueue time ${nextEnqueueTime.toISOString()}`,
         );
         if (nextEnqueueTime > new Date()) {
           const waitMs = nextEnqueueTime.getTime() - new Date().getTime();
           context.warn(
-            `[enqueueTasksForInstallationsActivity] wait to ${nextEnqueueTime.toISOString()}, ${waitMs} ms`
+            `[enqueueTasksForInstallationsActivity] wait to ${nextEnqueueTime.toISOString()}, ${waitMs} ms`,
           );
           await new Promise((r) => setTimeout(r, waitMs));
         }
@@ -110,13 +109,13 @@ const enqueueTasksForInstallationsActivity: ActivityHandler = async (
       context.warn(
         `[enqueueTasksForInstallationsActivity] ${lastSendTime.toISOString()} sending ${
           chunk[0].conversationReference.user.id
-        }`
+        }`,
       );
       await sender.sendMessages(batch);
       context.warn(
         `[enqueueTasksForInstallationsActivity] sent task to queue ${
           chunk[0].conversationReference.user.id
-        }, cost ${new Date().getTime() - lastSendTime.getTime()} ms}`
+        }, cost ${new Date().getTime() - lastSendTime.getTime()} ms}`,
       );
     }
 
@@ -127,13 +126,13 @@ const enqueueTasksForInstallationsActivity: ActivityHandler = async (
 
   const sbAdminClient = new ServiceBusAdministrationClient(
     `${serviceBusNamespace}.servicebus.windows.net`,
-    credential
+    credential,
   );
   const runtimeProperties = await sbAdminClient.getQueueRuntimeProperties(
-    serviceBusMessageQueueName
+    serviceBusMessageQueueName,
   );
   context.warn(
-    `[enqueueTasksForInstallationsActivity] active messages: ${runtimeProperties.activeMessageCount}`
+    `[enqueueTasksForInstallationsActivity] active messages: ${runtimeProperties.activeMessageCount}`,
   );
   newStatus.sentMessageCount =
     newStatus.totalMessageCount - runtimeProperties.activeMessageCount;
