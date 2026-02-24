@@ -6,9 +6,7 @@ const storageTableName = "installation";
 const installationMockTableName = "installationmock";
 
 async function copy() {
-  const credential = new DefaultAzureCredential({
-    requiredEnvVars: ["AZURE_TOKEN_CREDENTIALS"],
-  });
+  const credential = new DefaultAzureCredential();
 
   const originInstallationTableClient = new TableClient(
     `https://${storageAccount}.table.core.windows.net`,
