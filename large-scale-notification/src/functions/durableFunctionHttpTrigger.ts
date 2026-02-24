@@ -1,13 +1,13 @@
-﻿import * as df from "durable-functions";
-import { DefaultAzureCredential } from "@azure/identity";
-import {
+﻿import {
   app,
   HttpHandler,
   HttpRequest,
   HttpResponse,
   InvocationContext,
 } from "@azure/functions";
+import { ManagedIdentityCredential } from "@azure/identity";
 import { ServiceBusAdministrationClient } from "@azure/service-bus";
+import * as df from "durable-functions";
 import {
   managedIdentityId,
   serviceBusMessageQueueName,
@@ -16,18 +16,18 @@ import {
 
 const durableHttpStart: HttpHandler = async (
   request: HttpRequest,
-  context: InvocationContext
+  context: InvocationContext,
 ): Promise<HttpResponse> => {
   const client = df.getClient(context);
-  const credential = new DefaultAzureCredential({
-    managedIdentityClientId: managedIdentityId,
+  const credential = new ManagedIdentityCredential({
+    clientId: managedIdentityId,
   });
   const sbAdminClient = new ServiceBusAdministrationClient(
     `${serviceBusNamespace}.servicebus.windows.net`,
-    credential
+    credential,
   );
   let queueRuntimeProperties = await sbAdminClient.getQueueRuntimeProperties(
-    serviceBusMessageQueueName
+    serviceBusMessageQueueName,
   );
   const instanceId = await client.startNew("sendNotifications", {
     instanceId: undefined,
