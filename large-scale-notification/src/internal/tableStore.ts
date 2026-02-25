@@ -1,13 +1,13 @@
-import { ConversationReference } from "@microsoft/agents-activity";
-import { DefaultAzureCredential } from "@azure/identity";
 import { TableClient } from "@azure/data-tables";
+import { ManagedIdentityCredential } from "@azure/identity";
+import { ConversationReference } from "@microsoft/agents-activity";
 import { IStorage, PagedData } from "../notification/interface";
 
+import { InstallationReference } from "../types/installationReference";
 import {
   constructConversationReference,
   extractKeyDataFromConversationReference,
 } from "../util";
-import { InstallationReference } from "../types/installationReference";
 
 export class TableStore implements IStorage {
   private readonly client: TableClient;
@@ -15,34 +15,43 @@ export class TableStore implements IStorage {
   constructor(
     managedIdentityId: string,
     storageAccountURL: string,
-    storageTableName: string
+    storageTableName: string,
   ) {
-    const credential = new DefaultAzureCredential({
-      managedIdentityClientId: managedIdentityId,
+    const credential = new ManagedIdentityCredential({
+      clientId: managedIdentityId,
     });
 
     this.client = new TableClient(
       `${storageAccountURL}`,
       `${storageTableName}`,
       credential,
-      { allowInsecureConnection: true }
+      { allowInsecureConnection: true },
     );
   }
 
-  public async read(keys: string[]): Promise<{ [key: string]: Partial<ConversationReference> }> {
+  public async read(
+    keys: string[],
+  ): Promise<{ [key: string]: Partial<ConversationReference> }> {
     const results: { [key: string]: Partial<ConversationReference> } = {};
     try {
-      await Promise.all(keys.map(async (key) => {
-        const entity: InstallationReference = await this.client.getEntity(this.hash(key), key);
-        results[key] = constructConversationReference(entity);
-      }));
+      await Promise.all(
+        keys.map(async (key) => {
+          const entity: InstallationReference = await this.client.getEntity(
+            this.hash(key),
+            key,
+          );
+          results[key] = constructConversationReference(entity);
+        }),
+      );
     } catch (e: any) {
       // Optionally handle error
     }
     return results;
   }
 
-  public async write(changes: { [key: string]: Partial<ConversationReference> }): Promise<void> {
+  public async write(changes: {
+    [key: string]: Partial<ConversationReference>;
+  }): Promise<void> {
     /*
      * {
      *   "activityId":"f:4c06e7be-31d2-27d3-2c3f-e2c2ff775e0a",
@@ -79,7 +88,9 @@ export class TableStore implements IStorage {
 
   public async delete(keys: string[]): Promise<void> {
     try {
-      await Promise.all(keys.map(key => this.client.deleteEntity(this.hash(key), key)));
+      await Promise.all(
+        keys.map((key) => this.client.deleteEntity(this.hash(key), key)),
+      );
     } catch (e: unknown) {
       // Optionally handle error
     }
@@ -87,7 +98,7 @@ export class TableStore implements IStorage {
 
   public async list(
     pageSize?: number,
-    continuationToken?: string
+    continuationToken?: string,
   ): Promise<PagedData<Partial<ConversationReference>>> {
     const entities = await this.client
       .listEntities()

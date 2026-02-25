@@ -25,7 +25,7 @@
   "dependencies": {
     "@azure/data-tables": "^13.2.2",
     "@azure/functions": "^4.6.0",
-    "@azure/identity": "^4.4.1",
+    "@azure/identity": "^4.13.0",
     "@azure/service-bus": "^7.9.0",
     "@microsoft/agents-activity": "^0.4.3",
     "@microsoft/agents-hosting": "^0.4.3",
