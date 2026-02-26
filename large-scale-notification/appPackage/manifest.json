@@ -22,6 +22,7 @@
     "full": "full description for large-scale-notification"
   },
   "accentColor": "#FFFFFF",
+  "supportsChannelFeatures": "tier1",
   "bots": [
     {
       "botId": "${{BOT_ID}}",

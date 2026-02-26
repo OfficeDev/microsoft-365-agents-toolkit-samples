@@ -23,6 +23,7 @@
         "full": "Shows dashboard for helping the retail team"
     },
     "accentColor": "#FFFFFF",
+    "supportsChannelFeatures": "tier1",
     "staticTabs": [
         {
             "entityId": "1bd3087c-9df4-4798-93d0-53ed4ed13631",

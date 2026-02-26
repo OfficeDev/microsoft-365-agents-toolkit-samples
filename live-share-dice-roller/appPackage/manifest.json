@@ -23,6 +23,7 @@
         "color": "color.png"
     },
     "accentColor": "#FFFFFF",
+    "supportsChannelFeatures": "tier1",
     "configurableTabs": [
         {
             "configurationUrl": "${{BOT_ENDPOINT}}/?view=config&inTeams=1&load=1",

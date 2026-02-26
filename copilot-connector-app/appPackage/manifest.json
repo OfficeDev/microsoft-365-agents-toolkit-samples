@@ -22,6 +22,7 @@
         "full": "Full description of graph-connector-app"
     },
     "accentColor": "#FFFFFF",
+    "supportsChannelFeatures": "tier1",
     "bots": [],
     "composeExtensions": [],
     "configurableTabs": [

@@ -22,6 +22,7 @@
         "full": "Full description of dev-assist-dashboard"
     },
     "accentColor": "#FFFFFF",
+    "supportsChannelFeatures": "tier1",
     "bots": [],
     "composeExtensions": [],
     "configurableTabs": [],
