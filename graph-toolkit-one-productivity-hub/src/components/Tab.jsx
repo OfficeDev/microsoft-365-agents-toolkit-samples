@@ -17,6 +17,23 @@ import { TeamsFxProvider } from "@microsoft/mgt-teamsfx-provider";
 import { CacheService } from "@microsoft/mgt";
 import config from "./lib/config";
 
+/**
+ * Probe whether a Graph API endpoint is reachable (returns 2xx/3xx).
+ * Used to avoid rendering MGT components for unavailable services.
+ */
+async function isGraphEndpointAvailable(credential, scopes, endpoint) {
+  try {
+    const tokenObj = await credential.getToken(scopes);
+    const response = await fetch(`https://graph.microsoft.com/v1.0${endpoint}`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${tokenObj.token}` },
+    });
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
+
 class Tab extends React.Component {
   constructor(props) {
     super(props);
@@ -24,6 +41,9 @@ class Tab extends React.Component {
     CacheService.clearCacheById(cacheId);
     this.state = {
       showLoginPage: undefined,
+      calendarAvailable: null,
+      todoAvailable: null,
+      filesAvailable: null,
     };
   }
   async componentDidMount() {
@@ -56,19 +76,38 @@ class Tab extends React.Component {
     this.setState({
       showLoginPage: consentNeeded,
     });
+
+    if (!consentNeeded) {
+      /*Probe Graph endpoints first, then activate provider to avoid 404 errors*/
+      await this.probeGraphEndpoints();
+    }
+
     Providers.globalProvider.setState(
       consentNeeded ? ProviderState.SignedOut : ProviderState.SignedIn
     );
+
     return consentNeeded;
+  }
+
+  async probeGraphEndpoints() {
+    const now = new Date().toISOString();
+    const future = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString();
+    const [calendarAvailable, todoAvailable, filesAvailable] = await Promise.all([
+      isGraphEndpointAvailable(this.credential, this.scope, `/me/calendarview?startdatetime=${now}&enddatetime=${future}`),
+      isGraphEndpointAvailable(this.credential, this.scope, "/me/todo/lists"),
+      isGraphEndpointAvailable(this.credential, this.scope, "/me/drive/root/children"),
+    ]);
+    this.setState({ calendarAvailable, todoAvailable, filesAvailable });
   }
 
   async loginBtnClick() {
     try {
       await this.credential.login(this.scope);
-      Providers.globalProvider.setState(ProviderState.SignedIn);
       this.setState({
         showLoginPage: false,
       });
+      await this.probeGraphEndpoints();
+      Providers.globalProvider.setState(ProviderState.SignedIn);
     } catch (err) {
       if (err.message?.includes("CancelledByUser")) {
         const helpLink = "https://aka.ms/teamsfx-auth-code-flow";
@@ -113,13 +152,31 @@ class Tab extends React.Component {
               </div>
               <div class="row" className="content">
                 <div class="column" className="mgt-col">
-                  <Agenda></Agenda>
+                  {this.state.calendarAvailable ? (
+                    <Agenda></Agenda>
+                  ) : (
+                    <p style={{ color: "#888", fontStyle: "italic", padding: "1rem" }}>
+                      No calendar events available.
+                    </p>
+                  )}
                 </div>
                 <div class="column" className="mgt-col">
-                  <Todo></Todo>
+                  {this.state.todoAvailable ? (
+                    <Todo></Todo>
+                  ) : (
+                    <p style={{ color: "#888", fontStyle: "italic", padding: "1rem" }}>
+                      No to-do tasks available.
+                    </p>
+                  )}
                 </div>
                 <div class="column" className="mgt-col">
-                  <FileList></FileList>
+                  {this.state.filesAvailable ? (
+                    <FileList></FileList>
+                  ) : (
+                    <p style={{ color: "#888", fontStyle: "italic", padding: "1rem" }}>
+                      No files available.
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
