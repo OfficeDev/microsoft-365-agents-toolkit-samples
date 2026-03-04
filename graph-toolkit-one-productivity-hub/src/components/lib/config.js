@@ -1,6 +1,9 @@
+const env = import.meta.env;
+
 const config = {
-  initiateLoginEndpoint: process.env.REACT_APP_START_LOGIN_PAGE_URL,
-  clientId: process.env.REACT_APP_CLIENT_ID,
+  initiateLoginEndpoint:
+    env.REACT_APP_START_LOGIN_PAGE_URL || env.VITE_START_LOGIN_PAGE_URL,
+  clientId: env.REACT_APP_CLIENT_ID || env.VITE_CLIENT_ID,
 };
 
 export default config;
