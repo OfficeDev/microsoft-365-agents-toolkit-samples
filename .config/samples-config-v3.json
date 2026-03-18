@@ -806,7 +806,7 @@
                 "owner": "OfficeDev",
                 "repository": "Microsoft-Teams-Samples",
                 "ref": "main",
-                "dir": "samples/graph-rsc-helper/nodeJs"
+                "dir": "samples/TeamsJS/graph-rsc-helper/nodeJs"
             }
         },
         {
