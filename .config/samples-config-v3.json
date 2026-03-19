@@ -732,7 +732,7 @@
                 "owner": "OfficeDev",
                 "repository": "Microsoft-Teams-Samples",
                 "ref": "main",
-                "dir": "samples/msgext-link-unfurling-reddit/nodejs"
+                "dir": "samples/TeamsJS/msgext-link-unfurling-reddit/nodejs"
             }
         },
         {
