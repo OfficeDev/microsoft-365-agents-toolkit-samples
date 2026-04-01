@@ -46,15 +46,18 @@ provision:
       # The Microsoft Entra application's object id created for bot.
       objectId: BOT_OBJECT_ID
 
-  # Create or update the bot registration on dev.botframework.com
-  - uses: botFramework/create
+  # Deploy Azure Bot Service + OAuth connection "SSOSelf" for Teams SSO
+  # The OAuth connection allows Azure Bot Service to exchange the Teams SSO token
+  # for a Graph token via OBO, using the SSO AAD app credentials.
+  - uses: arm/deploy
     with:
-      botId: ${{BOT_ID}}
-      name: sso-bot
-      messagingEndpoint: ${{BOT_ENDPOINT}}/api/messages
-      description: ""
-      channels:
-        - name: msteams
+      subscriptionId: ${{AZURE_SUBSCRIPTION_ID}}
+      resourceGroupName: ${{AZURE_RESOURCE_GROUP_NAME}}
+      templates:
+        - path: ./infra/azure-local.bicep
+          parameters: ./infra/azure-local.parameters.json
+          deploymentName: Deploy-bot-sso-local-infra
+      bicepCliVersion: v0.38.33
 
   - uses: aadApp/update # Apply the AAD manifest to an existing AAD app. Will use the object id in manifest file to determine which AAD app to update.
     with:

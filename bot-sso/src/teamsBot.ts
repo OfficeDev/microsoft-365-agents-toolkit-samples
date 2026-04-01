@@ -36,12 +36,19 @@ export class TeamsBot extends AgentApplication<TurnState> {
       await context.sendActivity(MessageFactory.text("Sign in failed. Please try again."));
     });
 
+    this.onError(async (_context: TurnContext, err: unknown) => {
+      console.error("Unhandled error in bot:", err);
+    });
+
     this.onMessage("logout", async (context: TurnContext, state: TurnState) => {
       await this.authorization.signOut(context, state, "graph");
       await context.sendActivity(MessageFactory.text("You have been signed out."));
     });
 
-    // Handle SSO commands that require a Graph token
+    // Handle SSO commands that require a Graph token.
+    // The ["graph"] requirement triggers Teams SSO: Azure Bot Service exchanges the Teams SSO
+    // token for a Graph token via OBO using the "SSOSelf" OAuth connection.
+    // getToken() returns the resulting Graph token directly — no need to call exchangeToken.
     this.onActivity("message", async (context: TurnContext, state: TurnState) => {
       console.log("Running with Message Activity.");
 
@@ -53,20 +60,13 @@ export class TeamsBot extends AgentApplication<TurnState> {
 
       const SSOCommand = SSOCommandMap.get(txt);
       if (SSOCommand) {
-        // Get the SSO token, then exchange for a Graph token via OBO
+        // The OAuth connection already performed OBO — getToken returns the Graph token.
         const tokenResponse = await this.authorization.getToken(context, "graph");
         if (!tokenResponse?.token) {
           await context.sendActivity(MessageFactory.text("Unable to get token. Please sign in first."));
           return;
         }
-        const oboResponse = await this.authorization.exchangeToken(context, "graph", {
-          scopes: ["User.Read"],
-        });
-        if (!oboResponse?.token) {
-          await context.sendActivity(MessageFactory.text("Unable to exchange token. Please try again."));
-          return;
-        }
-        await SSOCommand.operationWithToken(context, oboResponse.token);
+        await SSOCommand.operationWithToken(context, tokenResponse.token);
       } else {
         await context.sendActivity(MessageFactory.text(`You said: ${context.activity.text}. Try typing 'show'.`));
       }
