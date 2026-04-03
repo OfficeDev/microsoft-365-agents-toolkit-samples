@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 const { CardFactory } = require("@microsoft/agents-hosting");
-const { TeamsInfo } = require("@microsoft/agents-hosting-teams");
+const { TeamsInfo } = require("@microsoft/agents-hosting-extensions-teams");
 const { ActivityTypes } = require("@microsoft/agents-activity");
 const { NotificationMiddleware, getKey } = require("./middleware");
 

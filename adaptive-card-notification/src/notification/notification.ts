@@ -4,7 +4,7 @@ import {
   TeamsInfo,
   TeamDetails,
   TeamsChannelAccount,
-} from "@microsoft/agents-hosting-teams";
+} from "@microsoft/agents-hosting-extensions-teams";
 import {
   Activity,
   ActivityTypes,
@@ -115,10 +115,11 @@ export class Channel implements NotificationTarget {
   ): Promise<{ id?: string }> {
     const response: { id?: string } = {};
     await this.parent.adapter.continueConversation(
+      this.parent.botAppId,
       this.parent.conversationReference as ConversationReference,
       async (context) => {
         const conversation = await this.newConversation(context);
-        await this.parent.adapter.continueConversation(conversation, async (ctx: TurnContext) => {
+        await this.parent.adapter.continueConversation(this.parent.botAppId, conversation, async (ctx: TurnContext) => {
           try {
             const res = await ctx.sendActivity(text);
             response.id = res?.id;
@@ -150,10 +151,11 @@ export class Channel implements NotificationTarget {
   ): Promise<{ id?: string }> {
     const response: { id?: string } = {};
     await this.parent.adapter.continueConversation(
+      this.parent.botAppId,
       this.parent.conversationReference as ConversationReference,
       async (context) => {
         const conversation = await this.newConversation(context);
-        await this.parent.adapter.continueConversation(conversation, async (ctx: TurnContext) => {
+        await this.parent.adapter.continueConversation(this.parent.botAppId, conversation, async (ctx: TurnContext) => {
           try {
             const res = await ctx.sendActivity({
               attachments: [CardFactory.adaptiveCard(card)],
@@ -237,10 +239,11 @@ export class Member implements NotificationTarget {
   ): Promise<{ id?: string }> {
     const response: { id?: string } = {};
     await this.parent.adapter.continueConversation(
+      this.parent.botAppId,
       this.parent.conversationReference as ConversationReference,
       async (context) => {
         const conversation = await this.newConversation(context);
-        await this.parent.adapter.continueConversation(conversation, async (ctx: TurnContext) => {
+        await this.parent.adapter.continueConversation(this.parent.botAppId, conversation, async (ctx: TurnContext) => {
           try {
             const res = await ctx.sendActivity(text);
             response.id = res?.id;
@@ -272,10 +275,11 @@ export class Member implements NotificationTarget {
   ): Promise<{ id?: string }> {
     const response: { id?: string } = {};
     await this.parent.adapter.continueConversation(
+      this.parent.botAppId,
       this.parent.conversationReference as ConversationReference,
       async (context) => {
         const conversation = await this.newConversation(context);
-        await this.parent.adapter.continueConversation(conversation, async (ctx: TurnContext) => {
+        await this.parent.adapter.continueConversation(this.parent.botAppId, conversation, async (ctx: TurnContext) => {
           try {
             const res = await ctx.sendActivity({
               attachments: [CardFactory.adaptiveCard(card)],
@@ -315,7 +319,7 @@ export class Member implements NotificationTarget {
       activity: context.activity,
       channelData: context.activity.channelData,
     };
-    const conversation = await connectorClient.createConversationAsync(conversationParams);
+    const conversation = await connectorClient.createConversation(conversationParams);
     personalConversation.conversation.id = conversation.id;
 
     return personalConversation;
@@ -392,6 +396,7 @@ export class TeamsBotInstallation implements NotificationTarget {
   ): Promise<{ id?: string }> {
     const response: { id?: string } = {};
     await this.adapter.continueConversation(
+      this.botAppId,
       this.conversationReference as ConversationReference,
       async (context) => {
         try {
@@ -424,6 +429,7 @@ export class TeamsBotInstallation implements NotificationTarget {
   ): Promise<{ id?: string }> {
     const response: { id?: string } = {};
     await this.adapter.continueConversation(
+      this.botAppId,
       this.conversationReference as ConversationReference,
       async (context) => {
         try {
@@ -459,6 +465,7 @@ export class TeamsBotInstallation implements NotificationTarget {
 
     let teamsChannels: ChannelInfo[] = [];
     await this.adapter.continueConversation(
+      this.botAppId,
       this.conversationReference as ConversationReference,
       async (context) => {
         const teamId = getTeamsBotInstallationId(context);
@@ -492,6 +499,7 @@ export class TeamsBotInstallation implements NotificationTarget {
     };
 
     await this.adapter.continueConversation(
+      this.botAppId,
       this.conversationReference as ConversationReference,
       async (context) => {
         const pagedMembers = await TeamsInfo.getPagedMembers(context, pageSize, continuationToken);
@@ -518,6 +526,7 @@ export class TeamsBotInstallation implements NotificationTarget {
 
     let teamDetails: TeamDetails | undefined;
     await this.adapter.continueConversation(
+      this.botAppId,
       this.conversationReference as ConversationReference,
       async (context) => {
         const teamId = getTeamsBotInstallationId(context);
@@ -582,6 +591,7 @@ export class NotificationBot {
   ): Promise<boolean> {
     let isValid = true;
     await this.adapter.continueConversation(
+      this.botAppId,
       conversationReference as ConversationReference,
       async (context) => {
         try {
