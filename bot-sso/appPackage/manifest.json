@@ -57,7 +57,8 @@
         "messageTeamMembers"
     ],
     "validDomains": [
-        "${{BOT_DOMAIN}}"
+        "${{BOT_DOMAIN}}",
+        "token.botframework.com"
     ],
     "webApplicationInfo": {
         "id": "${{AAD_APP_CLIENT_ID}}",
