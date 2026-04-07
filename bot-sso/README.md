@@ -45,6 +45,7 @@ This is a sample chatbot application demonstrating Single Sign-on using `Microso
 ### Run the app locally
 
 - From VS Code:
+  1. Sign into M365 and Azure by clicking the `Sign in to M365` and `Sign in to Azure` under the `ACCOUNTS` section from sidebar.
   1. hit `F5` to start debugging. Alternatively open the `Run and Debug Activity` Panel and select `Debug in Teams (Edge)` or `Debug in Teams (Chrome)`.
 - From Microsoft 365 Agents Toolkit CLI:
   1.  Install [dev tunnel cli](https://aka.ms/teamsfx-install-dev-tunnel).
