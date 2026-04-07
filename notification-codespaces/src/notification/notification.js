@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 const { CardFactory } = require("@microsoft/agents-hosting");
-const { TeamsInfo } = require("@microsoft/agents-hosting-teams");
+const { TeamsInfo } = require("@microsoft/agents-hosting-extensions-teams");
 const { ActivityTypes } = require("@microsoft/agents-activity");
 const { NotificationMiddleware, getKey } = require("./middleware");
 
@@ -54,22 +54,23 @@ class Channel {
   async sendMessage(text, onError) {
     const response = {};
     await this.parent.adapter.continueConversation(
-      this.parent.conversationReference,
-      async (context) => {
-        const conversation = await this.newConversation(context);
-        await this.parent.adapter.continueConversation(conversation, async (ctx) => {
-          try {
-            const res = await ctx.sendActivity(text);
-            response.id = res?.id;
-          } catch (error) {
-            if (onError) {
-              await onError(ctx, error);
-            } else {
-              throw error;
+        this.parent.botAppId,
+        this.parent.conversationReference,
+        async (context) => {
+          const conversation = await this.newConversation(context);
+          await this.parent.adapter.continueConversation(this.parent.botAppId, conversation, async (ctx) => {
+            try {
+              const res = await ctx.sendActivity(text);
+              response.id = res?.id;
+            } catch (error) {
+              if (onError) {
+                await onError(ctx, error);
+              } else {
+                throw error;
+              }
             }
-          }
-        });
-      }
+          });
+        }
     );
     return response;
   }
@@ -86,26 +87,27 @@ class Channel {
   async sendAdaptiveCard(card, onError) {
     const response = {};
     await this.parent.adapter.continueConversation(
-      this.parent.conversationReference,
-      async (context) => {
-        const conversation = await this.newConversation(context);
-        await this.parent.adapter.continueConversation(conversation, async (ctx) => {
-          try {
-            const res = await ctx.sendActivity({
-              attachments: [CardFactory.adaptiveCard(card)],
-              type: ActivityTypes.Message,
-            });
-            response.id = res?.id;
-          } catch (error) {
-            if (onError) {
-              await onError(ctx, error);
-            } else {
-              throw error;
+        this.parent.botAppId,
+        this.parent.conversationReference,
+        async (context) => {
+          const conversation = await this.newConversation(context);
+          await this.parent.adapter.continueConversation(this.parent.botAppId, conversation, async (ctx) => {
+            try {
+              const res = await ctx.sendActivity({
+                attachments: [CardFactory.adaptiveCard(card)],
+                type: ActivityTypes.Message,
+              });
+              response.id = res?.id;
+            } catch (error) {
+              if (onError) {
+                await onError(ctx, error);
+              } else {
+                throw error;
+              }
             }
-          }
-        });
-      },
-      true
+          });
+        },
+        true
     );
     return response;
   }
@@ -159,22 +161,23 @@ class Member {
   async sendMessage(text, onError) {
     const response = {};
     await this.parent.adapter.continueConversation(
-      this.parent.conversationReference,
-      async (context) => {
-        const conversation = await this.newConversation(context);
-        await this.parent.adapter.continueConversation(conversation, async (ctx) => {
-          try {
-            const res = await ctx.sendActivity(text);
-            response.id = res?.id;
-          } catch (error) {
-            if (onError) {
-              await onError(ctx, error);
-            } else {
-              throw error;
+        this.parent.botAppId,
+        this.parent.conversationReference,
+        async (context) => {
+          const conversation = await this.newConversation(context);
+          await this.parent.adapter.continueConversation(this.parent.botAppId, conversation, async (ctx) => {
+            try {
+              const res = await ctx.sendActivity(text);
+              response.id = res?.id;
+            } catch (error) {
+              if (onError) {
+                await onError(ctx, error);
+              } else {
+                throw error;
+              }
             }
-          }
-        });
-      }
+          });
+        }
     );
     return response;
   }
@@ -191,26 +194,27 @@ class Member {
   async sendAdaptiveCard(card, onError) {
     const response = {};
     await this.parent.adapter.continueConversation(
-      this.parent.conversationReference,
-      async (context) => {
-        const conversation = await this.newConversation(context);
-        await this.parent.adapter.continueConversation(conversation, async (ctx) => {
-          try {
-            const res = await ctx.sendActivity({
-              attachments: [CardFactory.adaptiveCard(card)],
-              type: ActivityTypes.Message,
-            });
-            response.id = res?.id;
-          } catch (error) {
-            if (onError) {
-              await onError(ctx, error);
-            } else {
-              throw error;
+        this.parent.botAppId,
+        this.parent.conversationReference,
+        async (context) => {
+          const conversation = await this.newConversation(context);
+          await this.parent.adapter.continueConversation(this.parent.botAppId, conversation, async (ctx) => {
+            try {
+              const res = await ctx.sendActivity({
+                attachments: [CardFactory.adaptiveCard(card)],
+                type: ActivityTypes.Message,
+              });
+              response.id = res?.id;
+            } catch (error) {
+              if (onError) {
+                await onError(ctx, error);
+              } else {
+                throw error;
+              }
             }
-          }
-        });
-      },
-      true
+          });
+        },
+        true
     );
     return response;
   }
@@ -295,7 +299,7 @@ class TeamsBotInstallation {
    * @returns The response of sending message.
    */ async sendMessage(text, onError) {
     const response = {};
-    await this.adapter.continueConversation(this.conversationReference, async (context) => {
+    await this.adapter.continueConversation(this.botAppId, this.conversationReference, async (context) => {
       try {
         const res = await context.sendActivity(text);
         response.id = res?.id;
@@ -321,24 +325,25 @@ class TeamsBotInstallation {
    */ async sendAdaptiveCard(card, onError) {
     const response = {};
     await this.adapter.continueConversation(
-      this.conversationReference,
-      async (context) => {
-        try {
-          const adaptiveCard = {
-            attachments: [CardFactory.adaptiveCard(card)],
-            type: ActivityTypes.Message,
-          };
-          const res = await context.sendActivity(adaptiveCard);
-          response.id = res?.id;
-        } catch (error) {
-          if (onError) {
-            await onError(context, error);
-          } else {
-            throw error;
+        this.botAppId,
+        this.conversationReference,
+        async (context) => {
+          try {
+            const adaptiveCard = {
+              attachments: [CardFactory.adaptiveCard(card)],
+              type: ActivityTypes.Message,
+            };
+            const res = await context.sendActivity(adaptiveCard);
+            response.id = res?.id;
+          } catch (error) {
+            if (onError) {
+              await onError(context, error);
+            } else {
+              throw error;
+            }
           }
-        }
-      },
-      true
+        },
+        true
     );
     return response;
   }
@@ -354,7 +359,7 @@ class TeamsBotInstallation {
     }
 
     let teamsChannels = [];
-    await this.adapter.continueConversation(this.conversationReference, async (context) => {
+    await this.adapter.continueConversation(this.botAppId, this.conversationReference, async (context) => {
       const teamId = getTeamsBotInstallationId(context);
       if (teamId !== undefined) {
         teamsChannels = await TeamsInfo.getTeamChannels(context, teamId);
@@ -380,7 +385,7 @@ class TeamsBotInstallation {
       continuationToken: "",
     };
 
-    await this.adapter.continueConversation(this.conversationReference, async (context) => {
+    await this.adapter.continueConversation(this.botAppId, this.conversationReference, async (context) => {
       const pagedMembers = await TeamsInfo.getPagedMembers(context, pageSize, continuationToken);
 
       result = {
@@ -402,7 +407,7 @@ class TeamsBotInstallation {
     }
 
     let teamDetails;
-    await this.adapter.continueConversation(this.conversationReference, async (context) => {
+    await this.adapter.continueConversation(this.botAppId, this.conversationReference, async (context) => {
       const teamId = getTeamsBotInstallationId(context);
       if (teamId !== undefined) {
         teamDetails = await TeamsInfo.getTeamDetails(context, teamId);
@@ -453,7 +458,7 @@ class NotificationBot {
    */
   async validateInstallation(conversationReference) {
     let isValid = true;
-    await this.adapter.continueConversation(conversationReference, async (context) => {
+    await this.adapter.continueConversation(this.botAppId, conversationReference, async (context) => {
       try {
         // try get member to see if the installation is still valid
         await TeamsInfo.getPagedMembers(context, 1);
@@ -616,9 +621,9 @@ class NotificationBot {
     scope = scope ?? SearchScope.All;
 
     return (
-      (target.type === "channel" && (scope & SearchScope.Channel) !== 0) ||
-      (target.type === "groupChat" && (scope & SearchScope.Group) !== 0) ||
-      (target.type === "personal" && (scope & SearchScope.Person) !== 0)
+        (target.type === "channel" && (scope & SearchScope.Channel) !== 0) ||
+        (target.type === "groupChat" && (scope & SearchScope.Group) !== 0) ||
+        (target.type === "personal" && (scope & SearchScope.Person) !== 0)
     );
   }
 

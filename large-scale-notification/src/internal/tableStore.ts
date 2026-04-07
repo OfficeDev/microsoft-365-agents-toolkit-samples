@@ -1,4 +1,4 @@
-import { TableClient } from "@azure/data-tables";
+import { TableClient, AzureNamedKeyCredential, NamedKeyCredential } from "@azure/data-tables";
 import { ManagedIdentityCredential } from "@azure/identity";
 import { ConversationReference } from "@microsoft/agents-activity";
 import { IStorage, PagedData } from "../notification/interface";
@@ -16,17 +16,24 @@ export class TableStore implements IStorage {
     managedIdentityId: string,
     storageAccountURL: string,
     storageTableName: string,
+    namedKeyCredential?: NamedKeyCredential,
   ) {
-    const credential = new ManagedIdentityCredential({
-      clientId: managedIdentityId,
-    });
-
-    this.client = new TableClient(
-      `${storageAccountURL}`,
-      `${storageTableName}`,
-      credential,
-      { allowInsecureConnection: true },
-    );
+    if (namedKeyCredential) {
+      this.client = new TableClient(
+        `${storageAccountURL}`,
+        `${storageTableName}`,
+        namedKeyCredential,
+        { allowInsecureConnection: true },
+      );
+    } else {
+      const credential = new ManagedIdentityCredential({ clientId: managedIdentityId });
+      this.client = new TableClient(
+        `${storageAccountURL}`,
+        `${storageTableName}`,
+        credential,
+        { allowInsecureConnection: true },
+      );
+    }
   }
 
   public async read(

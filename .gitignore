@@ -351,3 +351,4 @@ MigrationBackup/
 .playwright-cli/
 .claude/
 .idea/
+.aitemp/

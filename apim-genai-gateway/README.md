@@ -163,3 +163,14 @@ az rest --method post \
 ![alt text](./assets/image.png)
 
 > For local debugging using Microsoft 365 Agents Toolkit CLI, you need to do some extra steps described in [Set up your Microsoft 365 Agents Toolkit CLI for local debugging](https://aka.ms/teamsfx-cli-debugging).
+
+## Version History
+
+| Date         | Author | Comments                                         |
+| ------------ | ------ | ------------------------------------------------ |
+| Apr 7, 2026  | quke   | Upgrade @microsoft/agents-hosting to v1.4.1      |
+
+## Feedback
+
+We really appreciate your feedback! If you encounter any issue or error, please report issues to us following the [Supporting Guide](https://github.com/OfficeDev/TeamsFx-Samples/blob/dev/SUPPORT.md). Meanwhile you can make [recording](https://aka.ms/teamsfx-record) of your journey with our product, they really make the product better. Thank you!
+
