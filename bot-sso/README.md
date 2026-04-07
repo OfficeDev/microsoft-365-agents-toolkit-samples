@@ -55,6 +55,7 @@ This is a sample chatbot application demonstrating Single Sign-on using `Microso
       BOT_DOMAIN=sample-id-3978.devtunnels.ms
       BOT_ENDPOINT=https://sample-id-3978.devtunnels.ms
       ```
+  1.  Run command: `atk auth login azure` to sign in to your Azure account (required for provisioning the AAD app and bot registration).
   1.  Run command: `atk provision --env local` .
   1.  Run command: `atk deploy --env local` .
   1.  Run command: `atk preview --env local` .
@@ -84,7 +85,8 @@ This is a sample chatbot application demonstrating Single Sign-on using `Microso
 | Apr 19, 2022 | IvanJobs   | update to support Microsoft 365 Agent Toolkit v4.0.0 |
 | Dec 7, 2022  | yukun-dong | update to support Microsoft 365 Agent Toolkit v5.0.0 |
 | Feb 22, 2024 | yukun-dong | update card to adaptive card           |
-| May 28, 2025 | nliu       | update sdk                             |       
+| May 28, 2025 | nliu       | update sdk                             |
+| Apr 7, 2026  | quke       | Upgrade @microsoft/agents-hosting to v1.4.1 |
 
 ## Feedback
 
