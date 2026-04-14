@@ -18,7 +18,7 @@ export const agentApp = new AgentApplication({
 });
 
 // Listen for ANY message to be received. MUST BE AFTER ANY OTHER MESSAGE HANDLERS
-agentApp.activity(ActivityTypes.Message, async (context: TurnContext) => {
+agentApp.onActivity(ActivityTypes.Message, async (context: TurnContext) => {
   // Echo back users request
   const result = await client.chat.completions.create({
     messages: [

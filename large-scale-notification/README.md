@@ -190,3 +190,15 @@ Orchestrator is a pure function that has no side effect, so it will be replayed 
 ### Dynamic Concurrency
 
 This sample uses "Consumption" plan of Azure Function. The queue triggered function will be automatically scaled out to many instances. However this is a black box and spikes may happen during the sending process if there are not enough instances.
+
+## Version History
+
+| Date         | Author | Comments                                         |
+| ------------ | ------ | ------------------------------------------------ |
+| Oct 17, 2023 | nliu   | Onboard sample                                   |
+| Apr 7, 2026  | quke   | Upgrade @microsoft/agents-hosting to v1.4.1      |
+
+## Feedback
+
+We really appreciate your feedback! If you encounter any issue or error, please report issues to us following the [Supporting Guide](https://github.com/OfficeDev/TeamsFx-Samples/blob/dev/SUPPORT.md). Meanwhile you can make [recording](https://aka.ms/teamsfx-record) of your journey with our product, they really make the product better. Thank you!
+
