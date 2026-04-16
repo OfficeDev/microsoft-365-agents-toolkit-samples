@@ -40,7 +40,7 @@
     "@types/express": "^5.0.6",
     "@types/json-schema": "^7.0.15",
     "@types/luxon": "^3.3.0",
-    "axios": "^1.4.0",
+    "axios": "^1.15.0",
     "env-cmd": "^10.1.0",
     "shx": "^0.3.4",
     "ts-node": "^10.4.0",
