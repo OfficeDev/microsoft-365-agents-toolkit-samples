@@ -1,7 +1,9 @@
 {
   "IsEncrypted": false,
   "Values": {
+    "FUNCTIONS_WORKER_RUNTIME": "node",
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-    "FUNCTIONS_WORKER_RUNTIME": "node"
+    "TEAMSFX_API_ALPHAVANTAGE_ENDPOINT": "https://www.alphavantage.co",
+    "TEAMSFX_API_ALPHAVANTAGE_API_KEY": "demo"
   }
 }
