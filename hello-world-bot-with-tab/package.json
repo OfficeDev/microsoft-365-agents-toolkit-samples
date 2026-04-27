@@ -19,5 +19,11 @@
   },
   "dependencies": {
     "concurrently": "^7.6.0"
+  },
+  "devDependencies": {
+    "agents-simulator": "file:C:/Users/quke/source/atk/microsoft-365-agents-playground/packages/agents-simulator",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.0.0",
+    "@types/node": "^22.0.0"
   }
 }
