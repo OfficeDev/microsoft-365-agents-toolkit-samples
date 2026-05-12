@@ -5,6 +5,9 @@ version: v1.9
 
 environmentFolderPath: ./env
 
+additionalMetadata:
+  sampleTag: microsoft-365-agents-toolkit-samples:ProxyAgent-Python
+
 # Triggered when 'teamsfx provision' is executed
 provision:
   # Creates an app
@@ -125,4 +128,3 @@ publish:
     # the specified environment variable(s).
     writeToEnvironmentFile:
       publishedAppId: TEAMS_APP_PUBLISHED_APP_ID
-projectId: 617f6a3c-bef6-436d-9b44-594a0959a1e2
