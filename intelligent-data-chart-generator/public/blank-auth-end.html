@@ -1,0 +1,11 @@
+<!--This file is used as the redirect URI for silent MSAL token acquisition (ssoSilent / acquireTokenSilent).-->
+<!--MSAL opens a hidden iframe pointing to this page; it monitors the iframe URL for the auth code in the hash.-->
+<!--The page must exist so that the browser navigates here successfully instead of falling back to the SPA shell.-->
+<html>
+  <head>
+    <title>Blank Auth End Page</title>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+  </body>
+</html>
