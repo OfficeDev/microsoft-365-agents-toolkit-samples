@@ -30,9 +30,13 @@ export default async function validatePackageJson(
 
   const filePath = path.join(projectDir, "package.json");
   if (!(await fs.exists(filePath))) {
-    // C# projects don't have package.json
+    // C# and Python projects don't have package.json
     if (projectType === "csharp") {
       result.passed = [`C# project does not require package.json.`];
+      return result;
+    }
+    if (projectType === "python") {
+      result.passed = [`Python project does not require package.json.`];
       return result;
     }
     result.failed = [`package.json does not exist.`];
