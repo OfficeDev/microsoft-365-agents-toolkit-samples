@@ -24,7 +24,8 @@ provision:
         shell: pwsh
         run: |
           $url = 'https://management.azure.com/subscriptions/${{AZURE_SUBSCRIPTION_ID}}/resourceGroups/${{AZURE_RESOURCE_GROUP_NAME}}/providers/Microsoft.ApiManagement/service/${{APIM_SERVICE_NAME}}/subscriptions/${{APIM_SUBSCRIPTION_NAME}}/listSecrets?api-version=2021-08-01'
-          $key = az rest --method post --url $url --query primaryKey -o tsv
+          $key = (az rest --method post --url $url --query primaryKey -o tsv).Trim()
+          if (-not $key) { Write-Error "Failed to retrieve APIM subscription key. Ensure Azure CLI is logged in and has access to the APIM service."; exit 1 }
           $content = Get-Content env/.env.playground.user
           $filtered = @()
           foreach ($line in $content) {
