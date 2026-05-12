@@ -881,7 +881,7 @@
                 "owner": "pnp",
                 "repository": "copilot-pro-dev-samples",
                 "ref": "main",
-                "dir": "samples/da-ristorante-api"
+                "dir": "samples/da-ristorante-api-js"
             }
         },
         {
