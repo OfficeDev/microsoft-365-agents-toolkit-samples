@@ -86,4 +86,21 @@ describe('validatePackageJson()', () => {
     expect(result.warning.length).toBe(1);
     expect(result.warning[0]).toEqual("package.json does not have 'engines.node' field.");
   });
+
+  test('python project without package.json should pass', async () => {
+    mock({
+      "testFolder": {
+        "src": {
+          "requirements.txt": "microsoft-agents-botframework\n",
+        },
+      },
+    });
+
+    const result = await validateGif(path.join(process.cwd(), "testFolder"));
+    expect(result.name).toEqual("package.json");
+    expect(result.failed.length).toBe(0);
+    expect(result.passed.length).toBe(1);
+    expect(result.warning.length).toBe(0);
+    expect(result.passed[0]).toEqual("Python project does not require package.json.");
+  });
 });

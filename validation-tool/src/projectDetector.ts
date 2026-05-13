@@ -4,7 +4,7 @@
 import fs from "fs-extra";
 import path from "path";
 
-export type ProjectType = "typescript" | "csharp";
+export type ProjectType = "typescript" | "csharp" | "python";
 
 export interface ProjectPaths {
   projectType: ProjectType;
@@ -123,11 +123,44 @@ async function isCSharpFromConfig(projectDir: string): Promise<boolean> {
 }
 
 /**
+ * Check if a sample is a Python project by reading samples-config-v3.json
+ */
+async function isPythonFromConfig(projectDir: string): Promise<boolean> {
+  const sampleId = getExpectedSampleId(projectDir);
+  
+  const configPaths = getConfigPaths(projectDir);
+  
+  for (const configPath of configPaths) {
+    if (await fs.exists(configPath)) {
+      try {
+        const config: SamplesConfig = await fs.readJson(configPath);
+        const sample = config.samples.find(s => s.id === sampleId);
+        if (sample && sample.tags) {
+          return sample.tags.includes("Python");
+        }
+      } catch {
+        // Ignore parse errors, fall back to file detection
+      }
+    }
+  }
+  
+  // Fallback: check for Python-specific files
+  const pyFiles = ["pyproject.toml", "requirements.txt", "setup.py", "setup.cfg"];
+  for (const f of pyFiles) {
+    if (await fs.exists(path.join(projectDir, f))) return true;
+  }
+  // Check src/requirements.txt (common Python structure)
+  if (await fs.exists(path.join(projectDir, "src", "requirements.txt"))) return true;
+
+  return false;
+}
+
+/**
  * Detects the project type and returns the correct paths for validation.
  * 
- * First checks samples-config-v3.json for "C#" tag, then falls back to folder structure.
+ * First checks samples-config-v3.json for language tags, then falls back to folder structure.
  * 
- * TypeScript projects have files directly in the root:
+ * TypeScript/JavaScript projects have files directly in the root:
  *   - m365agents.yml
  *   - appPackage/
  *   - env/
@@ -136,10 +169,13 @@ async function isCSharpFromConfig(projectDir: string): Promise<boolean> {
  *   - M365Agent/m365agents.yml
  *   - M365Agent/appPackage/
  *   - M365Agent/env/
+ * 
+ * Python projects have files directly in the root (no package.json required).
  */
 export async function detectProjectType(projectDir: string): Promise<ProjectPaths> {
-  // First, check samples-config-v3.json for C# tag
+  // Check samples-config-v3.json for language tags
   const isCSharp = await isCSharpFromConfig(projectDir);
+  const isPython = await isPythonFromConfig(projectDir);
   
   // Check if M365Agent subfolder exists with m365agents.yml
   const m365AgentDir = path.join(projectDir, "M365Agent");
@@ -153,6 +189,16 @@ export async function detectProjectType(projectDir: string): Promise<ProjectPath
       rootDir: projectDir,
       agentDir: hasM365AgentFolder ? m365AgentDir : projectDir,
       displayPrefix: hasM365AgentFolder ? "M365Agent/" : "",
+    };
+  }
+
+  // Python project
+  if (isPython) {
+    return {
+      projectType: "python",
+      rootDir: projectDir,
+      agentDir: projectDir,
+      displayPrefix: "",
     };
   }
   
