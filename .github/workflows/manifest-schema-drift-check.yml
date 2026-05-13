@@ -24,8 +24,7 @@ jobs:
       - name: Detect schema drift and impact
         id: schema_check
         env:
-          GITHUB_COPILOT_TOKEN: ${{ secrets.GITHUB_COPILOT_TOKEN }}
-          GITHUB_MODELS_TOKEN: ${{ secrets.GITHUB_MODELS_TOKEN }}
+          COPILOT_TOKEN: ${{ secrets.COPILOT_TOKEN }}
           AI_SCHEMA_SUMMARY_MODEL: ${{ vars.AI_SCHEMA_SUMMARY_MODEL }}
           AI_SCHEMA_SUMMARY_API_URL: ${{ vars.AI_SCHEMA_SUMMARY_API_URL }}
         run: node ./.github/scripts/check-manifest-schema-update.cjs

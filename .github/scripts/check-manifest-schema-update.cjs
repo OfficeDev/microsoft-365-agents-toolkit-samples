@@ -254,13 +254,12 @@ async function generateAISchemaSummary(
   latestVersion,
   impactedCount,
 ) {
-  const token =
-    process.env.GITHUB_MODELS_TOKEN || process.env.GITHUB_COPILOT_TOKEN || "";
+  const token = process.env.COPILOT_TOKEN || "";
 
   if (!token) {
     return {
       source: "fallback",
-      text: "AI summary unavailable because no token was provided. Set GITHUB_MODELS_TOKEN or GITHUB_COPILOT_TOKEN.",
+      text: "AI summary unavailable because no token was provided. Set COPILOT_TOKEN.",
     };
   }
 
