@@ -1,6 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 
+const { execSync } = require("child_process");
+
 const REPO_ROOT = path.resolve(__dirname, "..", "..");
 const SAMPLE_CONFIG_PATH = path.join(
   REPO_ROOT,
@@ -17,9 +19,6 @@ const VALIDATOR_PATH = path.join(
 
 const MAX_PROBE_STEPS = 60;
 const MAX_CONSECUTIVE_MISSES = 10;
-const AI_DEFAULT_MODEL = "gpt-4.1-mini";
-const AI_DEFAULT_API_URL =
-  "https://models.inference.ai.azure.com/chat/completions";
 
 function parseVersion(value) {
   if (!value || typeof value !== "string") return null;
@@ -248,23 +247,21 @@ function buildFallbackSchemaSummary(
   ].join(" ");
 }
 
-async function generateAISchemaSummary(
+function generateAISchemaSummary(
   diff,
   currentVersion,
   latestVersion,
   impactedCount,
 ) {
-  const token = process.env.COPILOT_TOKEN || "";
+  // Check if COPILOT_TOKEN is available for CLI-based summary generation
+  const copilotToken = process.env.COPILOT_TOKEN || "";
 
-  if (!token) {
+  if (!copilotToken) {
     return {
       source: "fallback",
       text: "AI summary unavailable because no token was provided. Set COPILOT_TOKEN.",
     };
   }
-
-  const apiUrl = process.env.AI_SCHEMA_SUMMARY_API_URL || AI_DEFAULT_API_URL;
-  const model = process.env.AI_SCHEMA_SUMMARY_MODEL || AI_DEFAULT_MODEL;
 
   const promptPayload = {
     currentVersion: versionToString(currentVersion, false),
@@ -282,57 +279,36 @@ async function generateAISchemaSummary(
     },
   };
 
-  const requestBody = {
-    model,
-    temperature: 0.2,
-    messages: [
-      {
-        role: "system",
-        content:
-          "You summarize JSON schema changes for engineering issue tracking. Be concise and actionable.",
-      },
-      {
-        role: "user",
-        content: `Summarize the Teams manifest schema change data below. Output 5-8 bullet points covering: what changed, likely impact on existing Teams app manifests, validation risk, and upgrade priority.\\n\\n${JSON.stringify(promptPayload, null, 2)}`,
-      },
-    ],
-  };
+  const prompt = `Summarize the Teams manifest schema change data below. Output 5-8 bullet points covering: what changed, likely impact on existing Teams app manifests, validation risk, and upgrade priority.\n\n${JSON.stringify(promptPayload, null, 2)}`;
 
   try {
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+    // Invoke Copilot CLI via command line following GitHub's official Actions pattern
+    // https://docs.github.com/en/copilot/how-tos/copilot-cli/automate-copilot-cli/automate-with-actions
+    const result = execSync(
+      `copilot -p ${JSON.stringify(prompt)} --allow-tool=none --no-ask-user`,
+      {
+        encoding: "utf-8",
+        timeout: 30000,
+        env: { ...process.env, GITHUB_TOKEN: copilotToken },
+        stdio: ["pipe", "pipe", "pipe"],
       },
-      body: JSON.stringify(requestBody),
-      signal: AbortSignal.timeout(30000),
-    });
+    );
 
-    if (!response.ok) {
+    if (!result || typeof result !== "string") {
       return {
         source: "fallback",
-        text: `AI summary unavailable because API returned ${response.status}.`,
-      };
-    }
-
-    const data = await response.json();
-    const content = data?.choices?.[0]?.message?.content;
-    if (!content || typeof content !== "string") {
-      return {
-        source: "fallback",
-        text: "AI summary unavailable because response content was empty.",
+        text: "AI summary unavailable because CLI response was empty.",
       };
     }
 
     return {
       source: "ai",
-      text: content.trim(),
+      text: result.trim(),
     };
   } catch (error) {
     return {
       source: "fallback",
-      text: `AI summary unavailable due to request error: ${error.message}`,
+      text: `AI summary unavailable due to CLI error: ${error.message}`,
     };
   }
 }
@@ -459,6 +435,7 @@ async function main() {
   const impactedSamples = manifestInfos
     .filter((manifest) => {
       if (!manifest.manifestVersion) return false;
+      if (manifest.manifestVersionRaw === "devPreview") return false; // devPreview does not need updates
       return compareVersions(manifest.manifestVersion, latestPublished) < 0;
     })
     .map((manifest) => ({
@@ -495,7 +472,7 @@ async function main() {
 
     if (currentSchema && latestSchema) {
       const diff = analyzeSchemaDiff(currentSchema, latestSchema);
-      const ai = await generateAISchemaSummary(
+      const ai = generateAISchemaSummary(
         diff,
         repoMaxVersion,
         latestPublished,

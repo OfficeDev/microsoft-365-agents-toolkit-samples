@@ -21,12 +21,13 @@ jobs:
         with:
           node-version: 18
 
+      - name: Install Copilot CLI
+        run: npm install -g @github/copilot
+
       - name: Detect schema drift and impact
         id: schema_check
         env:
           COPILOT_TOKEN: ${{ secrets.COPILOT_TOKEN }}
-          AI_SCHEMA_SUMMARY_MODEL: ${{ vars.AI_SCHEMA_SUMMARY_MODEL }}
-          AI_SCHEMA_SUMMARY_API_URL: ${{ vars.AI_SCHEMA_SUMMARY_API_URL }}
         run: node ./.github/scripts/check-manifest-schema-update.cjs
 
       - name: Create or update tracking issue
@@ -45,6 +46,11 @@ jobs:
             const body = process.env.ISSUE_BODY;
             const markerVersion = process.env.DRIFT_MARKER_VERSION;
             const marker = `<!-- manifest-schema-version:${markerVersion} -->`;
+            
+            const assigneesRaw = (process.env.COPILOT_ASSIGNEE || "").trim();
+            const assignees = assigneesRaw 
+              ? assigneesRaw.split(",").map((item) => item.trim()).filter(Boolean)
+              : [];
 
             const labels = [
               { name: "manifest-schema-drift", color: "fbca04", description: "Tracks newly published Teams manifest schema updates" },
@@ -93,6 +99,21 @@ jobs:
               });
 
               core.info(`Updated existing issue #${existing.number}`);
+
+              // Assign to configured user if specified
+              if (assignees.length > 0) {
+                try {
+                  await github.rest.issues.addAssignees({
+                    owner,
+                    repo,
+                    issue_number: existing.number,
+                    assignees,
+                  });
+                  core.info(`Assigned issue to: ${assignees.join(", ")}`);
+                } catch (error) {
+                  core.warning(`Could not assign issue: ${error.message}`);
+                }
+              }
             } else {
               const created = await github.rest.issues.create({
                 owner,
@@ -100,26 +121,13 @@ jobs:
                 title,
                 body,
                 labels: ["manifest-schema-drift", "copilot-upgrade"],
+                assignees,
               });
 
               core.info(`Created issue #${created.data.number}`);
 
-              const assigneesRaw = (process.env.COPILOT_ASSIGNEE || "").trim();
-              if (assigneesRaw) {
-                const assignees = assigneesRaw.split(",").map((item) => item.trim()).filter(Boolean);
-                if (assignees.length > 0) {
-                  try {
-                    await github.rest.issues.addAssignees({
-                      owner,
-                      repo,
-                      issue_number: created.data.number,
-                      assignees,
-                    });
-                    core.info(`Assigned issue to: ${assignees.join(", ")}`);
-                  } catch (error) {
-                    core.warning(`Could not assign issue using COPILOT_ASSIGNEE. ${error.message}`);
-                  }
-                }
+              if (assignees.length > 0) {
+                core.info(`Assigned to: ${assignees.join(", ")}`);
               }
             }
 
