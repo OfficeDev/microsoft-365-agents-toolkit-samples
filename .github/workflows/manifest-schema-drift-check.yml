@@ -1,0 +1,134 @@
+name: Manifest Schema Drift Check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 16 * * *"
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  detect-and-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Detect schema drift and impact
+        id: schema_check
+        env:
+          GITHUB_COPILOT_TOKEN: ${{ secrets.GITHUB_COPILOT_TOKEN }}
+          GITHUB_MODELS_TOKEN: ${{ secrets.GITHUB_MODELS_TOKEN }}
+          AI_SCHEMA_SUMMARY_MODEL: ${{ vars.AI_SCHEMA_SUMMARY_MODEL }}
+          AI_SCHEMA_SUMMARY_API_URL: ${{ vars.AI_SCHEMA_SUMMARY_API_URL }}
+        run: node ./.github/scripts/check-manifest-schema-update.cjs
+
+      - name: Create or update tracking issue
+        if: ${{ steps.schema_check.outputs.drift_detected == 'true' }}
+        uses: actions/github-script@v7
+        env:
+          ISSUE_TITLE: ${{ steps.schema_check.outputs.issue_title }}
+          ISSUE_BODY: ${{ steps.schema_check.outputs.issue_body }}
+          DRIFT_MARKER_VERSION: ${{ steps.schema_check.outputs.drift_marker_version }}
+          COPILOT_ASSIGNEE: ${{ vars.COPILOT_ASSIGNEE }}
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const title = process.env.ISSUE_TITLE;
+            const body = process.env.ISSUE_BODY;
+            const markerVersion = process.env.DRIFT_MARKER_VERSION;
+            const marker = `<!-- manifest-schema-version:${markerVersion} -->`;
+
+            const labels = [
+              { name: "manifest-schema-drift", color: "fbca04", description: "Tracks newly published Teams manifest schema updates" },
+              { name: "copilot-upgrade", color: "0e8a16", description: "Issue is routed for Copilot-assisted upgrade work" }
+            ];
+
+            for (const label of labels) {
+              try {
+                await github.rest.issues.getLabel({ owner, repo, name: label.name });
+              } catch (error) {
+                if (error.status === 404) {
+                  await github.rest.issues.createLabel({
+                    owner,
+                    repo,
+                    name: label.name,
+                    color: label.color,
+                    description: label.description,
+                  });
+                } else {
+                  throw error;
+                }
+              }
+            }
+
+            const openIssues = await github.paginate(github.rest.issues.listForRepo, {
+              owner,
+              repo,
+              state: "open",
+              labels: "manifest-schema-drift",
+              per_page: 100,
+            });
+
+            const existing = openIssues.find((issue) =>
+              !issue.pull_request &&
+              (issue.title === title || (issue.body || "").includes(marker))
+            );
+
+            if (existing) {
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: existing.number,
+                title,
+                body,
+                labels: ["manifest-schema-drift", "copilot-upgrade"],
+              });
+
+              core.info(`Updated existing issue #${existing.number}`);
+            } else {
+              const created = await github.rest.issues.create({
+                owner,
+                repo,
+                title,
+                body,
+                labels: ["manifest-schema-drift", "copilot-upgrade"],
+              });
+
+              core.info(`Created issue #${created.data.number}`);
+
+              const assigneesRaw = (process.env.COPILOT_ASSIGNEE || "").trim();
+              if (assigneesRaw) {
+                const assignees = assigneesRaw.split(",").map((item) => item.trim()).filter(Boolean);
+                if (assignees.length > 0) {
+                  try {
+                    await github.rest.issues.addAssignees({
+                      owner,
+                      repo,
+                      issue_number: created.data.number,
+                      assignees,
+                    });
+                    core.info(`Assigned issue to: ${assignees.join(", ")}`);
+                  } catch (error) {
+                    core.warning(`Could not assign issue using COPILOT_ASSIGNEE. ${error.message}`);
+                  }
+                }
+              }
+            }
+
+      - name: Log no-drift result
+        if: ${{ steps.schema_check.outputs.drift_detected != 'true' }}
+        run: |
+          echo "No new manifest schema detected."
+          echo "Latest published: ${{ steps.schema_check.outputs.latest_published_minor }}"
+          echo "Validator baseline: ${{ steps.schema_check.outputs.validator_baseline }}"
+          echo "Repo max version: ${{ steps.schema_check.outputs.repo_max_version }}"
+          echo "AI summary source: ${{ steps.schema_check.outputs.ai_summary_source }}"
