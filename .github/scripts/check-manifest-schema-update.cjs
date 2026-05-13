@@ -289,7 +289,7 @@ function generateAISchemaSummary(
       {
         encoding: "utf-8",
         timeout: 30000,
-        env: { ...process.env, COPILOT_TOKEN: copilotToken },
+        env: { ...process.env, GITHUB_TOKEN: copilotToken },
         stdio: ["pipe", "pipe", "pipe"],
       },
     );
