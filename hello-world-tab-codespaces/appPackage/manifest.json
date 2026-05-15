@@ -22,6 +22,7 @@
         "full": "Full description of hello-world-tab"
     },
     "accentColor": "#FFFFFF",
+    "supportsChannelFeatures": "tier1",
     "bots": [],
     "composeExtensions": [],
     "configurableTabs": [

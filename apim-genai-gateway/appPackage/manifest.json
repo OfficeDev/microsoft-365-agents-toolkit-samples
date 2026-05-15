@@ -22,6 +22,7 @@
         "full": "full description for genai-gateway-sample"
     },
     "accentColor": "#FFFFFF",
+    "supportsChannelFeatures": "tier1",
     "copilotAgents": {
         "customEngineAgents": [
             {

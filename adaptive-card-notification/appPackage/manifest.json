@@ -22,6 +22,7 @@
         "full": "full description for adaptive-card-notifi"
     },
     "accentColor": "#FFFFFF",
+    "supportsChannelFeatures": "tier1",
     "bots": [
         {
             "botId": "${{BOT_ID}}",

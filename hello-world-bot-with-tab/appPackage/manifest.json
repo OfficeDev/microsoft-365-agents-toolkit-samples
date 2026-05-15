@@ -22,6 +22,7 @@
         "full": "Full description of hello-world-bot-with-tab"
     },
     "accentColor": "#FFFFFF",
+    "supportsChannelFeatures": "tier1",
     "bots": [
         {
             "botId": "${{BOT_ID}}",

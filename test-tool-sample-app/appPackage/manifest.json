@@ -22,6 +22,7 @@
         "full": "full description for bot-all-in-one"
     },
     "accentColor": "#FFFFFF",
+    "supportsChannelFeatures": "tier1",
     "bots": [
         {
             "botId": "${{BOT_ID}}",
