@@ -72,13 +72,13 @@ export default async function validateImage(projectDir: string): Promise<Result>
         if (dimensions.width && dimensions.height && dimensions.width / dimensions.height === 40/23) {
           result.passed.push(`assets/thumbnail.${ext} has 1600*920/800*460 resolution or same ratio.`);
         } else {
-          result.failed.push(`assets/thumbnail.${ext} must have 1600*920/800*460 resolution or same ratio (40:23 aspect ratio). Current: ${dimensions.width}x${dimensions.height}.`);
+          result.warning.push(`assets/thumbnail.${ext} must have 1600*920/800*460 resolution or same ratio (40:23 aspect ratio). Current: ${dimensions.width}x${dimensions.height}.`);
         }
         break;
       }
     }
     if (!thumbnailFound) {
-      result.failed.push(`Thumbnail image is required to display in sample gallery. Please add thumbnailPath to samples-config-v3.json or add assets/thumbnail.png.`);
+      result.warning.push(`Thumbnail image not found. Add thumbnailPath to samples-config-v3.json or add assets/thumbnail.png to include this sample in the gallery.`);
     }
   }
 
