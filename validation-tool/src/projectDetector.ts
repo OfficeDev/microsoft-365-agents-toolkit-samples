@@ -65,6 +65,7 @@ interface SamplesConfig {
 export interface SampleImagePaths {
   thumbnailPath?: string;
   gifPath?: string;
+  foundInConfig: boolean;
 }
 
 /**
@@ -85,6 +86,7 @@ export async function getSampleImagePaths(projectDir: string): Promise<SampleIma
           return {
             thumbnailPath: sample.thumbnailPath,
             gifPath: sample.gifPath,
+            foundInConfig: true,
           };
         }
       } catch {
@@ -93,7 +95,7 @@ export async function getSampleImagePaths(projectDir: string): Promise<SampleIma
     }
   }
   
-  return {};
+  return { foundInConfig: false };
 }
 
 /**

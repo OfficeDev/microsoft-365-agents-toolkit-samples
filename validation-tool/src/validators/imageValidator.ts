@@ -40,6 +40,11 @@ export default async function validateImage(projectDir: string): Promise<Result>
   // Get image paths from samples-config-v3.json
   const imagePaths = await getSampleImagePaths(projectDir);
   
+  // Warn if sample is not in samples-config-v3.json (and not a codespaces sample)
+  if (!isCodespaces && !imagePaths.foundInConfig) {
+    result.warning.push(`This sample is not included in samples-config-v3.json.`);
+  }
+  
   // Check thumbnail (required for sample gallery, but skip for codespaces samples)
   if (isCodespaces) {
     result.passed.push(`Thumbnail validation skipped for codespaces sample (not in samples-config-v3.json).`);
