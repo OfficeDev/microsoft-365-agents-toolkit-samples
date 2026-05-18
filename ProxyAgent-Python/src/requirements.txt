@@ -1,0 +1,12 @@
+python-dotenv
+fastapi
+uvicorn[standard]
+aiohttp
+typing_extensions>=4.15.0
+PyJWT
+microsoft-agents-hosting-fastapi>=0.9.1
+microsoft-agents-hosting-core>=0.9.1
+microsoft-agents-authentication-msal>=0.9.1
+microsoft-agents-activity>=0.9.1
+azure-ai-projects
+azure-identity
