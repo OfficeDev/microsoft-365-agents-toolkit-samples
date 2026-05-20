@@ -1,29 +1,22 @@
 import { ResponseType, Client } from "@microsoft/microsoft-graph-client";
 import { TokenCredentialAuthenticationProvider } from "@microsoft/microsoft-graph-client/authProviders/azureTokenCredentials";
 import { CardFactory, TurnContext } from "@microsoft/agents-hosting";
-import { OnBehalfOfCredential } from "@azure/identity";
+import { ClientSecretCredential } from "@azure/identity";
 import { SSOCommand } from "./SSOCommand";
-import oboAuthConfig from "../authConfig";
 import { Activity } from "@microsoft/agents-activity";
 
 export class ShowUserProfile implements SSOCommand {
   commandMessage = "show";
 
-  async operationWithSSOToken(context: TurnContext, ssoToken: string) {
+  async operationWithToken(context: TurnContext, token: string) {
     await context.sendActivity(
       "Retrieving user information from Microsoft Graph ..."
     );
 
-    // Call Microsoft Graph half of user
-    const oboCredential = new OnBehalfOfCredential({...oboAuthConfig, userAssertionToken: ssoToken });
-
-    // Create an instance of the TokenCredentialAuthenticationProvider by passing the tokenCredential instance and options to the constructor
-    const authProvider = new TokenCredentialAuthenticationProvider(
-      oboCredential,
-      {
-        scopes: ["User.Read"],
-      }
-    );
+    // Use the provided OBO access token as a static credential
+    const authProvider = {
+      getAccessToken: async () => token,
+    };
 
     // Initialize Graph client instance with authProvider
     const graphClient = Client.initWithMiddleware({
@@ -55,20 +48,21 @@ export class ShowUserProfile implements SSOCommand {
         body: [
           {
             type: "TextBlock",
-            text: "User Picture:",
+            text: "User Picture",
             weight: "Bolder",
-            size: "Medium",
+            size: "Medium"
           },
           {
             type: "Image",
             url: imageUri,
             size: "Large",
-            horizontalAlignment: "Left",
-          },
+            horizontalAlignment: "Left"
+          }
         ],
-        $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
-        version: "1.4",
-      });      await context.sendActivity(Activity.fromObject({ attachments: [card], type: "message" }));
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        version: "1.4"
+      });
+      await context.sendActivity(Activity.fromObject({ attachments: [card], type: "message" }));
     } else {
       await context.sendActivity(
         "Could not retrieve profile information from Microsoft Graph."

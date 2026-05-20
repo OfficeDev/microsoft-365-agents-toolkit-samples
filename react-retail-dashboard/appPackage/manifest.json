@@ -1,6 +1,6 @@
 {
-    "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.17/MicrosoftTeams.schema.json",
-    "manifestVersion": "1.17",
+    "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.27/MicrosoftTeams.schema.json",
+    "manifestVersion": "1.27",
     "version": "1.0.8",
     "showLoadingIndicator": false,
     "id": "${{TEAMS_APP_ID}}",
@@ -23,6 +23,7 @@
         "full": "Shows dashboard for helping the retail team"
     },
     "accentColor": "#FFFFFF",
+    "supportsChannelFeatures": "tier1",
     "staticTabs": [
         {
             "entityId": "1bd3087c-9df4-4798-93d0-53ed4ed13631",

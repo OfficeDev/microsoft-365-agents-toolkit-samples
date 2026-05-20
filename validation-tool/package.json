@@ -15,6 +15,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ajv-draft-04": "^1.0.0",
+    "ajv-formats": "^3.0.1",
     "chalk": "^4.1.2",
     "commander": "^11.0.0",
     "compare-versions": "^6.1.0",

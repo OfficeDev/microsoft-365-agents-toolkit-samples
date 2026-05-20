@@ -54,7 +54,7 @@ This sample demonstrates the architecture of a Teams notfication bot app created
 Since there are usually at most 25 users in Microsoft 365 E3/E5 subscription in a tenant, duplicate the installation data can be used to mock a large amount of users.
 
 1. Copy the value of `STORAGE_ACCOUNT_NAME` in `env/.env.dev` and paste it to variable `storageAccount` in `script/mockInstallationData.ts`.
-2. Please ensure you are logged into the Azure account used for deploying the app.
+2. Please ensure you are logged into the Azure account used for deploying the app and set environment variable `AZURE_TOKEN_CREDENTIALS` to `dev`.
 3. Run command in project root folder: `npx ts-node script/mockInstallationData.ts`.
 4. Update `storageTableName` in `src/internal/initialize.ts` to `installationMockTableName`.
 5. Deploy the code to Azure Function by selecting `Deploy` from the Microsoft 365 Agents Toolkit sidebar. Your app should now use the mock data.
@@ -190,3 +190,15 @@ Orchestrator is a pure function that has no side effect, so it will be replayed 
 ### Dynamic Concurrency
 
 This sample uses "Consumption" plan of Azure Function. The queue triggered function will be automatically scaled out to many instances. However this is a black box and spikes may happen during the sending process if there are not enough instances.
+
+## Version History
+
+| Date         | Author | Comments                                         |
+| ------------ | ------ | ------------------------------------------------ |
+| Oct 17, 2023 | nliu   | Onboard sample                                   |
+| Apr 7, 2026  | quke   | Upgrade @microsoft/agents-hosting to v1.4.1      |
+
+## Feedback
+
+We really appreciate your feedback! If you encounter any issue or error, please report issues to us following the [Supporting Guide](https://github.com/OfficeDev/TeamsFx-Samples/blob/dev/SUPPORT.md). Meanwhile you can make [recording](https://aka.ms/teamsfx-record) of your journey with our product, they really make the product better. Thank you!
+

@@ -83,8 +83,8 @@ describe('validateTeamsAppManifest()', () => {
 
     const result = await validateTeamsAppManifest(path.join(process.cwd(), "testFolder"));
     expect(result.name).toEqual("Teams App Manifest");
-    expect(result.failed.length).toBe(1);
+    expect(result.failed.length).toBe(0);
     expect(result.passed.length).toBe(1);
-    expect(result.failed[0]).toEqual("Manifest version(1.12) is NOT aligned with Microsoft 365 Agents Toolkit(1.17).");
+    expect(result.warning[0]).toEqual("Manifest version(1.12) is NOT aligned with Microsoft 365 Agents Toolkit(1.27.0).");
   });
 });

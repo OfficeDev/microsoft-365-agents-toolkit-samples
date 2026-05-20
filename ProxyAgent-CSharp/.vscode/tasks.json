@@ -139,6 +139,22 @@
           ]
         }
       }
+    },
+    {
+      "label": "PreReq & Launch Teams",
+      "dependsOn": [
+        "PreReq & Start Tunnel",
+        "Launch Edge - Teams"
+      ],
+      "dependsOrder": "sequence"
+    },
+    {
+      "label": "PreReq & Launch Copilot",
+      "dependsOn": [
+        "PreReq & Start Tunnel",
+        "Launch Edge - Copilot"
+      ],
+      "dependsOrder": "sequence"
     }
   ]
 }

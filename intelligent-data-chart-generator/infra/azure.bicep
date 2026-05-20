@@ -93,7 +93,7 @@ resource functionApp 'Microsoft.Web/sites@2021-02-01' = {
         }
         {
           name: 'WEBSITE_NODE_DEFAULT_VERSION'
-          value: '~20' // Set NodeJS version to 20.x
+          value: '~22' // Set NodeJS version to 22.x
         }
         {
           name: 'ALLOWED_APP_IDS'

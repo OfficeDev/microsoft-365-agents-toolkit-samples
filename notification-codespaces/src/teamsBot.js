@@ -1,8 +1,8 @@
-const { TeamsActivityHandler } = require("@microsoft/agents-hosting-teams");
+const { AgentApplication } = require("@microsoft/agents-hosting");
 
-// An empty teams activity handler.
+// An empty agent application handler.
 // You can add your customization code here to extend your bot logic if needed.
-class TeamsBot extends TeamsActivityHandler {
+class TeamsBot extends AgentApplication {
   constructor() {
     super();
   }

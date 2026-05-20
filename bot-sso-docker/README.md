@@ -54,6 +54,7 @@ This sample demonstrate how to containerize a Teams App and integrate the Docker
 ### Run the app locally
 
 - From VS Code:
+  1. Sign into M365 and Azure by clicking the `Sign in to M365` and `Sign in to Azure` under the `ACCOUNTS` section from sidebar.
   1. hit `F5` to start debugging. Alternatively open the `Run and Debug Activity` Panel and select `Debug (Edge)` or `Debug (Chrome)`.
 - From Microsoft 365 Agents Toolkit CLI:
   1.  Install [dev tunnel cli](https://aka.ms/teamsfx-install-dev-tunnel).
@@ -64,6 +65,7 @@ This sample demonstrate how to containerize a Teams App and integrate the Docker
       BOT_DOMAIN=sample-id-3978.devtunnels.ms
       BOT_ENDPOINT=https://sample-id-3978.devtunnels.ms
       ```
+  1.  Run command: `atk auth login azure` to sign in to your Azure account (required for provisioning the AAD app and bot registration).
   1.  Run command: `atk provision --env local` .
   1.  Run command: `docker build -t sso-bot ./` .
   1.  Run command: `docker run -p 3978:80 --env-file .localConfigs sso-bot` .
@@ -99,6 +101,7 @@ This sample demonstrate how to containerize a Teams App and integrate the Docker
 | Date         | Author     | Comments                               |
 | ------------ | ---------- | -------------------------------------- |
 | Jan 17, 2024  | hund030   | Onboard sample in Microsoft 365 Agent Toolkit V5.0.0 |
+| Apr 7, 2026   | quke      | Upgrade @microsoft/agents-hosting to v1.4.1          |
 
 ## Feedback
 

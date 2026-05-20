@@ -732,29 +732,8 @@
                 "owner": "OfficeDev",
                 "repository": "Microsoft-Teams-Samples",
                 "ref": "main",
-                "dir": "samples/msgext-link-unfurling-reddit/nodejs"
+                "dir": "samples/TeamsJS/msgext-link-unfurling-reddit/nodejs"
             }
-        },
-        {
-            "id": "intelligent-data-chart-generator",
-            "shortId": "data-chart-generator",
-            "onboardDate": "2024-01-31",
-            "title": "Intelligent Data Chart Generator",
-            "shortDescription": "The Microsoft Teams Tab app, powered by Azure OpenAI, interprets user inputs to generate data charts from Azure SQL.",
-            "fullDescription": "This intelligent Microsoft Teams Tab app is powered by Azure OpenAI, which helps users generating data charts based on users' description of the data chart in human language. There is an input box where users tell the Tab app what data chart they want to generate, and the app interprets user's requirements then generate visual charts. The data is from Azure SQL. This sample demonstrates how to build a seamless and intuitive experience for accessing and interpreting data.",
-            "types": [
-              "Tab"
-            ],
-            "tags": [
-              "Tab",
-              "TS",
-              "Azure Functions"
-            ],
-            "time": "30 mins to run",
-            "configuration": "Manual configurations required",
-            "thumbnailPath": "assets/thumbnail.png",
-            "gifPath": "assets/sampleDemo.gif",
-            "suggested": false
         },
         {
             "id": "bot-sso-docker",
@@ -827,7 +806,7 @@
                 "owner": "OfficeDev",
                 "repository": "Microsoft-Teams-Samples",
                 "ref": "main",
-                "dir": "samples/graph-rsc-helper/nodeJs"
+                "dir": "samples/TeamsJS/graph-rsc-helper/nodeJs"
             }
         },
         {
@@ -902,7 +881,7 @@
                 "owner": "pnp",
                 "repository": "copilot-pro-dev-samples",
                 "ref": "main",
-                "dir": "samples/da-ristorante-api"
+                "dir": "samples/da-ristorante-api-js"
             }
         },
         {
@@ -993,7 +972,7 @@
             "configuration": "Manual configurations required",
             "thumbnailPath": "assets/thumbnail.jpg",
             "gifPath": "assets/sampleDemo.gif",
-            "suggested": true
+            "suggested": false
         },
         {
             "id": "ProxyAgent-NodeJS",
@@ -1016,6 +995,29 @@
             "configuration": "Manual configurations required",
             "thumbnailPath": "images/screen009.jpg",
             "gifPath": "images/screen009.jpg",
+            "suggested": true
+        },
+        {
+            "id": "ProxyAgent-Python",
+            "shortId": "ProxyAgent-Python",
+            "onboardDate": "2026-05-06",
+            "title": "Microsoft Foundry Agent to Microsoft 365 Copilot With SSO",
+            "shortDescription": "Sample to connect a Microsoft Foundry Agent to Microsoft 365 Copilot using Microsoft 365 Agent SDK. Leverage SSO to pass user token to Microsoft Foundry.",
+            "fullDescription": "This solution demonstrates how to integrate a Microsoft Foundry agent with Microsoft Teams and Microsoft 365 Copilot, providing a seamless experience for users to interact with powerful AI capabilities directly within their productivity tools. Built with Node.js/TypeScript and the Microsoft 365 Agents SDK.",
+            "types": [
+                "Custom Engine Agent"
+            ],
+            "tags": [
+                "Python",
+                "Azure",
+                "SSO",
+                "Agent",
+                "Microsoft Foundry"
+            ],
+            "time": "5 mins to run",
+            "configuration": "Manual configurations required",
+            "thumbnailPath": "assets/thumbnail.jpg",
+            "gifPath": "assets/sampleDemo.gif",
             "suggested": true
         },
         {

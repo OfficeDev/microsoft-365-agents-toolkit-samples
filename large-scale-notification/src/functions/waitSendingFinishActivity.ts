@@ -11,8 +11,8 @@
 import * as df from "durable-functions";
 import { ActivityHandler } from "durable-functions";
 
-import { DefaultAzureCredential } from "@azure/identity";
 import { InvocationContext } from "@azure/functions";
+import { ManagedIdentityCredential } from "@azure/identity";
 import { ServiceBusAdministrationClient } from "@azure/service-bus";
 
 import {
@@ -24,27 +24,27 @@ import { SendStatus } from "../types/sendStatus";
 
 const waitSendingFinishActivity: ActivityHandler = async (
   triggerInput: any,
-  context: InvocationContext
+  context: InvocationContext,
 ): Promise<SendStatus> => {
-  const credential = new DefaultAzureCredential({
-    managedIdentityClientId: managedIdentityId,
+  const credential = new ManagedIdentityCredential({
+    clientId: managedIdentityId,
   });
   const input = triggerInput as SendStatus;
   const sbAdminClient = new ServiceBusAdministrationClient(
     `${serviceBusNamespace}.servicebus.windows.net`,
-    credential
+    credential,
   );
   let runtimeProperties = await sbAdminClient.getQueueRuntimeProperties(
-    serviceBusMessageQueueName
+    serviceBusMessageQueueName,
   );
   context.warn(`[waitSendingFinishActivity] checking.`);
   while (runtimeProperties.activeMessageCount > 0) {
     context.warn(
-      `[waitSendingFinishActivity] active messages: ${runtimeProperties.activeMessageCount}`
+      `[waitSendingFinishActivity] active messages: ${runtimeProperties.activeMessageCount}`,
     );
     await new Promise((r) => setTimeout(r, 5000));
     runtimeProperties = await sbAdminClient.getQueueRuntimeProperties(
-      serviceBusMessageQueueName
+      serviceBusMessageQueueName,
     );
   }
   input.failedMessageCount =
