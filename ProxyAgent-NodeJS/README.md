@@ -81,6 +81,26 @@ This proxy pattern allows you to:
 
 ---
 
+## 🤖 GitHub Copilot Integration
+
+This repo ships with a built-in **GitHub Copilot skill** that gives Copilot deep context about the proxy agent architecture. When you use GitHub Copilot in VS Code (Chat, Inline, or Edits), it automatically understands:
+
+- **Edit boundaries** — which parts of `agent.ts` to replace (backend seam) and which to leave alone (SDK lifecycle, SSO, streaming)
+- **Config wiring** — how to add environment variables across all 4 layers (config.ts, .env, .yml, bicep)
+- **Auth patterns** — when to use TokenCredential, API keys, or managed identity
+- **Forbidden patterns** — what to avoid (hardcoded secrets, plain-text keys in production, etc.)
+
+**How it works:**
+
+| File | Purpose |
+|------|---------|
+| `.github/copilot-instructions.md` | Routes Copilot to the skill on first interaction |
+| `.agents/skills/proxy-agent-dev/SKILL.md` | Full architectural context, build flow, and verification checklist |
+
+> **Tip:** Open GitHub Copilot Chat in VS Code and ask *"How do I swap the backend to OpenAI?"* — Copilot will walk you through it step by step using the skill's guidance.
+
+---
+
 ## 🚀 Quick Start
 
 Choose your deployment approach:
@@ -171,6 +191,12 @@ Infrastructure as Code and configuration for Microsoft 365 integration.
 
 ```text
 ProxyAgent-NodeJS/
+├── .agents/
+│   └── skills/
+│       └── proxy-agent-dev/
+│           └── SKILL.md             # 🤖 Copilot skill (architecture + edit guidance)
+├── .github/
+│   └── copilot-instructions.md      # 🤖 Routes Copilot to the skill
 ├── src/
 │   ├── index.ts                 # Application entry point (Express server)
 │   ├── agent.ts                 # Backend integration (replace to swap providers)
