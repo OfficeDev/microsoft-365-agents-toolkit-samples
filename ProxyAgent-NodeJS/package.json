@@ -28,19 +28,19 @@
     "dependencies": {
         "@azure/ai-agents": "^1.1.0",
         "@azure/core-auth": "^1.10.1",
-        "@azure/identity": "^4.13.0",
-        "@microsoft/agents-activity": "^1.1.1",
-        "@microsoft/agents-hosting": "^1.1.1",
-        "@microsoft/agents-hosting-express": "^1.1.1",
-        "jsonwebtoken": "^9.0.2",
+        "@azure/identity": "^4.13.1",
+        "@microsoft/agents-activity": "^1.5.3",
+        "@microsoft/agents-hosting": "^1.5.3",
+        "@microsoft/agents-hosting-express": "^1.5.3",
+        "jsonwebtoken": "^9.0.3",
         "typescript": "^5.9.3"
     },
     "devDependencies": {
-        "@types/express": "^5.0.5",
+        "@types/express": "^5.0.6",
         "@types/jsonwebtoken": "^9.0.10",
         "@types/node": "^22.10.2",
         "env-cmd": "^10.1.0",
-        "nodemon": "^3.1.7",
+        "nodemon": "^3.1.14",
         "ts-node": "^10.9.2"
     }
 }

@@ -130,7 +130,7 @@ All tools are automatically detected and validated when you press F5. Install th
 | Tool | Version | Purpose | Installation |
 |------|---------|---------|--------------|
 | **Visual Studio Code** | Latest | IDE | [Download](https://code.visualstudio.com/) |
-| **Node.js** | 22.x+ | Bot runtime & scripts | [Download](https://nodejs.org/) |
+| **Node.js** | 22 or 24 | Bot runtime & scripts | [Download](https://nodejs.org/) |
 | **Azure CLI** | Latest | Azure authentication | `winget install Microsoft.AzureCLI` |
 | **Dev Tunnels CLI** | Latest | Local endpoint exposure | `winget install Microsoft.devtunnel` |
 
