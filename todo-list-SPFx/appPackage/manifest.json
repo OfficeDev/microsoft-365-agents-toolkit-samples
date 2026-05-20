@@ -1,6 +1,6 @@
 {
-    "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.17/MicrosoftTeams.schema.json",
-    "manifestVersion": "1.17",
+    "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.27/MicrosoftTeams.schema.json",
+    "manifestVersion": "1.27",
     "id": "${{TEAMS_APP_ID}}",
     "version": "1.0.0",
     "developer": {
@@ -22,6 +22,7 @@
         "color": "color.png"
     },
     "accentColor": "#004578",
+    "supportsChannelFeatures": "tier1",
     "configurableTabs": [
         {
             "configurationUrl": "https://{teamSiteDomain}{teamSitePath}/_layouts/15/TeamsLogon.aspx?SPFX=true&dest={teamSitePath}/_layouts/15/teamshostedapp.aspx%3Fteams%26componentId=c314487b-f51c-474d-823e-a2c3ec82b1ff%26forceLocale={locale}",

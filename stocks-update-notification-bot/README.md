@@ -24,7 +24,7 @@ The Stocks Update Notification bot shows you how to request data on a pretermine
 - How to use a bot in different contexts
 
 ## Prerequisite to use this sample
-- [Node.js](https://nodejs.org/), supported versions: 20, 22
+- [Node.js](https://nodejs.org/), supported versions: 22
 - A Microsoft 365 account. If you do not have Microsoft 365 account, apply one from [Microsoft 365 developer program](https://developer.microsoft.com/en-us/microsoft-365/dev-program)
 - [Microsoft 365 Agents Toolkit Visual Studio Code Extension](https://aka.ms/teams-toolkit) version 5.0.0 and higher or [Microsoft 365 Agents Toolkit CLI](https://aka.ms/teams-toolkit-cli)
 
@@ -61,6 +61,7 @@ The Stocks Update Notification bot shows you how to request data on a pretermine
 | Aug 19, 2022 | garrytrinder  | update to support Microsoft 365 Agent Toolkit V4.0.0 |
 | Dec 5, 2022  | XiaofuHuang   | update to support Microsoft 365 Agent Toolkit v5.0.0 |
 | Jan 28, 2026  | quke   | update to Function v4 as v1 is deprecated, fix vulnerability |
+| Apr 7, 2026   | quke   | Upgrade @microsoft/agents-hosting to v1.4.1                  |
 
 ## Feedback
 We really appreciate your feedback! If you encounter any issue or error, please report issues to us following the [Supporting Guide](https://github.com/OfficeDev/TeamsFx-Samples/blob/dev/SUPPORT.md). Meanwhile you can make [recording](https://aka.ms/teamsfx-record) of your journey with our product, they really make the product better. Thank you!

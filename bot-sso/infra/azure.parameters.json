@@ -22,6 +22,18 @@
     },
     "aadAppOauthAuthorityHost": {
       "value": "${{AAD_APP_OAUTH_AUTHORITY_HOST}}"
+    },
+    "ssoAppClientId": {
+      "value": "${{AAD_APP_CLIENT_ID}}"
+    },
+    "ssoAppClientSecret": {
+      "value": "${{SECRET_AAD_APP_CLIENT_SECRET}}"
+    },
+    "ssoAppTenantId": {
+      "value": "${{AAD_APP_TENANT_ID}}"
+    },
+    "botSsoConnectionName": {
+      "value": "${{BOT_SSO_CONNECTION_NAME}}"
     }
   }
 }

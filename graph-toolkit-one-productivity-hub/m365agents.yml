@@ -77,7 +77,7 @@ deploy:
   # Run npm command
   - uses: cli/runNpmCommand
     with:
-      args: install --production
+      args: install
   # Run npm command
   - uses: cli/runNpmCommand
     env:

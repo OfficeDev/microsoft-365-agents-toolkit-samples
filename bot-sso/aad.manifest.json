@@ -100,7 +100,8 @@
     ],
     "web": {
         "redirectUris": [
-            "https://${{BOT_DOMAIN}}/auth-end.html"
+            "https://${{BOT_DOMAIN}}/auth-end.html",
+            "https://token.botframework.com/.auth/web/redirect"
         ],
         "implicitGrantSettings": {}
     },

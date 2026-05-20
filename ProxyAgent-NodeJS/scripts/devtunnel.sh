@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Ensure ~/bin is in PATH for devtunnel
+export PATH="$HOME/bin:$PATH"
+
 exe=$(which devtunnel)
 if [ $? -ne 0 ]; then
   echo "Dev Tunnels CLI not found. Please install: https://learn.microsoft.com/azure/developer/dev-tunnels/get-started"

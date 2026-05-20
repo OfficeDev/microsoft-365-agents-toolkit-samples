@@ -8,44 +8,35 @@ import { adapter } from "../internal/initialize";
 
 export async function messages(
   request: HttpRequest,
-  context: InvocationContext
+  _context: InvocationContext
 ): Promise<HttpResponseInit> {
-  const res: HttpResponseInit = { status: 200 };
+  const body = await request.json();
+  const compatibleReq = {
+    body,
+    headers: Object.fromEntries(request.headers.entries()),
+    method: request.method,
+  };
+
+  let status = 200;
+  let returnBody: unknown = null;
   const response = {
+    status: (code: number) => { status = code; },
+    send: (b: unknown) => { returnBody = b; },
+    setHeader: () => {},
     end: () => {},
-    header: (name: string, value: unknown) => {
-      res.headers = res.headers || {};
-      res.headers[name] = value;
-    },
-    send: (body: unknown) => {
-      res.body = body as string;
-    },
-    status: (code) => {
-      res.status = code;
-    },
-    socket: {},
-  } as any;
+  };
+
   await adapter.process(
-    await requestAdaptor(request),
-    response,
-    async (context) => {
+    compatibleReq as any,
+    response as any,
+    async (_turnContext) => {
       // Add your bot logic here if needed
     }
   );
-  return res;
-}
 
-async function requestAdaptor(request: HttpRequest): Promise<any> {
   return {
-    body: (await request.json()) as any,
-    headers: (await Promise.all(request.headers.entries())).reduce(
-      (acc, [key, value]) => {
-        acc[key] = value;
-        return acc;
-      },
-      {}
-    ),
-    method: request.method,
+    status,
+    body: returnBody ? JSON.stringify(returnBody) : undefined,
   };
 }
 

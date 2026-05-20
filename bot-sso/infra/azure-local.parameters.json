@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "botId": {
+      "value": "${{BOT_ID}}"
+    },
+    "botEndpoint": {
+      "value": "${{BOT_ENDPOINT}}"
+    },
+    "botAppTenantId": {
+      "value": "${{AAD_APP_TENANT_ID}}"
+    },
+    "ssoAppClientId": {
+      "value": "${{AAD_APP_CLIENT_ID}}"
+    },
+    "ssoAppClientSecret": {
+      "value": "${{SECRET_AAD_APP_CLIENT_SECRET}}"
+    },
+    "ssoAppTenantId": {
+      "value": "${{AAD_APP_TENANT_ID}}"
+    },
+    "botSsoConnectionName": {
+      "value": "${{BOT_SSO_CONNECTION_NAME}}"
+    }
+  }
+}

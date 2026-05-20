@@ -18,6 +18,14 @@ param aadAppOauthAuthorityHost string
 @secure()
 param aadAppClientSecret string
 
+param ssoAppClientId string
+@secure()
+param ssoAppClientSecret string
+param ssoAppTenantId string
+
+@description('The name of the OAuth connection for SSO')
+param botSsoConnectionName string = 'SSOSelf'
+
 resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
   location: location
   name: identityName
@@ -81,6 +89,7 @@ resource webAppSettings 'Microsoft.Web/sites/config@2021-02-01' = {
     AAD_APP_CLIENT_SECRET: aadAppClientSecret
     AAD_APP_TENANT_ID: aadAppTenantId
     AAD_APP_OAUTH_AUTHORITY_HOST: aadAppOauthAuthorityHost
+    BOT_SSO_CONNECTION_NAME: botSsoConnectionName
     RUNNING_ON_AZURE: '1'
   }
 }
@@ -95,6 +104,10 @@ module azureBotRegistration './botRegistration/azurebot.bicep' = {
     identityTenantId: identity.properties.tenantId
     botAppDomain: webApp.properties.defaultHostName
     botDisplayName: botDisplayName
+    ssoAppClientId: ssoAppClientId
+    ssoAppClientSecret: ssoAppClientSecret
+    ssoAppTenantId: ssoAppTenantId
+    botSsoConnectionName: botSsoConnectionName
   }
 }
 

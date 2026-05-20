@@ -106,12 +106,16 @@ graph TB
 
 | Tool | Version | Installation |
 |------|---------|--------------|
+| **PowerShell Core** | 7.x+ | `winget install Microsoft.PowerShell` |
 | **Azure CLI** | Latest | [Install Guide](https://learn.microsoft.com/cli/azure/install-azure-cli) |
 | **Microsoft 365 Agents Toolkit CLI** | Latest | [Install Guide](https://aka.ms/m365agentstoolkit-cli) |
 | **.NET SDK** | 9.0 | [Download](https://dotnet.microsoft.com/download/dotnet/9.0) |
 
 **Installation Commands:**
 ```powershell
+# PowerShell Core
+winget install Microsoft.PowerShell
+
 # Azure CLI
 winget install Microsoft.AzureCLI
 
@@ -119,6 +123,7 @@ winget install Microsoft.AzureCLI
 npm install -g @microsoft/m365agentstoolkit-cli
 
 # Verify installations
+pwsh --version
 az --version
 atk --version
 dotnet --version

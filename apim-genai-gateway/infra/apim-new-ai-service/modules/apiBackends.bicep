@@ -154,7 +154,7 @@ resource apimSubscription 'Microsoft.ApiManagement/service/subscriptions@2023-05
   properties: {
     allowTracing: true
     displayName: 'AI Services Subscription'
-    scope: '/apis/${api.id}'
+    scope: '/apis/${api.name}'
     state: 'active'
   }
 }
