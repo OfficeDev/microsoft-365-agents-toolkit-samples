@@ -56,13 +56,13 @@ jobs:
           echo "All changed files:"
           echo "$CHANGED_FILES"
           
-          # Get changed markdown files (README.md and README.md.tpl)
-          CHANGED_MD_FILES=$(echo "$CHANGED_FILES" | grep -E '(README\.md|README\.md\.tpl)$' || true)
+          # Get changed markdown files (README.md and README.md.tpl), excluding archived samples
+          CHANGED_MD_FILES=$(echo "$CHANGED_FILES" | grep -E '(README\.md|README\.md\.tpl)$' | grep -v '^archive/' || true)
           echo "Changed markdown files:"
           echo "$CHANGED_MD_FILES"
           
-          # Get changed directories containing package.json changes
-          CHANGED_PKG_DIRS=$(echo "$CHANGED_FILES" | grep -E 'package\.json(\.tpl)?$' | xargs -I {} dirname {} | sort -u || true)
+          # Get changed directories containing package.json changes, excluding archived samples
+          CHANGED_PKG_DIRS=$(echo "$CHANGED_FILES" | grep -E 'package\.json(\.tpl)?$' | grep -v '^archive/' | xargs -I {} dirname {} | sort -u || true)
           echo "Changed package.json directories:"
           echo "$CHANGED_PKG_DIRS"
           
