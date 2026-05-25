@@ -9,7 +9,8 @@
     "strict": false,
     "allowSyntheticDefaultImports": true,  
     "esModuleInterop": true,  
-    "moduleResolution": "nodenext",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
     "typeRoots": ["./node_modules/@types"]
   }
 }
