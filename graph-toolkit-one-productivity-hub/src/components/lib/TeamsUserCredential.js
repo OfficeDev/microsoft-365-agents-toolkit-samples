@@ -107,10 +107,8 @@ export class TeamsUserCredential {
 
     // If code exists in result, user may using previous auth-start and auth-end page.
     if (resultJson.code) {
-      const helpLink = "https://aka.ms/teamsfx-auth-code-flow";
       const usingPreviousAuthPage =
-        "Found auth code in response. Auth code is not support for current version of SDK. " +
-        `Please refer to the help link for how to fix the issue: ${helpLink}.`;
+        "Found auth code in response. Auth code is not support for current version of SDK. ";
       console.error(usingPreviousAuthPage);
       throw new Error(usingPreviousAuthPage);
     }
