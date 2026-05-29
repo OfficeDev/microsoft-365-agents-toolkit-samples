@@ -107,7 +107,7 @@ resource storage 'Microsoft.Storage/storageAccounts@2021-06-01' = {
   kind: 'StorageV2'
   location: location
   sku: {
-    name: storageSKU // You can follow https://aka.ms/teamsfx-bicep-add-param-tutorial to add functionStorageSku property to provisionParameters to override the default value "Standard_LRS".
+    name: storageSKU // Add functionStorageSku property to provisionParameters to override the default value "Standard_LRS".
   }
   properties: {
     allowSharedKeyAccess: false // Disable Shared Key Access

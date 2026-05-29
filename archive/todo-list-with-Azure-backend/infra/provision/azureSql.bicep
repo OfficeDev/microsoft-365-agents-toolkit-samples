@@ -21,7 +21,7 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2021-05-01-preview' = {
   location: resourceGroup().location
   name: sqlDatabaseName
   sku: {
-    name: sqlDatabaseSku // You can follow https://aka.ms/teamsfx-bicep-add-param-tutorial to add sqlDatabaseSku property to provisionParameters to override the default value "Basic".
+    name: sqlDatabaseSku // Add sqlDatabaseSku property to provisionParameters to override the default value "Basic".
   }
 }
 

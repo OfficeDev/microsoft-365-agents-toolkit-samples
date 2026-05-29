@@ -13,7 +13,7 @@ resource serverfarms 'Microsoft.Web/serverfarms@2021-02-01' = {
   kind: 'functionapp'
   location: resourceGroup().location
   sku: {
-    name: serverfarmsSku // You can follow https://aka.ms/teamsfx-bicep-add-param-tutorial to add functionServerfarmsSku property to provisionParameters to override the default value "Y1".
+    name: serverfarmsSku // Add functionServerfarmsSku property to provisionParameters to override the default value "Y1".
   }
   properties: {}
 }

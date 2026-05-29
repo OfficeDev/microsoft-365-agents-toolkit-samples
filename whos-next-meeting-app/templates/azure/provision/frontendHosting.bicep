@@ -13,7 +13,7 @@ resource storage 'Microsoft.Storage/storageAccounts@2021-06-01' = {
     supportsHttpsTrafficOnly: true
   }
   sku: {
-    name: storageSku // You can follow https://aka.ms/teamsfx-bicep-add-param-tutorial to add frontendHostingStorageSku property to provisionParameters to override the default value "Standard_LRS".
+    name: storageSku // Add frontendHostingStorageSku property to provisionParameters to override the default value "Standard_LRS".
   }
 }
 

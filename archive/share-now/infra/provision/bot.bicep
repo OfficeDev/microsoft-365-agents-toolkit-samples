@@ -27,7 +27,7 @@ resource botService 'Microsoft.BotService/botServices@2021-03-01' = {
     msaAppType:'UserAssignedMSI'
   }
   sku: {
-    name: botServiceSku // You can follow https://aka.ms/teamsfx-bicep-add-param-tutorial to add botServiceSku property to provisionParameters to override the default value "F0".
+    name: botServiceSku // Add botServiceSku property to provisionParameters to override the default value "F0".
   }
 }
 
