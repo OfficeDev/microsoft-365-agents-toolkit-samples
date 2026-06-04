@@ -107,7 +107,7 @@ resource storage 'Microsoft.Storage/storageAccounts@2021-06-01' = {
   kind: 'StorageV2'
   location: location
   sku: {
-    name: storageSKU // Add functionStorageSku property to provisionParameters to override the default value "Standard_LRS".
+    name: storageSKU // You can follow https://learn.microsoft.com/en-us/microsoftteams/platform/toolkit/provision#use-an-existing-microsoft-entra-app-for-your-teams-app to add functionStorageSku property to provisionParameters to override the default value "Standard_LRS".
   }
   properties: {
     allowSharedKeyAccess: false // Disable Shared Key Access

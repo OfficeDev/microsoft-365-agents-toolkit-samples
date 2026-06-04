@@ -21,7 +21,7 @@ resource sqlDatabase 'Microsoft.Sql/servers/databases@2021-05-01-preview' = {
   location: resourceGroup().location
   name: sqlDatabaseName
   sku: {
-    name: sqlDatabaseSku // Add sqlDatabaseSku property to provisionParameters to override the default value "Basic".
+    name: sqlDatabaseSku // You can follow https://learn.microsoft.com/en-us/microsoftteams/platform/toolkit/provision#use-an-existing-microsoft-entra-app-for-your-teams-app to add sqlDatabaseSku property to provisionParameters to override the default value "Basic".
   }
 }
 

@@ -13,7 +13,7 @@ resource serverfarms 'Microsoft.Web/serverfarms@2021-02-01' = {
   kind: 'functionapp'
   location: resourceGroup().location
   sku: {
-    name: serverfarmsSku // Add functionServerfarmsSku property to provisionParameters to override the default value "Y1".
+    name: serverfarmsSku // You can follow https://learn.microsoft.com/en-us/microsoftteams/platform/toolkit/provision#use-an-existing-microsoft-entra-app-for-your-teams-app to add functionServerfarmsSku property to provisionParameters to override the default value "Y1".
   }
   properties: {}
 }

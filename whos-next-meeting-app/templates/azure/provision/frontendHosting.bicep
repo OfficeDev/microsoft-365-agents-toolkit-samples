@@ -13,7 +13,7 @@ resource storage 'Microsoft.Storage/storageAccounts@2021-06-01' = {
     supportsHttpsTrafficOnly: true
   }
   sku: {
-    name: storageSku // Add frontendHostingStorageSku property to provisionParameters to override the default value "Standard_LRS".
+    name: storageSku // You can follow https://learn.microsoft.com/en-us/microsoftteams/platform/toolkit/provision#use-an-existing-microsoft-entra-app-for-your-teams-app to add frontendHostingStorageSku property to provisionParameters to override the default value "Standard_LRS".
   }
 }
 
