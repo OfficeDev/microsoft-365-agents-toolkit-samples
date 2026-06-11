@@ -77,7 +77,7 @@ jobs:
         uses: Stockopedia/action-get-changed-files@v1.2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          ignore: "**/+(.github)"
+          ignore: "**/+(.github|archive)"
           foldersOnly: true
           format: json
 
@@ -92,6 +92,11 @@ jobs:
           validationFailed="validation failed"
           validationResult=true
           while IFS= read -r line; do
+            # Skip archived samples (under the archive/ folder) - they are intentionally retired
+            if [[ "$line" == "archive" || "$line" == archive/* ]]; then
+              printf "\nSkipping archived folder: '$line'\n"
+              continue
+            fi
             if [[ ! ${exceptions[@]} =~ $line ]]
             then
               # Skip deleted folders - they no longer exist so cannot be validated
