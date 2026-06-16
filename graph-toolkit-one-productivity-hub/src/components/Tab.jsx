@@ -110,11 +110,10 @@ class Tab extends React.Component {
       Providers.globalProvider.setState(ProviderState.SignedIn);
     } catch (err) {
       if (err.message?.includes("CancelledByUser")) {
-        const helpLink = "https://aka.ms/teamsfx-auth-code-flow";
         err.message +=
           '\nIf you see "AADSTS50011: The reply URL specified in the request does not match the reply URLs configured for the application" ' +
           "in the popup window, you may be using unmatched version for TeamsFx SDK (version >= 0.5.0) and Microsoft 365 Agents Toolkit (version < 3.3.0) or " +
-          `cli (version < 0.11.0). Please refer to the help link for how to fix the issue: ${helpLink}`;
+          "cli (version < 0.11.0).";
       }
       alert("Login failed: " + err);
       return;

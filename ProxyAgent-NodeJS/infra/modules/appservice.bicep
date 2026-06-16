@@ -98,12 +98,20 @@ resource webApp 'Microsoft.Web/sites@2023-12-01' = {
           value: 'true'
         }
         {
-          name: 'clientId'  // Lowercase - required by @microsoft/agents-hosting SDK
+          name: 'connections__serviceConnection__settings__clientId'
           value: botId
         }
         {
-          name: 'tenantId'  // Lowercase - required by @microsoft/agents-hosting SDK
+          name: 'connections__serviceConnection__settings__tenantId'
           value: botTenantId
+        }
+        {
+          name: 'connectionsMap__0__connection'
+          value: 'serviceConnection'
+        }
+        {
+          name: 'connectionsMap__0__serviceUrl'
+          value: '*'
         }
         // Application-specific configuration (used by src/config.ts and src/agent.ts)
         {

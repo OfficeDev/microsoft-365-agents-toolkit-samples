@@ -1,24 +1,25 @@
-# Microsoft Foundry Agent for Microsoft 365
+# Proxy Agent Sample for Microsoft 365
 
-> **Making Microsoft Foundry Agents available in Microsoft 365 Copilot and Teams using the Microsoft 365 Agents Toolkit.**
+> **Connect any external AI agent to Microsoft 365 Copilot and Teams using the Microsoft 365 Agents Toolkit.**
 
-This solution demonstrates how to integrate a Microsoft Foundry agent with Microsoft Teams and Microsoft 365 Copilot, providing a seamless experience for users to interact with powerful AI capabilities directly within their productivity tools.
+This sample provides a reusable proxy pattern to integrate **any AI backend** (OpenAI, Anthropic, Groq, LangChain, Microsoft Foundry, or your own) with Microsoft Teams and Microsoft 365 Copilot. The proxy handles Teams transport, SSO, and streaming — you replace only the backend call. **Microsoft Foundry is used as the demo backend**, but the architecture is designed to be swapped out.
 
 [![Video Tutorial](https://img.youtube.com/vi/U9Yv2vjKYbI/0.jpg)](https://www.youtube.com/watch?v=U9Yv2vjKYbI)
 
 > **Note:** The video demonstrates the C# version of this sample. This repository contains the Node.js/TypeScript implementation.
 
 ## This sample illustrates
-- How to connect a Microsoft Foundry Agent to M365 Copilot
+- How to **proxy any AI backend** into M365 Copilot and Teams (Microsoft Foundry is used as the demo)
 - How to use the Agent SDK with Managed Identity (no secrets in production)
-- How to setup and use **SSO in M365 Copilot & Teams** and pass user tokens to Microsoft Foundry
+- How to setup and use **SSO in M365 Copilot & Teams** and forward user tokens to your backend
 - How to configure **SSO with Federated Credentials** for a secret-free SSO flow **(Single Tenant Only)**
+- How to **swap the backend** — replace a single file (`src/agent.ts`) to point at a different AI provider
 
 ---
 
 ## 🔄 Architecture Flow
 
-This is an high level sequence diagram illustrating the interaction flow between the user, Microsoft 365 Copilot, the Proxy Agent, and the Microsoft Foundry AI agent.
+This is a high level sequence diagram illustrating the interaction flow between the user, Microsoft 365 Copilot, the Proxy Agent, and any AI backend (Microsoft Foundry shown as the demo example).
 
 ```mermaid
 sequenceDiagram
@@ -36,7 +37,7 @@ sequenceDiagram
         participant P as Proxy Agent (Agents SDK)
     end
 
-    box "Microsoft Foundry"
+    box "Your AI Backend (e.g. Microsoft Foundry)"
         participant A as AI Agent Backend
     end
 
@@ -72,10 +73,31 @@ sequenceDiagram
 ```
 
 This proxy pattern allows you to:
-- ✅ Connect existing AI agents to Microsoft 365 Copilot
-- ✅ Maintain your AI logic in Microsoft Foundry
+- ✅ Connect **any AI backend** to Microsoft 365 Copilot and Teams
+- ✅ Keep your AI logic in your backend of choice (Foundry, OpenAI, Anthropic, custom, etc.)
 - ✅ Provide seamless user experience in Teams and Copilot with SSO
 - ✅ Handle authentication and message routing automatically
+- ✅ Swap backends by changing only `src/agent.ts`
+
+---
+
+## 🤖 GitHub Copilot Integration
+
+This repo ships with a built-in **GitHub Copilot skill** that gives Copilot deep context about the proxy agent architecture. When you use GitHub Copilot in VS Code (Chat, Inline, or Edits), it automatically understands:
+
+- **Edit boundaries** — which parts of `agent.ts` to replace (backend seam) and which to leave alone (SDK lifecycle, SSO, streaming)
+- **Config wiring** — how to add environment variables across all 4 layers (config.ts, .env, .yml, bicep)
+- **Auth patterns** — when to use TokenCredential, API keys, or managed identity
+- **Forbidden patterns** — what to avoid (hardcoded secrets, plain-text keys in production, etc.)
+
+**How it works:**
+
+| File | Purpose |
+|------|---------|
+| `.github/copilot-instructions.md` | Routes Copilot to the skill on first interaction |
+| `.agents/skills/proxy-agent-dev/SKILL.md` | Full architectural context, build flow, and verification checklist |
+
+> **Tip:** Open GitHub Copilot Chat in VS Code and ask *"How do I swap the backend to OpenAI?"* — Copilot will walk you through it step by step using the skill's guidance.
 
 ---
 
@@ -135,9 +157,9 @@ atk deploy --env dev
 
 ### Required Services
 
-- **Microsoft Foundry Project** with a configured agent
+- **An AI backend** — this sample ships with a Microsoft Foundry demo, but you can substitute any provider
 - **Microsoft 365 tenant** with Teams or Copilot access
-- **Azure subscription** with permission to assign Azure role-based access control (Azure RBAC).
+- **Azure subscription** with permission to assign Azure role-based access control (Azure RBAC)
 
 ---
 
@@ -147,11 +169,11 @@ This solution consists of one main component:
 
 ### Bot Application + M365 Agents Toolkit Project
 
-Node.js/TypeScript bot application that serves as a proxy between Microsoft 365 and Microsoft Foundry.
+Node.js/TypeScript bot application that serves as a proxy between Microsoft 365 and any AI backend.
 
 **Key Features:**
 
-- Connects to Microsoft Foundry Agent Service
+- Proxies messages to any AI backend (Microsoft Foundry included as the demo)
 - Handles user authentication and SSO
 - Manages conversation threads and message routing
 - Built on Microsoft 365 Agents SDK for Node.js
@@ -169,38 +191,42 @@ Infrastructure as Code and configuration for Microsoft 365 integration.
 
 ```text
 ProxyAgent-NodeJS/
+├── .agents/
+│   └── skills/
+│       └── proxy-agent-dev/
+│           └── SKILL.md             # 🤖 Copilot skill (architecture + edit guidance)
+├── .github/
+│   └── copilot-instructions.md      # 🤖 Routes Copilot to the skill
 ├── src/
-│   ├── index.ts              # Application entry point (Express server)
-│   ├── agent.ts              # Microsoft Foundry integration
-│   ├── adapter.ts            # Bot Framework adapter configuration
-│   ├── config.ts             # Configuration management
+│   ├── index.ts                 # Application entry point (Express server)
+│   ├── agent.ts                 # Backend integration (replace to swap providers)
+│   ├── config.ts                # Configuration management
+│   ├── logger.ts                # Logging utility (configurable log levels)
 │   └── userAuthTokenWrapper.ts  # User authentication wrapper
-├── appPackage/               # Teams app package
-│   ├── manifest.json         # App manifest template
-│   └── build/                # Generated manifests (.dev, .local, .playground)
-├── env/                      # Environment configuration
-│   ├── .env.dev              # Azure production environment
-│   │   ├── .env.local            # Local development environment
-│   │   └── .env.playground       # Playground environment
-│   ├── infra/                    # Infrastructure as Code (Bicep)
-│   │   ├── azure.bicep           # Production deployment template
-│   │   ├── azure-local.bicep     # Local development template
-│   │   └── modules/              # Reusable Bicep modules
-│   ├── scripts/                  # Utility scripts
-│   │   ├── devtunnel.ps1         # Dev tunnel management (PowerShell)
-│   │   ├── devtunnel.sh          # Dev tunnel management (Bash)
-│   │   ├── env.js                # Environment file generator
-│   │   └── guid-encoder.js       # GUID encoding utility
-│   ├── m365agents.yml            # Production orchestration
-│   ├── m365agents.local.yml      # Local orchestration
-│   ├── m365agents.playground.yml # Playground orchestration
-│   ├── package.json              # Node.js dependencies
-│   ├── tsconfig.json             # TypeScript configuration
-│   ├── AZURE_DEPLOYMENT.md       # 📘 Azure deployment guide
-│   └── LOCAL_DEPLOYMENT.md       # 📘 Local development guide
-│
-├── images/                       # Screenshots and diagrams
-└── README.md                     # This file
+├── appPackage/                  # Teams app package
+│   ├── manifest.json            # App manifest template
+│   └── build/                   # Generated manifests (.dev, .local, .playground)
+├── env/                         # Environment configuration
+│   ├── .env.dev                 # Azure production environment
+│   ├── .env.local               # Local development environment (auto-generated)
+│   └── env.TEMPLATE             # Template with all variables documented
+├── infra/                       # Infrastructure as Code (Bicep)
+│   ├── azure.bicep              # Production deployment template
+│   ├── azure-local.bicep        # Local development template
+│   └── modules/                 # Reusable Bicep modules
+├── scripts/                     # Utility scripts
+│   ├── devtunnel.ps1            # Dev tunnel management (PowerShell)
+│   ├── devtunnel.sh             # Dev tunnel management (Bash)
+│   ├── env.js                   # Environment file generator
+│   └── guid-encoder.js          # GUID encoding utility
+├── m365agents.yml               # Production orchestration
+├── m365agents.local.yml         # Local orchestration
+├── package.json                 # Node.js dependencies
+├── tsconfig.json                # TypeScript configuration
+├── AZURE_DEPLOYMENT.md          # 📘 Azure deployment guide
+├── LOCAL_DEPLOYMENT.md          # 📘 Local development guide
+├── images/                      # Screenshots and diagrams
+└── README.md                    # This file
 ```
 
 ---
@@ -225,7 +251,9 @@ ProxyAgent-NodeJS/
 
 ## ⚙️ Configuration
 
-### Microsoft Foundry Setup
+### Backend Setup (Microsoft Foundry Demo)
+
+The sample ships with Microsoft Foundry as the demo backend. To use it:
 
 1. **Create an Agent in Microsoft Foundry Portal:**
    - Configure the model (GPT-4, GPT-4 Turbo, etc.)
@@ -280,7 +308,7 @@ MicrosoftAppTenantId=<tenant-id>
 1. Install the app in Teams (via app package upload)
 2. Start a chat with the bot
 3. Ask questions or give commands
-4. The bot routes requests to your Microsoft Foundry agent
+4. The bot routes requests to your AI backend (Microsoft Foundry in this demo)
 5. Get AI-powered responses with context awareness
 
 ### In Microsoft 365 Copilot
@@ -290,7 +318,7 @@ MicrosoftAppTenantId=<tenant-id>
 1. Access via https://m365copilot.com/
 2. Find your agent in the left sidebar
 3. Click "Open with Copilot"
-4. Use natural language to interact with your Microsoft Foundry agent
+4. Use natural language to interact with your AI backend
 5. Seamless integration with other M365 services
 
 ---
@@ -418,7 +446,7 @@ MicrosoftAppTenantId=<tenant-id>
 - ✅ Check dev tunnel is running (local) or App Service is started (Azure)
 - ✅ Verify bot endpoint in Azure Bot Service configuration
 - ✅ Check application logs for errors
-- ✅ Verify Microsoft Foundry agent is accessible
+- ✅ Verify your AI backend is accessible (e.g., Microsoft Foundry agent)
 
 ### SSO Not Working
 - ✅ Check `webApplicationInfo` in app manifest
@@ -463,9 +491,9 @@ MicrosoftAppTenantId=<tenant-id>
 
 ---
 
-## 🎓 Tutorial: Creating a Stock Agent in Microsoft Foundry
+## 🎓 Tutorial: Creating a Stock Agent in Microsoft Foundry (Demo Backend)
 
-This tutorial shows you how to create the same Stock Agent demonstrated in the video and screenshots above.
+This tutorial shows you how to create the same Stock Agent demonstrated in the video and screenshots above, using Microsoft Foundry as the demo backend.
 
 ### Overview
 
