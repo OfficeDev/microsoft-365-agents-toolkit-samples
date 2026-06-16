@@ -41,7 +41,7 @@
     "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^22.5.4",
     "env-cmd": "latest",
-    "nodemon": "^3.1.4",
+    "nodemon": "^3.1.14",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "tsup": "^8.4.0",
