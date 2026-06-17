@@ -16,8 +16,13 @@ Use this mapping to know the current vs. former names—so you can correctly int
 > - Explain the rebranding briefly if it helps the user’s understanding.  
 
 # Instructions for Copilot
-- Before doing any work in this repository, read the `proxy-agent-dev` skill.
-- Before editing code in this repository, ensure the [Microsoft Agents SDK plugin](https://github.com/microsoft/Agents/tree/main/agent-plugins) is installed. It provides skills (`agents-sdk-typescript`, `agents-sdk-debugging`, `azure-agents-sdk-provision`) that activate automatically when working with `@microsoft/agents-hosting` and related packages.
+- Before doing any work in this repository, read the `proxy-agent-dev` skill at `.agents/skills/proxy-agent-dev/SKILL.md`.
+- **Verify the Microsoft Agents SDK plugin is installed before editing code.** Check for the directory `~/.vscode/agent-plugins/github.com/microsoft/agents/agent-plugins/agents-for-js/skills/`. If it does not exist or does not contain the skills `agents-sdk-typescript`, `agents-sdk-debugging`, and `azure-agents-sdk-provision`, **stop and ask the user to install the plugin** by running the VS Code command `GitHub Copilot: Install Copilot Agent Plugin` and entering `https://github.com/microsoft/agents` as the repository URL. Do not proceed with code edits until the plugin is confirmed installed.
+- **You MUST read the relevant Agents SDK skill `SKILL.md` BEFORE writing or modifying any Agents SDK code** — do not rely on prior knowledge. Read the skill file(s) from `~/.vscode/agent-plugins/github.com/microsoft/agents/agent-plugins/agents-for-js/skills/<skill-name>/SKILL.md` according to the task:
+  - `agents-sdk-typescript` — before authoring or changing any code that uses the M365 Agents SDK (`AgentApplication`, `TurnContext`, `TurnState`, message handlers, streaming, SSO/token wiring in `src/agent.ts`, `src/config.ts`, `src/index.ts`).
+  - `agents-sdk-debugging` — before diagnosing bot messaging, SSO/token, or runtime/streaming failures.
+  - `azure-agents-sdk-provision` — before changing provisioning or infrastructure (`infra/`, Bicep modules, `m365agents*.yml`, OAuth connection / managed identity setup).
+- If a task spans multiple areas, read each applicable skill first. If you are unsure whether a change touches the Agents SDK, read `agents-sdk-typescript` to confirm before proceeding.
 - Apps and agents for Microsoft 365 or Microsoft 365 Copilot refers to applications for products in Microsoft 365, agents for Microsoft 365 Copilot, including Teams app, Office addin, declarative agent, customer engine agent, etc.
 - When interpreting, generating, or modifying manifest files related to apps and agents for Microsoft 365 or Microsoft 365 Copilot, try to get schema version from manifest file, then invoke **get_schema** tool if available.
 - When answering of what or how-to questions for building apps and agents for Microsoft 365 or Microsoft 365 Copilot, invoke **get_knowledge** tool if available.
