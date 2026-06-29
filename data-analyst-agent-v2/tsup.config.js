@@ -18,7 +18,7 @@ module.exports = {
     const srcDataDir = join(__dirname, 'src', 'data');
     const distDataDir = join(__dirname, 'dist', 'data');
     
-mkdirSync(distDataDir, { recursive: true });
+    mkdirSync(distDataDir, { recursive: true });
 
     if (!existsSync(srcDataDir)) {
       console.warn('src/data directory not found, skipping static file copy');
