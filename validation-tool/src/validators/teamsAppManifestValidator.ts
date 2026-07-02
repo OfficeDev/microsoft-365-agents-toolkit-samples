@@ -9,7 +9,7 @@ import addFormats from "ajv-formats";
 import { Result } from "../resultType";
 import { detectProjectType } from "../projectDetector";
 
-const LATEST_MANIFEST_VERSION = "1.28.0";
+const LATEST_MANIFEST_VERSION = "1.29.0";
 const MANIFEST_PREVIEW_VERSION = "devPreview";
 
 async function fetchSchema(schemaUrl: string): Promise<Record<string, unknown> | null> {

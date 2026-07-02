@@ -1,4 +1,4 @@
-const { copyFileSync, mkdirSync, readdirSync } = require('fs');
+const { copyFileSync, mkdirSync, readdirSync, existsSync } = require('fs');
 const { join } = require('path');
 
 /** @type {import('tsup').Options} */
@@ -19,7 +19,12 @@ module.exports = {
     const distDataDir = join(__dirname, 'dist', 'data');
     
     mkdirSync(distDataDir, { recursive: true });
-    
+
+    if (!existsSync(srcDataDir)) {
+      console.warn('src/data directory not found, skipping static file copy');
+      return;
+    }
+
     const files = readdirSync(srcDataDir);
     for (const file of files) {
       if (file.endsWith('.sql') || file.endsWith('.jsonl') || file.endsWith('.md') || file.endsWith('.db')) {
