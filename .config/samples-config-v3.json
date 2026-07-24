@@ -19,7 +19,6 @@
       "Azure",
       "Adaptive Cards",
       "SSO",
-      "SPFx",
       "Outlook",
       "Graph",
       "Dev Proxy"
@@ -186,27 +185,6 @@
       ],
       "time": "5min to run",
       "configuration": "Ready for debug",
-      "thumbnailPath": "assets/thumbnail.png",
-      "gifPath": "assets/sampleDemo.gif",
-      "suggested": false
-    },
-    {
-      "id": "todo-list-SPFx",
-      "shortId": "todo-spfx",
-      "onboardDate": "2021-05-06",
-      "title": "Todo List with SPFx",
-      "shortDescription": "Todo List app hosting on SharePoint",
-      "fullDescription": "The \"Todo List with SPFx\" is a Microsoft Teams application that provides a collaborative task management tool for Teams or Channel members. The application is hosted on SharePoint, allowing users to create, update, and delete tasks within a shared Todo List. The main user scenario involves members of a Team or Channel collaborating on the same Todo List and manipulating the same set of Todo items. The application leverages SharePoint Framework (SPFx) for its development and uses Single Sign-On (SSO) for user authentication. It also utilizes the Microsoft Graph Toolkit for accessing and manipulating Microsoft Graph data. The application does not require an Azure account for deployment, instead, it is deployed to the SharePoint App Catalog and synced to the Teams App Catalog. The application is primarily a Tab application and is written in TypeScript.",
-      "types": [
-        "Tab"
-      ],
-      "tags": [
-        "SharePoint",
-        "SPFx",
-        "TS"
-      ],
-      "time": "1hr to run",
-      "configuration": "Manual configurations required",
       "thumbnailPath": "assets/thumbnail.png",
       "gifPath": "assets/sampleDemo.gif",
       "suggested": false
