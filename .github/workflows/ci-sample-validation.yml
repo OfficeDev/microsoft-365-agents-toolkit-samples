@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Checkout Pull Request
         if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/checkout@v3
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
         with:
           fetch-depth: 0
           ref: ${{ github.head_ref }}
@@ -27,13 +27,13 @@ jobs:
 
       - name: Checkout Branch
         if: ${{ github.event_name != 'pull_request' }}
-        uses: actions/checkout@v3
+        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
         with:
           fetch-depth: 0
           ref: ${{ github.ref_name }}
           repository: ${{ github.repository }}
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3.9.1
         with:
           node-version: 18
 
@@ -74,7 +74,7 @@ jobs:
       - name: Get Changed Folders
         id: get_changed_folders
         if: ${{ github.event_name == 'pull_request' }}
-        uses: Stockopedia/action-get-changed-files@v1.2
+        uses: Stockopedia/action-get-changed-files@328c7e4ce8d8f40398e7cd03ae4e45df24a6ae70 # v1.2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           ignore: "**/+(.github|archive)"
