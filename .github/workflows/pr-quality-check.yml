@@ -32,7 +32,7 @@ jobs:
     steps:
       - name: Checkout Pull Request
         if: ${{ github.event_name == 'pull_request' }}
-        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           ref: ${{ github.head_ref }}
@@ -40,7 +40,7 @@ jobs:
 
       - name: Checkout Branch
         if: ${{ github.event_name != 'pull_request' }}
-        uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           ref: ${{ github.ref_name }}
@@ -89,7 +89,7 @@ jobs:
           fi
 
       - name: Set up Python for README analysis
-        uses: actions/setup-python@7f4fc3e22c37d6ff65e88745f38bd3157c663f7c # v4.9.1
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.x'
 
@@ -118,7 +118,7 @@ jobs:
             python -u .github/scripts/analyze_markdown.py --scan-directory "." --file-patterns "**/README.md" "**/README.md.tpl"
           fi
 
-      - uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3.9.1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
 

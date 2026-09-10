@@ -20,14 +20,14 @@ jobs:
           echo It's not allowed to run CD on other branch except release.
           exit 1
       
-      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: fetch latest tag
         uses: actions-ecosystem/action-get-latest-tag@b7c32daec3395a9616f88548363a42652b22d435 # v1.6.0
         id: get-latest-tag
       
       - name: update tag
-        uses: richardsimko/update-tag@aab2434e9a5040687874aa39d1c6377ec0cb0d94 # v1.1.6
+        uses: richardsimko/update-tag@24fe62c216198eb57283429200e63a06f62afe5b # v3.0.0
         if: ${{ github.event.inputs.update-tag == 'no' }}
         with:
           tag_name: ${{ steps.get-latest-tag.outputs.tag }}
@@ -36,7 +36,7 @@ jobs:
 
       - name: Bump version and push tag
         if: ${{ github.event.inputs.update-tag != 'no' }}
-        uses: anothrNick/github-tag-action@9aaabdb5e989894e95288328d8b17a6347217ae3 # 1.26.0
+        uses: anothrNick/github-tag-action@4ed44965e0db8dab2b466a16da04aec3cc312fd8 # 1.75.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
