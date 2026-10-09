@@ -36,9 +36,24 @@ jobs:
 
       - name: Bump version and push tag
         if: ${{ github.event.inputs.update-tag != 'no' }}
+        id: bump-tag
         uses: anothrNick/github-tag-action@9aaabdb5e989894e95288328d8b17a6347217ae3 # 1.26.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           INITIAL_VERSION: ${{ steps.get-latest-tag.outputs.tag }}
           RELEASE_BRANCHES: "main"
+
+      - name: Bump version when latest commit is already tagged
+        if: ${{ github.event.inputs.update-tag != 'no' && steps.bump-tag.outputs.new_tag == '' }}
+        env:
+          LATEST_TAG: ${{ steps.get-latest-tag.outputs.tag }}
+        run: |
+          if [[ ! "$LATEST_TAG" =~ ^v?([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo "::error::Latest tag '$LATEST_TAG' is not a semantic version."
+            exit 1
+          fi
+
+          new_tag="v${BASH_REMATCH[1]}.$((BASH_REMATCH[2] + 1)).0"
+          git tag "$new_tag"
+          git push origin "$new_tag"
