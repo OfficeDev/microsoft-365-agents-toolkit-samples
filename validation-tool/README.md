@@ -37,7 +37,7 @@ The content of m365agents.yml should follow these rules:
 ### Teams App Manifest
 The content of appPackage/manifest.json should follow these rules:
 * `id` is referencing placeholder from env, which is `${{TEAMS_APP_ID}}`
-* Manifest version should be latest to align with Microsoft 365 Agents Toolkit
+* Manifest version should be `1.31` with `$schema` set to `https://developer.microsoft.com/json-schemas/teams/v1.31/MicrosoftTeams.schema.json` to align with Microsoft 365 Agents Toolkit. Manifests using `devPreview` are reported with a warning.
 ### Demo GIF
 The default path is 'assets/sampleDemo.gif', if the sample is not using this path, validator will show a warning message.
 The size of sample gif file should be 1600x920/800x460 or other size that has same ratio.
